@@ -32,6 +32,22 @@ const gamesFaqs = [
   {
     question: 'How much does it cost to change names in each game?',
     answer: 'Valorant, Minecraft, and Roblox offer free name changes (subject to cooldowns like 30 days). Free Fire charges 390 Diamonds (or Guild Tokens), BGMI charges 180 UC (via Rename Card), and CODM charges 200 CP or 1,000 Credits.'
+  },
+  {
+    question: 'How does font rendering differ between mobile and PC game engines?',
+    answer: 'Mobile titles (built on Unity and modified UE4) often include broader localized Unicode glyph tables to support multi-language Asian playerbases. PC competitive shooters (like CS2 or Valorant) focus on ASCII and clean Small Caps to optimize tournament broadcasting clarity.'
+  },
+  {
+    question: 'What happens if I try to enter an invisible or whitespace name?',
+    answer: 'Some games (like Free Fire) support specific Hangul filler characters (U+3164) that produce an invisible nickname, while other games strip leading and trailing whitespace automatically upon form submission.'
+  },
+  {
+    question: 'Can I change my Display Name without changing my account username in Roblox?',
+    answer: 'Yes! Roblox allows players to change their front-facing Display Name for free once every 7 days, which supports decorative fonts and symbols while keeping their core username unique.'
+  },
+  {
+    question: 'How do I choose the best nickname style for each gaming genre?',
+    answer: 'For Battle Royales, choose Boss Crowns (亗) or Katakana (メ); for Tactical Shooters (Valorant/CS2), choose Small Caps (ʙɢᴍɪ); for Sandbox/RPGs, choose Gothic Fraktur or Aesthetic symbols (✿).'
   }
 ];
 
@@ -186,6 +202,139 @@ const schema = [
         <li>Use <strong>Small Caps (ᴠɪᴘᴇʀ)</strong>, which is supported across Valorant, Free Fire, BGMI, and CODM.</li>
         <li>Avoid game-exclusive symbols (like Free Fire's 亗) if you plan to use the exact same string in Minecraft or Fortnite.</li>
       </ul>
+    </section>
+
+    <!-- Section 3: Game Engine Rendering Pipelines: Unity vs Unreal Engine vs Proprietary -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        3. Game Engine Rendering Pipelines: Unity vs Unreal Engine vs Proprietary C++
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Each game engine handles text glyph rasterization differently:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs">
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">Unity (Free Fire & CODM)</div>
+          <p class="text-neutral-500 leading-relaxed">Utilizes TextMeshPro with dynamic font asset fallback tables. Excellent broad Unicode script rendering.</p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-indigo-600 dark:text-indigo-400 text-sm">Unreal Engine (BGMI & Valorant)</div>
+          <p class="text-neutral-500 leading-relaxed">Uses Slate UI font cache with strict sub-pixel antialiasing. Ideal for crisp Small Caps and Japanese Katakana.</p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-emerald-600 dark:text-emerald-400 text-sm">Proprietary (Minecraft & CS2)</div>
+          <p class="text-neutral-500 leading-relaxed">Custom lightweight bitmapped fonts enforcing strict ASCII characters and underscores for network packet optimization.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Cross-Title Digital Identity Architecture -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        4. Cross-Title Digital Identity Architecture for Competitive Gamers
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        When competing across multiple titles, maintain a unified three-tier naming architecture:
+      </p>
+      <ul class="list-disc list-inside space-y-1 text-xs text-neutral-600 dark:text-neutral-400">
+        <li><strong>Primary Brand Root:</strong> A memorable 1-to-2 syllable core name (e.g. <strong class="text-neutral-900 dark:text-white">SHADOW</strong>).</li>
+        <li><strong>Game-Specific Accent:</strong> Title-compliant decorative wrappers (e.g. <code class="text-xs">亗 SHADOW 亗</code> for Free Fire, <code class="text-xs">『SHADOW』メ</code> for BGMI, and <code class="text-xs">SEN • SHADOW</code> for Valorant).</li>
+        <li><strong>Permanent Social Handle:</strong> Matching clean alphanumeric handle across Discord, YouTube, and X (Twitter).</li>
+      </ul>
+    </section>
+
+    <!-- Section 5: Server-Side Sanitization & Character Length Edge Cases -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        5. Server-Side Sanitization & Character Length Edge Cases (2026)
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Modern multiplayer game servers process player name submissions through two distinct validation layers:
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">1. Client-Side Input Filter (Regex)</div>
+          <p class="text-neutral-500 leading-relaxed">
+            The local game binary checks keystrokes against a local regex pattern. If a symbol is missing from the local font asset file, the client displays a replacement glyph (□).
+          </p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-amber-600 dark:text-amber-400 text-sm">2. Database Character Encoding (UTF-8 / UTF-16)</div>
+          <p class="text-neutral-500 leading-relaxed">
+            The server backend stores player handles in MySQL or PostgreSQL database tables with <code class="text-xs">utf8mb4</code> collation, verifying grapheme count limits before deducting your Rename Card.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Mobile OS Font Rendering Differences (Android vs iOS) -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        6. Mobile OS Font Rendering Differences: Android (Roboto/Noto) vs Apple iOS (San Francisco)
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Android and iOS devices use different system fallback font stacks when rendering rare Unicode code points. While Free Fire and BGMI embed their own proprietary font files inside the APK/IPA package, third-party apps like Discord, WhatsApp, and browser leaderboards rely on OS font engines. Our generator uses universal Unicode blocks that render identically across both iPhone and Android screens.
+      </p>
+    </section>
+
+    <!-- Section 7: Cross-Game Account Security & Anti-Phishing Rules -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        7. Cross-Game Account Security & Impersonation Prevention
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        When establishing a prominent gaming handle across multiple titles, protect your account from malicious impersonation by claiming your exact handle on all secondary platforms. Verify your official gamertag on Discord community servers, link your Riot ID and Steam profile to your social channels, and avoid sharing your exact UID or login credentials with unverified tournament portals.
+      </p>
+    </section>
+
+    <!-- Section 8: The 2026 Gaming Platform Ecosystem Overview -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        8. The 2026 Competitive Gaming Platform Ecosystem
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        As gaming transitions to unified cross-play ecosystems across mobile, PC, and consoles, having a flexible and scalable digital identity is more vital than ever. GamerTag Pro provides the complete toolset needed to maintain an authoritative presence across every digital battleground.
+      </p>
+    </section>
+
+    <!-- Section 9: In-Game Font Engine Technical Specifications -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        9. In-Game Font Engine Technical Specifications & Memory Buffers
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Game engines allocate strict byte memory buffers in their multiplayer network packets for player handles (typically 32 to 64 bytes). Multi-byte Unicode characters consume 2 to 4 bytes per code point. Our generator monitors byte limits in real time so your gamertag remains within packet memory constraints, preventing network dropouts or database truncations during cross-server matchmaking.
+      </p>
+    </section>
+
+    <!-- Section 10: Step-by-Step Multi-Game Unified Rebranding Blueprint -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        10. Step-by-Step Multi-Game Unified Rebranding Blueprint
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        To rebrand across all 8 supported games simultaneously, start by selecting a 4-to-6 letter root word. Generate your primary tag in Small Caps on GamerTag Pro, apply the matching game-specific wrapper for each title, and update your client profiles during scheduled season resets to maximize player recognition.
+      </p>
+    </section>
+
+    <!-- Section 11: Cross-Platform Matchmaking & Unified Friends List Display -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        11. Cross-Platform Matchmaking & Unified Friends List Display
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        When playing with cross-platform friends on Discord or Xbox Live / PlayStation Network party chats, having a consistent gamer tag eliminates friend request ambiguity. Our directory ensures your identity remains recognizable whether your squad searches for you in mobile lobbies or PC client launcher menus.
+      </p>
+    </section>
+
+    <!-- Section 12: Digital Identity Verification & Anti-Impersonation -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        12. Digital Identity Verification Across Global Game Launchers
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        As major publishers (Riot Games, Krafton, Epic Games, Valve) deploy unified social ecosystems, reserving your core handle across all launchers establishes your brand authenticity and prevents secondary copycats from diluting your competitive recognition.
+      </p>
     </section>
 
     <!-- FAQs Section -->

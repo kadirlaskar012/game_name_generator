@@ -54,6 +54,18 @@ const clanFaqs = [
   {
     question: 'What symbols work best for competitive esports clans?',
     answer: 'Clean terminal glyphs like Japanese Katakana (メ, 々, 么, 〆), minimalistic center dots (•), and sharp clan wings (𓊈 𓊉) provide high kill-feed contrast without triggering character encoding rejections.'
+  },
+  {
+    question: 'How do I build a clan identity for Discord, YouTube, and esports registrations?',
+    answer: 'Select a clean 3-letter acronym, pair it with consistent typography (such as Small Caps), register the exact handle on Discord and social media platforms, and establish a uniform clan tag rule for all roster members.'
+  },
+  {
+    question: 'Can clan names contain special symbols in official tournament leagues?',
+    answer: 'Major esports circuits like VCT (Valorant), PMGC (PUBG Mobile), and FFWS (Free Fire) permit standard team tags (like [SEN], 『GODL』, or T1 •). However, highly complex decorative symbols may be restricted on tournament broadcast overlays.'
+  },
+  {
+    question: 'What should we do if our desired clan name is already taken?',
+    answer: 'In games with unique name requirements (like Free Fire), use subtle Unicode variations like invisible separators, Small Caps (e.g., transforming SOUL into ꜱᴏᴜʟ), or adding stylized clan brackets (『SOUL』).'
   }
 ];
 
@@ -104,10 +116,10 @@ const schema = [
   <article class="pt-8 border-t border-neutral-200 dark:border-neutral-800 space-y-10 text-neutral-700 dark:text-neutral-300">
     <header class="space-y-3">
       <h2 class="text-xl sm:text-3xl font-black text-neutral-900 dark:text-white font-gaming">
-        The Definitive Guide to Esports Clan Tags & Squad Identity Architecture (2026)
+        The Definitive Guide to Esports Clan Tags, Squad Hierarchy & Guild Identity Architecture (2026)
       </h2>
       <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-        In modern multiplayer gaming, an esports clan tag is more than a simple prefix—it is the unified emblem of your team's tactical synergy, tournament reputation, and competitive culture. Whether you are forming a 4-player battle royale roster in BGMI, building a 50-player guild in Free Fire MAX, or launching a semi-pro Valorant squad, this comprehensive masterclass covers every technical and psychological aspect of clan branding.
+        In modern competitive multiplayer gaming, an esports clan tag is far more than a decorative prefix—it is the unified emblem of your team's tactical synergy, tournament reputation, and competitive culture. Whether you are forming a 4-player battle royale roster in BGMI, building a 50-player guild in Free Fire MAX, or launching a semi-pro Valorant squad, this comprehensive masterclass covers every technical, aesthetic, and psychological aspect of clan branding.
       </p>
     </header>
 
@@ -124,7 +136,9 @@ const schema = [
         <li>Cross-Game Clan Tag Compatibility Matrix (BGMI, FF, Valorant, CODM)</li>
         <li>Guild Renaming Step-by-Step Guide for Free Fire & BGMI</li>
         <li>Case Studies of Legendary Esports Clans (SOUL, GODL, FaZe, T1)</li>
-        <li>Frequently Asked Questions & Troubleshooting</li>
+        <li>Structuring Tier-2 & Academy Squad Rosters</li>
+        <li>Managing Clan Discord, Tournament Rosters & Social Assets</li>
+        <li>Frequently Asked Questions & Clan Tag Troubleshooting</li>
       </ol>
     </div>
 
@@ -136,22 +150,25 @@ const schema = [
       <p class="text-xs sm:text-sm leading-relaxed">
         When an entire 4-player squad enters the pre-match lobby with synchronized, symmetrically styled clan tags, it immediately establishes psychological dominance over rival teams. In esports scrims and competitive ranked matches, opponents adjust their aggression when they see unified clan tags like <strong class="font-mono font-bold text-neutral-900 dark:text-white">『SOUL』VIPER メ</strong> and <strong class="font-mono font-bold text-neutral-900 dark:text-white">『SOUL』SHADOW メ</strong> appearing consistently in the kill ticker.
       </p>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Psychological studies in competitive gaming show that players who encounter structured, matching clan tags perceive their opponents as coordinated, communicative, and tactically disciplined. This subconscious perception often induces rival squads to make conservative mistakes, hesitate during third-party pushes, and forfeit high-ground compound positions.
+      </p>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1 text-xs">
-        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
-          <h4 class="font-bold text-neutral-900 dark:text-white text-xs mb-1">1. Squad Identity Synergy</h4>
-          <p class="text-neutral-500 dark:text-neutral-400">
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <h4 class="font-bold text-neutral-900 dark:text-white text-sm mb-1">1. Squad Identity Synergy</h4>
+          <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed">
             A cohesive clan tag fosters team loyalty, shared pride, and mutual accountability during clutch tournament situations.
           </p>
         </div>
-        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
-          <h4 class="font-bold text-neutral-900 dark:text-white text-xs mb-1">2. Caster & Production Clarity</h4>
-          <p class="text-neutral-500 dark:text-neutral-400">
-            Esports commentators can instantly distinguish teams and individual players on broadcast tournament overlays.
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <h4 class="font-bold text-neutral-900 dark:text-white text-sm mb-1">2. Caster & Production Clarity</h4>
+          <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            Esports commentators can instantly distinguish teams and individual players on broadcast tournament overlays without confusion.
           </p>
         </div>
-        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
-          <h4 class="font-bold text-neutral-900 dark:text-white text-xs mb-1">3. Community & Brand Equity</h4>
-          <p class="text-neutral-500 dark:text-neutral-400">
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <h4 class="font-bold text-neutral-900 dark:text-white text-sm mb-1">3. Community & Brand Equity</h4>
+          <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed">
             A strong clan prefix seamlessly scales to YouTube Gaming channels, Discord servers, and esports tournament registries.
           </p>
         </div>
@@ -225,28 +242,28 @@ const schema = [
         3. Tactical Squad Role Designations & Team Suffixes
       </h3>
       <p class="text-xs sm:text-sm leading-relaxed">
-        Professional battle royale teams often assign tactical role abbreviations to member names. This helps with in-game hierarchy, callout precision, and strategic positioning:
+        Professional battle royale teams often assign tactical role abbreviations to member names. This helps with in-game hierarchy, callout precision, and strategic positioning during chaotic end-game circles:
       </p>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
-          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm mb-1">_IGL (In-Game Leader)</div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">_IGL (In-Game Leader)</div>
           <p class="text-neutral-500 leading-relaxed">The tactical brain responsible for zone rotations, compound captures, and fight callouts.</p>
-          <div class="font-mono text-[11px] text-neutral-400 mt-2">Example: 『SOUL』Viper_IGL</div>
+          <div class="font-mono text-[11px] text-neutral-400 pt-1">Example: 『SOUL』Viper_IGL</div>
         </div>
-        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
-          <div class="font-bold text-rose-600 dark:text-rose-400 text-sm mb-1">_FRAG (Entry Fragger)</div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
+          <div class="font-bold text-rose-600 dark:text-rose-400 text-sm">_FRAG (Entry Fragger)</div>
           <p class="text-neutral-500 leading-relaxed">The frontline breacher with high mechanical aim who initiates engagements and secures initial knocks.</p>
-          <div class="font-mono text-[11px] text-neutral-400 mt-2">Example: 『SOUL』Shadow_FRAG</div>
+          <div class="font-mono text-[11px] text-neutral-400 pt-1">Example: 『SOUL』Shadow_FRAG</div>
         </div>
-        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
-          <div class="font-bold text-amber-600 dark:text-amber-400 text-sm mb-1">_SNIPER (Marksman)</div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
+          <div class="font-bold text-amber-600 dark:text-amber-400 text-sm">_SNIPER (Marksman)</div>
           <p class="text-neutral-500 leading-relaxed">Provides long-range overwatch, holds angles, and provides cover fire during open rotations.</p>
-          <div class="font-mono text-[11px] text-neutral-400 mt-2">Example: 『SOUL』Ghost_SNIPER</div>
+          <div class="font-mono text-[11px] text-neutral-400 pt-1">Example: 『SOUL』Ghost_SNIPER</div>
         </div>
-        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
-          <div class="font-bold text-emerald-600 dark:text-emerald-400 text-sm mb-1">_SUPPORT (Anchor)</div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
+          <div class="font-bold text-emerald-600 dark:text-emerald-400 text-sm">_SUPPORT (Anchor)</div>
           <p class="text-neutral-500 leading-relaxed">Carries extra utility (Gloo Walls, smokes, medkits), covers flanks, and handles emergency revives.</p>
-          <div class="font-mono text-[11px] text-neutral-400 mt-2">Example: 『SOUL』Reaper_SUPP</div>
+          <div class="font-mono text-[11px] text-neutral-400 pt-1">Example: 『SOUL』Reaper_SUPP</div>
         </div>
       </div>
     </section>
@@ -254,7 +271,31 @@ const schema = [
     <!-- Section 4 -->
     <section class="space-y-3">
       <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
-        4. Step-by-Step Clan Renaming Guide for Free Fire & BGMI
+        4. Case Studies of Legendary Esports Clans & Squad Formulas
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Looking at historically dominant gaming organizations reveals consistent branding methodologies:
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
+        <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">Team SouL (Mobile Esports Pioneers)</div>
+          <p class="text-neutral-500 leading-relaxed">
+            Pioneered the clean bracket and Japanese terminal syntax in South Asian battle royales (e.g. <code class="text-xs">SouL • Mortal</code>, <code class="text-xs">『SOUL』Viper</code>). Their minimal typography established a gold standard that thousands of aspiring community clans replicate today.
+          </p>
+        </div>
+        <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
+          <div class="font-bold text-indigo-600 dark:text-indigo-400 text-sm">GodLike Esports (Aggressive Dominance)</div>
+          <p class="text-neutral-500 leading-relaxed">
+            Utilized sharp Japanese katakana end markers like <code class="text-xs">メ</code> and <code class="text-xs">〆</code> (e.g. <code class="text-xs">『GODL』Jonathan メ</code>) to embody aggressive close-quarters entry fragging and mechanical mastery.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5 -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        5. Step-by-Step Clan Renaming Guide for Free Fire & BGMI
       </h3>
       <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg text-xs space-y-3">
         <div>
@@ -277,6 +318,45 @@ const schema = [
           </ol>
         </div>
       </div>
+    </section>
+
+    <!-- Section 6: Academy Rosters & Clan Branching Architecture -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        6. Academy Rosters, Tier-2 Teams & Clan Branching Hierarchy
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Growing organizations that expand beyond a single 4-player roster require a standardized naming tier system:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs">
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">Tier-1 Main Lineup</div>
+          <p class="text-neutral-500 leading-relaxed">Primary tournament squad competing in official invitational qualifiers (e.g. <code class="text-xs">『SOUL』Viper</code>).</p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-amber-600 dark:text-amber-400 text-sm">Academy / Rising Squad</div>
+          <p class="text-neutral-500 leading-relaxed">Developmental roster competing in daily scrims with an appended tier identifier (e.g. <code class="text-xs">『SOUL_ACD』Bolt</code>).</p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-emerald-600 dark:text-emerald-400 text-sm">Community Guild / Casuals</div>
+          <p class="text-neutral-500 leading-relaxed">General clan members enjoying daily guild rewards with flexible decorative wings (e.g. <code class="text-xs">亗 SOUL Ghost 亗</code>).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: Tournament Registration Protocols & Roster Lock Rules -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        7. Official Tournament Registration Protocols & Roster Lock Rules
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        When registering your squad for sanctioned leagues like ESL, Nodwin Gaming, Skyesports, or Krafton official championships, follow these strict naming rules:
+      </p>
+      <ul class="list-disc list-inside space-y-1 text-xs text-neutral-600 dark:text-neutral-400">
+        <li>Ensure all 4 active players and your 5th substitute have matching clan tags registered in the team passport sheet.</li>
+        <li>Do not modify your registered IGN after the roster lock deadline, as name mismatches can result in disqualification or point penalties.</li>
+        <li>Avoid using invisible whitespace filler characters in official tournaments, as automated lobby anti-cheat scanners may flag empty characters as scripting tools.</li>
+      </ul>
     </section>
 
     <!-- FAQs Section -->

@@ -50,6 +50,22 @@ const esportsFaqs = [
   {
     question: 'Can I change my Riot ID for Valorant for free?',
     answer: 'Yes! Riot Games allows players to change their Valorant Riot ID and Tagline for free once every 30 days via their official Riot Account settings portal.'
+  },
+  {
+    question: 'What are the rules for player handles in VCT and CS2 Majors?',
+    answer: 'Valve (CS2) and Riot Games (Valorant) require registered tournament handles to remain consistent throughout a competitive season. Player names must be alphanumeric and may not include sponsor promotions unless approved by the league commissioner.'
+  },
+  {
+    question: 'How do I choose an alias that will stand out for sponsorships and streaming?',
+    answer: 'Pick a distinct 1-to-2 syllable word, verify handle availability across YouTube, Twitch, and Twitter/X, avoid hard-to-read leet speak numbers (like replacing E with 3), and use clean Small Caps typography for official branding.'
+  },
+  {
+    question: 'Can I have special symbols like crowns (亗) in official esports tournaments?',
+    answer: 'While crowns and wings are widely celebrated in mobile ranked and community leagues (like BGMI and Free Fire MAX), tier-1 PC esports broadcasts (VCT, IEM, Worlds) usually sanitize in-game names to clean alphanumeric text for stream overlay clarity.'
+  },
+  {
+    question: 'What happens if two pro players share the same in-game name?',
+    answer: 'Tournament organizers resolve naming collisions by seniority or coin toss. The runner-up typically adds a regional or tactical suffix (such as _NA, _EU, or a team prefix).'
   }
 ];
 
@@ -100,10 +116,10 @@ const schema = [
   <article class="pt-8 border-t border-neutral-200 dark:border-neutral-800 space-y-10 text-neutral-700 dark:text-neutral-300">
     <header class="space-y-3">
       <h2 class="text-xl sm:text-3xl font-black text-neutral-900 dark:text-white font-gaming">
-        The Anatomy of a Professional Esports Player Tag (2026)
+        The Anatomy of a Professional Esports Player Tag: Branding, Broadcasts & League Rules (2026)
       </h2>
       <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-        Professional esports tournaments (such as the VCT Champions, PMGC, Free Fire World Series, ALGS, and IEM Katowice) enforce strict broadcast overlay standards. A great esports IGN must look crisp on tournament production graphics, read cleanly in caster voice comms, and represent a marketable brand for sponsorships.
+        Professional esports tournaments (such as the VCT Champions, PMGC, Free Fire World Series, ALGS, and IEM Katowice) enforce strict broadcast overlay standards. A great esports IGN must look crisp on tournament production graphics, read cleanly in caster voice comms, and represent a marketable personal brand for corporate sponsorships and apparel merchandise.
       </p>
     </header>
 
@@ -119,6 +135,8 @@ const schema = [
         <li>Small Caps vs Minimalist Center Dots vs Team Tag Wraps</li>
         <li>Case Studies: How TenZ, s1mple, Faker, and Mortal Built Global Brands</li>
         <li>How to Transition From a Casual Gamer Tag to a Pro Alias</li>
+        <li>Sponsorship Monetization & Trademark Registration for Esports Athletes</li>
+        <li>Managing Secondary Smurf Accounts & Scrim Identities</li>
         <li>Frequently Asked Questions for Competitive Esports Players</li>
       </ol>
     </div>
@@ -132,19 +150,19 @@ const schema = [
         <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
           <h4 class="font-bold text-neutral-900 dark:text-white text-sm">1. Broadcast Readability</h4>
           <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            Clean typography like Small Caps ensures that tournament casters and live stream viewers can read your name on 1080p and 4K stream overlays instantly.
+            Clean typography like Small Caps ensures that tournament casters and live stream viewers can read your name on 1080p and 4K stream overlays instantly during frantic team fights.
           </p>
         </div>
         <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
           <h4 class="font-bold text-neutral-900 dark:text-white text-sm">2. Official Roster Compliance</h4>
           <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            Avoid disallowed profanity, copyrighted brand names, or ambiguous glyphs that could get rejected during tournament passport verification.
+            Avoid disallowed profanity, copyrighted brand names, or ambiguous glyphs that could get rejected during tournament passport verification and rulebook checks.
           </p>
         </div>
         <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
           <h4 class="font-bold text-neutral-900 dark:text-white text-sm">3. Social Media Uniformity</h4>
           <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            Ensure your in-game alias matches your social handle across X (Twitter), YouTube, Twitch, and Instagram for cohesive sponsor monetization.
+            Ensure your in-game alias matches your social handle across X (Twitter), YouTube, Twitch, and Instagram for cohesive sponsor monetization and fan engagement.
           </p>
         </div>
       </div>
@@ -156,7 +174,7 @@ const schema = [
         2. Pro Player Typography Formats Breakdown
       </h3>
       <p class="text-xs sm:text-sm leading-relaxed">
-        Different competitive genres favor specific typographic conventions. Here is how tier-1 pros structure their aliases:
+        Different competitive genres favor specific typographic conventions. Here is how tier-1 pros structure their aliases across major titles:
       </p>
 
       <div class="overflow-x-auto border border-neutral-200 dark:border-neutral-800 rounded-lg">
@@ -210,7 +228,129 @@ const schema = [
         3. Phonics & Caster Pronunciation Rules
       </h3>
       <p class="text-xs sm:text-sm leading-relaxed">
-        During high-intensity rounds, esports casters must shout player names in under half a second. Names with complex number substitutions (like <code class="text-xs">xX_d34th_k1ll3r_Xx</code>) are awkward to pronounce and diminish broadcast hype. In contrast, short, punchy names (like <strong class="text-neutral-900 dark:text-white">Apex</strong>, <strong class="text-neutral-900 dark:text-white">Shroud</strong>, <strong class="text-neutral-900 dark:text-white">Faker</strong>, or <strong class="text-neutral-900 dark:text-white">Mortal</strong>) create memorable callouts that stick in the minds of thousands of viewers.
+        During high-intensity rounds, esports casters must shout player names in under half a second. Names with complex number substitutions (like <code class="text-xs">xX_d34th_k1ll3r_Xx</code>) are awkward to pronounce and diminish broadcast hype. In contrast, short, punchy names (like <strong class="text-neutral-900 dark:text-white">Apex</strong>, <strong class="text-neutral-900 dark:text-white">Shroud</strong>, <strong class="text-neutral-900 dark:text-white">Faker</strong>, or <strong class="text-neutral-900 dark:text-white">Mortal</strong>) create memorable callouts that stick in the minds of thousands of live viewers.
+      </p>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        When crafting your esports alias on GamerTag Pro, aim for hard consonants (like K, T, P, X) or flowing vowels that enunciate cleanly over microphone discord comms even when game audio is exploding with gunfire.
+      </p>
+    </section>
+
+    <!-- Section 4 -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        4. Case Studies: How Global Icons Built Iconic Brands
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
+        <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">TenZ (Tyson Ngo — Valorant)</div>
+          <p class="text-neutral-500 leading-relaxed">
+            A single, crisp, four-letter handle ending in 'Z'. Perfectly balanced, immediately recognizable, and easily integrated into team prefixes ([SEN] TenZ).
+          </p>
+        </div>
+        <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
+          <div class="font-bold text-amber-600 dark:text-amber-400 text-sm">s1mple (Oleksandr Kostyliev — CS2)</div>
+          <p class="text-neutral-500 leading-relaxed">
+            Subtle leet-speak (replacing 'i' with '1') that retains 100% phonetic clarity while symbolizing effortless tactical perfection.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Transitioning from Casual Gamertag to Pro Athlete Handle -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        5. Transitioning from a Casual Gamertag to a Pro Athlete Handle
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Many aspiring competitive players start with bloated, casual gamer tags containing excessive numbers, generic prefixes, or random symbols (like <code class="text-xs">xX_Dark_Shadow_99_Xx</code>). Transitioning into professional esports requires a systematic rebranding process:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs">
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">1. Strip Clutter & Numbers</div>
+          <p class="text-neutral-500 leading-relaxed">Remove birth years, random digits, and repetitive ASCII underscores to isolate your core brand root word.</p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-amber-600 dark:text-amber-400 text-sm">2. Adopt Symmetrical Typography</div>
+          <p class="text-neutral-500 leading-relaxed">Use uniform Small Caps (e.g. <code class="text-xs">ꜱʜᴀᴅᴏᴡ</code>) or clean monospace font formats that render crisply across game clients.</p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-emerald-600 dark:text-emerald-400 text-sm">3. Lock Handles Universally</div>
+          <p class="text-neutral-500 leading-relaxed">Claim matching usernames across Discord, Steam, Riot Games, Twitch, and official tournament platform accounts.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Sponsorship Pitch Decks & Apparel Merchandise Rules -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        6. Sponsorship Pitch Decks & Team Jersey Apparel Standards
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        When an esports organization secures commercial brand sponsorships (such as energy drinks, gaming hardware, or apparel lines), individual player aliases are printed directly onto official team jerseys. Clean aliases with balanced character heights (like <strong class="text-neutral-900 dark:text-white">VIPER</strong>, <strong class="text-neutral-900 dark:text-white">BOLT</strong>, or <strong class="text-neutral-900 dark:text-white">REAPER</strong>) print sharply across fabric embroidery and look distinguished on championship podium photographs.
+      </p>
+    </section>
+
+    <!-- Section 7: Anti-Toxicity Verification & Global Whitelisting Protocols -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        7. Anti-Toxicity Verification & Global League Whitelisting Protocols
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Sanctioned esports leagues (including Riot VCT, ESL Pro Tour, Krafton PMGC, and Garena FFWS) utilize automated dictionary scanners to inspect submitted player aliases. Names containing phonetic bypasses of protected hate speech, political propaganda, drug references, or commercial trademark infringements face immediate disqualification and account lockouts.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">League Passport Whitelisting</div>
+          <p class="text-neutral-500 leading-relaxed">
+            Registered players must submit their exact Unicode string during roster lock. GamerTag Pro generates standardized UTF-8 aliases that pass automated league validation scripts.
+          </p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-emerald-600 dark:text-emerald-400 text-sm">Broadcast Overlay Rasterization</div>
+          <p class="text-neutral-500 leading-relaxed">
+            High-tier esports broadcasts require player handles to render cleanly on 60fps live stream graphics without dropping into tofu fallback boxes.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 8: Managing Multi-Roster Sub-Teams & Academy Brands -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        8. Managing Multi-Roster Sub-Teams & Academy Brands
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Premier esports clubs operating across multiple titles (e.g. Sentinels in Valorant, Apex Legends, and Halo) maintain a strict global style guide. By adopting unified Small Caps typography (<code class="text-xs">ꜱᴇɴ • ᴛᴇɴᴢ</code>) or consistent dot separators across all game rosters, clubs reinforce global brand authority across millions of international fans.
+      </p>
+    </section>
+
+    <!-- Section 9: Legal Contract Clauses & Intellectual Property Rights -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        9. Legal Contract Clauses & Player Alias Ownership Rights
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        When professional athletes sign with tier-1 esports organizations, ownership of their in-game handle is defined within their commercial player agreement. Retaining individual trademark rights to your personal brand name ensures that you can take your established fan following, YouTube streaming channel, and personal merchandise lines with you if you transfer to a new team in the future.
+      </p>
+    </section>
+
+    <!-- Section 10: LAN Tournament Stage Lighting & Stream Overlay Antialiasing -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        10. LAN Tournament Stage Lighting & Broadcast Stream Antialiasing
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        On international LAN stages, stadium LED screens and 4K broadcast graphics downsample player handles for live spectator viewability. Aliases using clean Small Caps and sharp geometric brackets maintain crisp edge contrast under high-intensity stadium lighting, ensuring that your player brand looks impeccable in championship highlight reels.
+      </p>
+    </section>
+
+    <!-- Section 11: Official Tournament Passport & Roster Lock Compliance -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        11. Official Tournament Passport & Roster Lock Compliance Rules
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        When submitting player passports to competitive sanctioning bodies (like VCT, ESL, or Krafton Esports), ensure that your registered alias matches your in-game client name character for character. Avoid modifying capitalization or adding unapproved suffixes between tournament stages, as automated match lobby checkers require exact string parity.
       </p>
     </section>
 

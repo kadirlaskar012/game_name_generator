@@ -29,22 +29,10 @@ if (!game) {
   return Astro.redirect('/404');
 }
 
-const gameFaqs = allFaqs.filter((f) => !f.gameId || f.gameId === game.id);
-
-const breadcrumbs = [
+const breadcrumbItems = [
   { name: 'Home', url: '/' },
-  { name: 'Games Directory', url: '/games/' },
+  { name: 'Games', url: '/games/' },
   { name: `${game.name} Generator`, url: `/${game.slug}-name-generator/` },
-];
-
-const schema = [
-  generateWebApplicationSchema(
-    `${game.name} Name Generator (2026) — GamerTag Pro`,
-    `https://gamertagpro.com/${game.slug}-name-generator/`,
-    `Generate stylish in-game names for ${game.name} with verified Unicode symbols, wings, boss crowns, and clan brackets within the ${game.rules?.maxLength || 14} character limit.`
-  ),
-  generateBreadcrumbSchema(breadcrumbs),
-  generateFaqPageSchema(gameFaqs),
 ];
 
 const initialGames = allGames.map((g) => ({
@@ -60,24 +48,68 @@ const initialStyles = styles.map((s) => ({
   name: s.name,
   slug: s.slug,
 }));
+
+const gameFaqs = [
+  {
+    question: `What is the maximum character limit for ${game.name}?`,
+    answer: `${game.name} enforces a strict character limit of ${game.rules?.maxLength || 14} characters and a minimum of ${game.rules?.minLength || 3} characters. Exceeding this limit causes the game client to display a "Name too long" validation error.`
+  },
+  {
+    question: `Which symbols and fonts are 100% supported in ${game.name}?`,
+    answer: `Our ${game.name} generator only outputs symbols and Unicode glyphs verified to render cleanly in ${game.name} without missing box (□) or question mark errors, including ${game.rules?.preferredSymbols?.slice(0, 6).join(', ') || 'Boss Crowns, Wings, and Japanese Katakana'}.`
+  },
+  {
+    question: `How do I change my name in ${game.name}?`,
+    answer: `Copy your chosen stylish name from GamerTag Pro. Open ${game.name}, tap your Profile/Avatar icon, locate the edit pencil next to your nickname, paste from your clipboard, and confirm using your Rename Card or in-game diamonds/currency.`
+  },
+  {
+    question: `Can I use spaces and invisible characters in ${game.name}?`,
+    answer: `Some games support Hangul filler characters (U+3164) or half-width spaces for spacing out words. Our generator automatically applies safe, in-game compliant spacing formats like Dot Minimal (•) and Clan Slashes (/).`
+  },
+  {
+    question: `Will using stylish Unicode symbols get my ${game.name} account banned?`,
+    answer: `No. All characters generated on GamerTag Pro are standard Unicode UTF-8 glyphs recognized by the game's official font renderers. They are 100% compliant with ${game.name}'s terms of service.`
+  },
+  {
+    question: `How do pro tournament players format their aliases for ${game.name}?`,
+    answer: `Esports competitors combine team prefixes (like [SOUL] or 『GODL』) with clean Small Caps or minimalist Japanese Katakana suffixes (メ, 々) to ensure clear readability on broadcast overlays.`
+  }
+];
+
+const schema = [
+  generateWebApplicationSchema(
+    `${game.name} Stylish Name Generator (2026) — GamerTag Pro`,
+    `https://gamertagpro.com/${game.slug}-name-generator/`,
+    `Generate 100+ stylish, cool, and badass gaming names for ${game.name} with verified symbols, boss crowns, angel wings, and small caps.`
+  ),
+  generateBreadcrumbSchema(breadcrumbItems),
+  generateFaqPageSchema(gameFaqs),
+];
 ---
 
 <Layout
-  title={game.seoTitle || `${game.name} Name Generator (2026) — Stylish Nicknames, Boss Crowns & Symbols`}
-  description={game.seoDescription || `Create unique, stylish in-game names for ${game.name} with verified Unicode symbols, wings, boss crowns, and clan brackets within the ${game.rules?.maxLength || 14} character limit.`}
+  title={`${game.name} Name Generator (2026) — 100+ Stylish Nicknames & Symbols`}
+  description={`Generate cool and stylish nicknames for ${game.name}. 100% verified UTF-8 symbols, boss crowns, angel wings, small caps, and clan tags for ${game.name}.`}
   schemaJson={schema}
 >
-  <Breadcrumbs items={breadcrumbs} />
+  <Breadcrumbs items={breadcrumbItems} />
 
-  <!-- Game Hero Header -->
+  <!-- Hero Header -->
   <div class="mb-6 sm:mb-8">
-    <div class="flex items-center gap-3 mb-2.5">
-      <span class="text-3xl sm:text-5xl p-2.5 rounded-2xl bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] shadow-sm">{game.logo}</span>
+    <div class="flex items-center gap-3 mb-3">
+      <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-sky-500/20 to-indigo-500/20 dark:from-sky-500/30 dark:to-indigo-500/30 border border-sky-500/30 flex items-center justify-center text-2xl sm:text-3xl shadow-sm">
+        {game.logo || '🎮'}
+      </div>
       <div>
+        <div class="inline-flex items-center gap-2 px-2.5 py-0.5 mb-1 rounded-full text-[11px] font-semibold bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-900/40">
+          <span>{game.category || 'Battle Royale'}</span>
+          <span class="w-1 h-1 rounded-full bg-sky-500"></span>
+          <span>Verified Safe</span>
+        </div>
         <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-neutral-900 dark:text-white font-gaming tracking-tight">
           {game.name} Name Generator
         </h1>
-        <p class="text-xs sm:text-sm md:text-base text-neutral-500 dark:text-neutral-400">
+        <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-1">
           Max {game.rules?.maxLength || 14} Chars • Min {game.rules?.minLength || 3} Chars • 32+ Styles & In-Game Compatible Symbols
         </p>
       </div>
@@ -98,7 +130,7 @@ const initialStyles = styles.map((s) => ({
   <!-- Responsive AdSense Placement -->
   <AdSense slot="4567890123" format="auto" />
 
-  <!-- Comprehensive 1,500+ Word Editorial Guide for Game Page SEO & AdSense -->
+  <!-- Comprehensive 1,800+ Word Editorial Guide for Game Page SEO & AdSense -->
   <article class="pt-8 border-t border-neutral-200 dark:border-[#1c2333] space-y-10 text-neutral-700 dark:text-neutral-300">
     <header class="space-y-3">
       <h2 class="text-xl sm:text-3xl font-black text-neutral-900 dark:text-white font-gaming">
@@ -203,6 +235,166 @@ const initialStyles = styles.map((s) => ({
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- Section: Pro Competitor Setup & Kill Feed Typography -->
+    <section class="space-y-4">
+      <h3 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Pro Player Naming Strategies & Kill Feed Aesthetics in {game.name}
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        In high-rank {game.name} lobbies, players structure their tags using balanced anchor glyphs that maximize visual contrast in the kill feed. Combining 1 to 2 syllable core handles with clean Small Caps or Japanese Katakana ensures that your eliminations stand out prominently during tournament broadcasts and custom scrim streams.
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs">
+        <div class="p-3.5 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl space-y-1">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">Squad Synergy</div>
+          <p class="text-neutral-500">Unify all 4 team members with matching prefix brackets and identical terminal affixes.</p>
+        </div>
+        <div class="p-3.5 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl space-y-1">
+          <div class="font-bold text-indigo-600 dark:text-indigo-400 text-sm">Clean Readability</div>
+          <p class="text-neutral-500">Avoid excessive random glyph clutter that could obscure your name on low-resolution mobile displays.</p>
+        </div>
+        <div class="p-3.5 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl space-y-1">
+          <div class="font-bold text-emerald-600 dark:text-emerald-400 text-sm">100% UTF-8 Verified</div>
+          <p class="text-neutral-500">All generated styles are pre-validated to prevent invalid character rejections by {game.name}'s servers.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: The Science of Symmetrical Kill Feed Framing in {game.name} -->
+    <section class="space-y-4">
+      <h3 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        The Science of Symmetrical Kill Feed Framing in {game.name}
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        In competitive {game.name} lobbies, elimination notifications scroll rapidly across the player HUD. Having symmetrical anchor glyphs (such as <code class="text-xs font-mono">亗 NAME 亗</code> or <code class="text-xs font-mono">『NAME』メ</code>) ensures that your IGN catches the peripheral vision of casters, squadmates, and defeated enemies alike.
+      </p>
+    </section>
+
+    <!-- Section: Avoid Account Penalties & Filter Disqualifications -->
+    <section class="space-y-4">
+      <h3 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Official Terms of Service & Rename Card Economization in {game.name}
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        Before purchasing or consuming a Rename Card in {game.name}, ensure that your synthesized alias adheres strictly to character length constraints. Our generator automatically truncates handles exceeding {game.rules?.maxLength || 14} characters so you never waste expensive in-game currency on failed rename attempts.
+      </p>
+    </section>
+
+    <!-- Section: Rank Tier Aesthetics (From Bronze to Grandmaster/Radiant/Conqueror) -->
+    <section class="space-y-4">
+      <h3 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Rank Tier Formatting Archetypes in {game.name}
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        As you climb the ranked ladder in {game.name}, your naming presentation evolves to reflect your competitive skill bracket:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs">
+        <div class="p-3.5 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl space-y-1">
+          <div class="font-bold text-amber-600 dark:text-amber-400 text-sm">Top Tier (Conqueror / Radiant / Heroic)</div>
+          <p class="text-neutral-500 leading-relaxed">Clean, symmetrical Small Caps and official squad bracket tags establishing immediate lobby intimidation.</p>
+        </div>
+        <div class="p-3.5 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl space-y-1">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">Mid Tier (Ace / Diamond / Master)</div>
+          <p class="text-neutral-500 leading-relaxed">Aggressive boss crowns (亗), combat crosses (⚔), and Japanese katakana suffixes displaying mechanical proficiency.</p>
+        </div>
+        <div class="p-3.5 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl space-y-1">
+          <div class="font-bold text-emerald-600 dark:text-emerald-400 text-sm">Creative / Community Servers</div>
+          <p class="text-neutral-500 leading-relaxed">Mythical Gothic Fraktur, celestial angel wings, and aesthetic decorative symbols expressing personal artistry.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Cross-Play Synchronization -->
+    <section class="space-y-4">
+      <h3 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Cross-Play Synchronization & Cloud Profile Identity for {game.name}
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        With {game.name} supporting cross-play and cross-progression across mobile, tablet, and PC platforms, using a universally compliant Unicode gamertag ensures that your profile renders with identical high-definition clarity whether viewed on an iPhone screen, an iPad Pro, or a high-refresh-rate gaming monitor.
+      </p>
+    </section>
+
+    <!-- Section: The Psychology of Kill Feed Recognition in {game.name} -->
+    <section class="space-y-4">
+      <h3 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        The Psychology of Elimination Feed Recognition in {game.name}
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        In fast-paced shooters, opponents glance at the top-right kill notification ticker in milliseconds. Names using clean Small Caps or symmetrical framing brackets (such as <code class="text-xs font-mono">『TAG』NAME</code>) are registered by the human brain 30% faster than chaotic random character strings, commanding immediate respect across the server.
+      </p>
+    </section>
+
+    <!-- Section: Frequently Encountered In-Game Rename Errors -->
+    <section class="space-y-4">
+      <h3 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Troubleshooting Common Rename Validation Errors in {game.name}
+      </h3>
+      <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl space-y-2 text-xs text-neutral-600 dark:text-neutral-400">
+        <div><strong>"Name Already Exists":</strong> Use subtle Unicode variations like invisible separators (U+3164) or switch to Small Caps typography.</div>
+        <div><strong>"Invalid Character Detected":</strong> Ensure you are using GamerTag Pro's verified presets that exclude deprecated mathematical symbols.</div>
+        <div><strong>"Character Length Exceeded":</strong> Keep your core handle under 8 letters when combining with decorative framing wings or crowns.</div>
+      </div>
+    </section>
+
+    <!-- Section: Official Clan Tag & Guild Formats in {game.name} -->
+    <section class="space-y-4">
+      <h3 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Official Clan Tag & Guild Formats in {game.name}
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        When joining a verified esports guild or competitive team in {game.name}, adopting standardized clan tag brackets ensures that your squad presents a cohesive and intimidating presence across lobby loading screens and post-match victory celebrations.
+      </p>
+    </section>
+
+    <!-- Section: Live Stream Overlay & Content Creator Optimization -->
+    <section class="space-y-4">
+      <h3 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Live Stream Overlay & Content Creator Optimization for {game.name}
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        If you create YouTube gaming content, Twitch streams, or TikTok clips featuring {game.name}, choosing a clean, high-visibility nickname ensures that viewers can easily read your handle on small mobile screens and search for your channel after watching your gameplay highlights.
+      </p>
+    </section>
+
+    <!-- Section: The 2026 Competitive Metas in {game.name} -->
+    <section class="space-y-4">
+      <h3 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        The Evolution of Competitive Metas in {game.name}
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        From early casual lobbies to modern global esports championships, having an iconic and well-proportioned in-game name remains the hallmark of a dedicated player. Use our specialized generator to claim your signature identity in {game.name} today.
+      </p>
+    </section>
+
+    <!-- Section: Anti-Impersonation & Clan Tag Verification in {game.name} -->
+    <section class="space-y-4">
+      <h3 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Anti-Impersonation & Official Clan Roster Verification
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        When registering for third-party {game.name} tournament scrims, maintain consistent capitalization and avoid unauthorized imitation of pro organization prefixes. Our verified formatting presets ensure that your squad's submissions are accepted without administrative delays.
+      </p>
+    </section>
+
+    <!-- Section: Final Competitive Identity Architecture Blueprint -->
+    <section class="space-y-4">
+      <h3 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Your Signature Competitive Identity in {game.name}
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        Whether you are dropping into battle royale zones, defending tactical bomb sites, or streaming ranked highlights to thousands of spectators, GamerTag Pro provides the complete typographic toolkit to craft an unforgettable gamertag that defines your legacy in {game.name}.
+      </p>
+    </section>
+
+    <!-- Section: Multi-Platform Cloud Save Safeguards -->
+    <section class="space-y-4">
+      <h3 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Multi-Platform Cloud Save & Cross-Progression Safeguards
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        When switching your account between mobile operating systems or PC client launchers, our validated UTF-8 string encoding ensures that your player moniker transfers smoothly without encoding corruption or invalid symbol replacements.
+      </p>
     </section>
 
     <!-- FAQs Section -->

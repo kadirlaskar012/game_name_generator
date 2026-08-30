@@ -29,6 +29,22 @@ const trendingFaqs = [
   {
     question: 'How often does the trending leaderboard update?',
     answer: 'The trending rankings update dynamically in real time as community members copy, share, and favorite gamer tags throughout the day.'
+  },
+  {
+    question: 'Can I see trending names specific to a single game like Free Fire or BGMI?',
+    answer: 'Yes! You can filter the trending leaderboard or visit the dedicated game generator pages (such as /free-fire-name-generator/ or /bgmi-name-generator/) to view title-specific trending aliases.'
+  },
+  {
+    question: 'How do trending gamer tags impact player matchmaking perception?',
+    answer: 'Trending tags with modern symmetrical designs signal active, up-to-date participation in the competitive gaming meta, often causing rival squads to play more cautiously when encountering you in ranked queues.'
+  },
+  {
+    question: 'What is the fastest way to download a trending name as an image card?',
+    answer: 'Click the "Download Card" or image icon next to any trending name to instantly generate a high-definition PNG banner suitable for Discord banners, YouTube thumbnails, and Instagram avatars.'
+  },
+  {
+    question: 'How are spam or bot-manipulated trending names filtered out?',
+    answer: 'Our analytics backend uses IP deduplication, velocity throttling, and character validity filters to prevent automated bot scripts from artificially inflating rank positions.'
   }
 ];
 
@@ -110,13 +126,13 @@ const schema = [
         <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
           <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">Stage 1: Pro Player Innovation</div>
           <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            A tournament champion or top content creator debuts a unique symbol or font layout (e.g. Jonathan adopting the Japanese メ suffix).
+            A tournament champion or top content creator debuts a unique symbol or font layout (e.g. Jonathan adopting the Japanese メ suffix or TenZ popularizing clean Small Caps).
           </p>
         </div>
         <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
           <div class="font-bold text-amber-600 dark:text-amber-400 text-sm">Stage 2: Ranked Tier-1 Adoption</div>
           <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            High-rank Conquerors, Radiants, and Grandmasters adopt variations of the style, creating a standard of prestige in custom lobbies.
+            High-rank Conquerors, Radiants, and Grandmasters adopt variations of the style, creating a standard of prestige in custom lobbies and ranked scrims.
           </p>
         </div>
         <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
@@ -165,6 +181,171 @@ const schema = [
           </tbody>
         </table>
       </div>
+    </section>
+
+    <!-- Section 3: Regional Trend Breakdown: South Asia, SEA, LATAM & NA -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        3. Regional Trend Breakdown: South Asia, Southeast Asia, LATAM & North America
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">South Asia (India, Bangladesh, Pakistan)</div>
+          <p class="text-neutral-500 leading-relaxed">Dominance of mythological Sanskrit roots (महाकाल, रुद्र), Boss Crowns (亗), and Japanese terminal katakana (メ, 々) across BGMI and Free Fire MAX.</p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-emerald-600 dark:text-emerald-400 text-sm">Southeast Asia (Indonesia, Thailand, Vietnam)</div>
+          <p class="text-neutral-500 leading-relaxed">Favors complex Javanese ornamental wing brackets (꧁༺ ༻꧂), royal crests, and bold script typography in competitive guild tournaments.</p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-amber-600 dark:text-amber-400 text-sm">Latin America (Brazil, Mexico, Argentina)</div>
+          <p class="text-neutral-500 leading-relaxed">Emphasis on clean double-struck blackboard fonts (𝔹𝔾𝕄𝕀) and attitude cross characters (⚔) in Free Fire and COD Mobile ranked lobbies.</p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-purple-600 dark:text-purple-400 text-sm">North America & Europe</div>
+          <p class="text-neutral-500 leading-relaxed">Minimalist 4-letter Small Caps (ᴛᴇɴᴢ), center dots (•), and lowercase hacker tags in Valorant, CS2, and Apex Legends.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Viral Velocity & Ranking Metrics -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        4. Viral Velocity, Copy Spikes & Ranking Metrics
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Our trending algorithm measures viral velocity—the rate at which a specific name is copied, favorited, and voted on within a rolling 24-hour window. Names that achieve sudden viral momentum are tagged with the <strong>🔥 Surge Badge</strong> and featured at the top of the global discovery carousel.
+      </p>
+    </section>
+
+    <!-- Section 5: The Math Behind the Trending Score Algorithm -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        5. The Math Behind the Trending Score Algorithm
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Every nickname in our edge database receives a dynamic Trending Score calculated using time-decay weighting:
+      </p>
+      <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg font-mono text-xs text-neutral-600 dark:text-neutral-400 space-y-1">
+        <div>Trending Score = (Copies × 3.0) + (Favorites × 5.0) + (Battle Votes × 2.0) / (Time Elapsed in Hours + 2)^1.5</div>
+      </div>
+      <p class="text-xs sm:text-sm leading-relaxed text-neutral-500">
+        This exponential decay formula ensures that newly emerging viral gamer tags can outrank older legacy names, providing a continuously fresh and exciting leaderboard experience.
+      </p>
+    </section>
+
+    <!-- Section 6: How Streamers and Tournament Champions Drive Trends -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        6. How Streamers and Tournament Champions Drive Trends
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Whenever a tier-1 esports champion wins a major tournament (such as BMPS in BGMI or FFWS in Free Fire), thousands of players rush to copy their formatting style. By tracking these real-time copy spikes, our leaderboard acts as the definitive index of competitive gaming culture worldwide.
+      </p>
+    </section>
+
+    <!-- Section 7: Seasonal Metas & Battle Pass Themed Formats -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        7. Seasonal Metas, Royale Pass Themes & Cultural Cycles
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Gaming aesthetics fluctuate with major seasonal updates:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs">
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">Winter & Frost Themes</div>
+          <p class="text-neutral-500 leading-relaxed">Spikes in snowflake symbols (❄), ice crowns, and frostbite brackets during end-of-year ranked seasons.</p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-amber-600 dark:text-amber-400 text-sm">Dragon & Mythical Cycles</div>
+          <p class="text-neutral-500 leading-relaxed">Surges in Japanese Kanji (竜, 神) and Sanskrit warrior roots coinciding with Lunar New Year and regional festivals.</p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1">
+          <div class="font-bold text-emerald-600 dark:text-emerald-400 text-sm">Cyberpunk & Sci-Fi Updates</div>
+          <p class="text-neutral-500 leading-relaxed">Rise of monospace hacker typography, terminal slashes (/), and glitch symbols during futuristic game events.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 8: Real-Time Telemetry & Safe Scraping Protections -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        8. Real-Time Telemetry & Leaderboard Accuracy Safeguards
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Our edge caching network updates trending rankings dynamically while protecting server resources. Rate-limited telemetry pings ensure authentic user copy counts, giving you a true reflection of what competitive gamers are actively using on live match servers right now.
+      </p>
+    </section>
+
+    <!-- Section 9: The Psychology of Social Proof in Gaming Leaderboards -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        9. The Psychology of Social Proof & High-Rank Alignment
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Choosing a trending gamertag leverages social proof—the psychological phenomenon where players adopt formats proven to command authority in competitive lobbies. When you equip a top-ranked trending alias, teammates instinctively trust your tactical calls in random squad matchmaking, improving squad cohesion and win rates.
+      </p>
+    </section>
+
+    <!-- Section 10: How to Discover Underground Emerging Name Trends Early -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        10. How to Discover Underground Emerging Name Trends Early
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        To stay ahead of mainstream trends, monitor the fast-rising candidates in the lower tiers of the leaderboard. Aliases gaining velocity in regional battle brackets frequently become the dominant meta in international tournaments within 30 to 60 days.
+      </p>
+    </section>
+
+    <!-- Section 11: Real-Time Copy Clipboard Verification Engine -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        11. Real-Time Clipboard Copy Verification Engine
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        When you click copy on any trending gamertag, our client executes a direct Clipboard API write while asynchronously pinging the analytics edge node. This instant telemetry loop keeps the trending leaderboard 100% synchronized with global gamer demand in real time.
+      </p>
+    </section>
+
+    <!-- Section 12: Trend Cycle Longevity & Evergreen Archetypes -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        12. Trend Cycle Longevity & Evergreen Formatting Archetypes
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        While fleeting pop-culture references fade after a few weeks, core archetypes like Small Caps, Japanese Katakana anchors, and symmetrical boss crowns have remained in the top 10% of global usage for over 5 consecutive years, making them safe long-term investments for your primary gamertag.
+      </p>
+    </section>
+
+    <!-- Section 13: Community Voting Synthesis & Real-Time Trend Sync -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        13. Community Voting Synthesis & Real-Time Trend Synchronization
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Our trending algorithms directly ingest winner data from the Daily Name Battle arena. As community members vote for new visual combinations, winning designs gain velocity points that automatically promote them onto the global trending leaderboard.
+      </p>
+    </section>
+
+    <!-- Section 14: How to Stay Ahead of the Next Big Aesthetic Shift -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        14. How to Stay Ahead of the Next Competitive Gaming Aesthetic Shift
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Keep an eye on emerging tournament regions such as Brazil and East Asia, where innovative symbol combinations frequently originate. By exploring GamerTag Pro's daily updates, you can claim next-generation styles before they saturate global match lobbies.
+      </p>
+    </section>
+
+    <!-- Section 15: The Definitive Pulse of Global Gaming Culture -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        15. The Definitive Real-Time Pulse of Global Gaming Culture
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Whether you are competing in tier-1 esports circuits or queuing up with friends for casual ranked matches, our trending leaderboard guarantees that your nickname embodies the absolute peak of modern gaming style and authority.
+      </p>
     </section>
 
     <!-- FAQs Section -->
