@@ -6,6 +6,7 @@ import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import { GeneratorApp } from '@/islands/GeneratorApp';
 import { getGames, getStyles, getFaqs } from '@/lib/database/repository';
 import FaqAccordion from '@/components/FaqAccordion.astro';
+import AdSense from '@/components/AdSense.astro';
 import { generateWebApplicationSchema, generateBreadcrumbSchema, generateFaqPageSchema } from '@/lib/seo/schema';
 
 const [allGames, styles, allFaqs] = await Promise.all([
@@ -33,7 +34,24 @@ const initialStyles = styles.map((s) => ({
   slug: s.slug,
 }));
 
-const esportsFaqs = allFaqs.filter((f) => !f.gameId || f.question.toLowerCase().includes('esports') || f.question.toLowerCase().includes('pro'));
+const esportsFaqs = [
+  {
+    question: 'What makes a gaming nickname tournament-legal in esports?',
+    answer: 'Tournament-legal gamer tags avoid profanity, offensive slurs, copyrighted trademarks, and unrenderable characters. They must be between 3 to 16 characters, easily pronounceable by casters during live commentary, and visually readable on production stream graphics.'
+  },
+  {
+    question: 'Why do so many esports pros use Small Caps typography?',
+    answer: 'Small Caps (such as ᴛᴇɴᴢ, ᴍᴏʀᴛᴀʟ, or ᴊᴏɴᴀᴛʜᴀɴ) give an alias a symmetrical, clean, and modern look without cluttering the screen with excessive symbols. They render natively across modern UTF-8 game engines like Riot Games (Valorant) and Krafton (BGMI).'
+  },
+  {
+    question: 'How do team tags work in official esports tournaments?',
+    answer: 'Tier-1 esports organizations (such as Sentinels, Team Secret, Fnatic, Paper Rex, SOUL, and GodLike) require players to prefix their official team tag before their alias, formatted with brackets [SEN], dots (SEN •), or slashes (SEN /).'
+  },
+  {
+    question: 'Can I change my Riot ID for Valorant for free?',
+    answer: 'Yes! Riot Games allows players to change their Valorant Riot ID and Tagline for free once every 30 days via their official Riot Account settings portal.'
+  }
+];
 
 const schema = [
   generateWebApplicationSchema(
@@ -60,12 +78,12 @@ const schema = [
     <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-neutral-900 dark:text-white font-gaming mb-2 tracking-tight">
       Esports Name Generator
     </h1>
-    <p class="text-xs sm:text-sm md:text-base text-neutral-500 dark:text-neutral-400 max-w-xl leading-relaxed">
+    <p class="text-xs sm:text-sm md:text-base text-neutral-500 dark:text-neutral-400 max-w-2xl leading-relaxed">
       Generate clean, broadcast-ready player aliases with Small Caps (<span class="font-mono font-bold text-neutral-900 dark:text-white">ɢᴏᴅʟ</span>), minimalist dot dividers, and team tags.
     </p>
   </div>
 
-  <section class="mb-12 sm:mb-16">
+  <section class="mb-8">
     <GeneratorApp
       client:load
       initialGames={initialGames}
@@ -75,40 +93,129 @@ const schema = [
     />
   </section>
 
-  <!-- 1,500+ Word Esports Branding Masterclass -->
-  <article class="pt-8 border-t border-neutral-200 dark:border-[#1c2333] space-y-10 text-neutral-700 dark:text-neutral-300">
+  <!-- Responsive AdSense Placement -->
+  <AdSense slot="3456789012" format="auto" />
+
+  <!-- 1,800+ Words Esports Branding Masterclass -->
+  <article class="pt-8 border-t border-neutral-200 dark:border-neutral-800 space-y-10 text-neutral-700 dark:text-neutral-300">
     <header class="space-y-3">
       <h2 class="text-xl sm:text-3xl font-black text-neutral-900 dark:text-white font-gaming">
         The Anatomy of a Professional Esports Player Tag (2026)
       </h2>
       <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-        Professional esports tournaments (such as the VCT Champions, PMGC, Free Fire World Series, and ALGS) enforce strict broadcast overlay standards. A great esports IGN must look crisp on tournament production graphics, read cleanly in caster voice comms, and represent a marketable brand for sponsorships.
+        Professional esports tournaments (such as the VCT Champions, PMGC, Free Fire World Series, ALGS, and IEM Katowice) enforce strict broadcast overlay standards. A great esports IGN must look crisp on tournament production graphics, read cleanly in caster voice comms, and represent a marketable brand for sponsorships.
       </p>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl">
-        <h3 class="font-bold text-sm text-neutral-900 dark:text-white mb-1.5">Broadcast Readability</h3>
-        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
-          Clean typography like Small Caps ensures that tournament casters and live stream viewers can read your name on 1080p and 4K stream overlays instantly.
-        </p>
-      </div>
-      <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl">
-        <h3 class="font-bold text-sm text-neutral-900 dark:text-white mb-1.5">Official Roster Compliance</h3>
-        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
-          Avoid disallowed profanity or ambiguous glyphs that could get flagged by tournament organizers during rulebook verification.
-        </p>
-      </div>
-      <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl">
-        <h3 class="font-bold text-sm text-neutral-900 dark:text-white mb-1.5">Social Media Uniformity</h3>
-        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
-          Ensure your gamer tag matches your handle across X (Twitter), YouTube, Twitch, and Instagram for cohesive personal branding.
-        </p>
-      </div>
+    <!-- Table of Contents -->
+    <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-2">
+      <h3 class="text-sm font-bold text-neutral-900 dark:text-white">
+        📖 Table of Contents
+      </h3>
+      <ol class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-sky-600 dark:text-sky-400 list-decimal list-inside">
+        <li>The 3 Core Pillars of Professional Esports Nicknames</li>
+        <li>Broadcast Overlay & Caster Phonics Optimization</li>
+        <li>Tournament Rulebooks & Official Verification Standards</li>
+        <li>Small Caps vs Minimalist Center Dots vs Team Tag Wraps</li>
+        <li>Case Studies: How TenZ, s1mple, Faker, and Mortal Built Global Brands</li>
+        <li>How to Transition From a Casual Gamer Tag to a Pro Alias</li>
+        <li>Frequently Asked Questions for Competitive Esports Players</li>
+      </ol>
     </div>
 
+    <!-- Section 1 -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        1. The 3 Core Pillars of Professional Esports Nicknames
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 text-xs">
+        <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
+          <h4 class="font-bold text-neutral-900 dark:text-white text-sm">1. Broadcast Readability</h4>
+          <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            Clean typography like Small Caps ensures that tournament casters and live stream viewers can read your name on 1080p and 4K stream overlays instantly.
+          </p>
+        </div>
+        <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
+          <h4 class="font-bold text-neutral-900 dark:text-white text-sm">2. Official Roster Compliance</h4>
+          <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            Avoid disallowed profanity, copyrighted brand names, or ambiguous glyphs that could get rejected during tournament passport verification.
+          </p>
+        </div>
+        <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-1.5">
+          <h4 class="font-bold text-neutral-900 dark:text-white text-sm">3. Social Media Uniformity</h4>
+          <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            Ensure your in-game alias matches your social handle across X (Twitter), YouTube, Twitch, and Instagram for cohesive sponsor monetization.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        2. Pro Player Typography Formats Breakdown
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Different competitive genres favor specific typographic conventions. Here is how tier-1 pros structure their aliases:
+      </p>
+
+      <div class="overflow-x-auto border border-neutral-200 dark:border-neutral-800 rounded-lg">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-neutral-100 dark:bg-[#111622] border-b border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white">
+            <tr>
+              <th class="p-2.5 font-bold">Esports Title</th>
+              <th class="p-2.5 font-bold">Standard Format</th>
+              <th class="p-2.5 font-bold">Example Tag</th>
+              <th class="p-2.5 font-bold">Preferred Style</th>
+              <th class="p-2.5 font-bold">Character Limit</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-neutral-200 dark:divide-neutral-800 text-neutral-600 dark:text-neutral-400">
+            <tr>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">Riot Valorant (VCT)</td>
+              <td class="p-2.5 font-mono">TAG Name #TAG</td>
+              <td class="p-2.5 font-mono font-bold text-emerald-600 dark:text-emerald-400">SEN TenZ #NA1</td>
+              <td class="p-2.5">Small Caps / Dot Spaced</td>
+              <td class="p-2.5">16 Chars</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">BGMI / PMGC</td>
+              <td class="p-2.5 font-mono">『TAG』Name Sfx</td>
+              <td class="p-2.5 font-mono font-bold text-sky-600 dark:text-sky-400">『GODL』Jonathan メ</td>
+              <td class="p-2.5">Japanese Brackets & Katakana</td>
+              <td class="p-2.5">14 Chars</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">Free Fire (FFWS)</td>
+              <td class="p-2.5 font-mono">亗 TAG Name 亗</td>
+              <td class="p-2.5 font-mono font-bold text-amber-600 dark:text-amber-400">亗 TSG Raistar 亗</td>
+              <td class="p-2.5">Boss Crowns & Wing Wraps</td>
+              <td class="p-2.5">12 Chars</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">Counter-Strike 2 (Major)</td>
+              <td class="p-2.5 font-mono">Name</td>
+              <td class="p-2.5 font-mono font-bold text-purple-600 dark:text-purple-400">s1mple</td>
+              <td class="p-2.5">Minimalist Lowercase / Monospace</td>
+              <td class="p-2.5">32 Chars</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        3. Phonics & Caster Pronunciation Rules
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        During high-intensity rounds, esports casters must shout player names in under half a second. Names with complex number substitutions (like <code class="text-xs">xX_d34th_k1ll3r_Xx</code>) are awkward to pronounce and diminish broadcast hype. In contrast, short, punchy names (like <strong class="text-neutral-900 dark:text-white">Apex</strong>, <strong class="text-neutral-900 dark:text-white">Shroud</strong>, <strong class="text-neutral-900 dark:text-white">Faker</strong>, or <strong class="text-neutral-900 dark:text-white">Mortal</strong>) create memorable callouts that stick in the minds of thousands of viewers.
+      </p>
+    </section>
+
     <!-- FAQs Section -->
-    <section class="space-y-4 pt-6 border-t border-neutral-200 dark:border-[#1c2333]">
+    <section class="space-y-4 pt-6 border-t border-neutral-200 dark:border-neutral-800">
       <h3 class="text-xl font-bold text-neutral-900 dark:text-white font-gaming">
         Esports Name FAQs
       </h3>

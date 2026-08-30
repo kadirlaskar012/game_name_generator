@@ -6,6 +6,7 @@ import { GeneratorApp } from '@/islands/GeneratorApp';
 import { TrendingSection } from '@/islands/TrendingSection';
 import GameCard from '@/components/GameCard.astro';
 import FaqAccordion from '@/components/FaqAccordion.astro';
+import AdSense from '@/components/AdSense.astro';
 import { getGames, getStyles, getFaqs } from '@/lib/database/repository';
 import { generateWebSiteSchema, generateWebApplicationSchema, generateFaqPageSchema } from '@/lib/seo/schema';
 
@@ -60,7 +61,7 @@ const homeSchema = [
   </section>
 
   <!-- Real-Time Interactive Generator Island -->
-  <section class="mb-10">
+  <section class="mb-8">
     <GeneratorApp
       client:load
       initialGames={initialGames}
@@ -69,6 +70,9 @@ const homeSchema = [
       defaultName="BGMI"
     />
   </section>
+
+  <!-- Responsive AdSense Placement -->
+  <AdSense slot="1234567890" format="auto" />
 
   <!-- Games Catalogue Section -->
   <section class="mb-10 pt-6 border-t border-neutral-200 dark:border-neutral-800">

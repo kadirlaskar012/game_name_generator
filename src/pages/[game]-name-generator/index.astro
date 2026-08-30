@@ -5,6 +5,7 @@ import Layout from '@/layouts/Layout.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import { GeneratorApp } from '@/islands/GeneratorApp';
 import FaqAccordion from '@/components/FaqAccordion.astro';
+import AdSense from '@/components/AdSense.astro';
 import { getGameBySlug, getGames, getStyles, getFaqs } from '@/lib/database/repository';
 import { generateWebApplicationSchema, generateFaqPageSchema, generateBreadcrumbSchema } from '@/lib/seo/schema';
 
@@ -84,7 +85,7 @@ const initialStyles = styles.map((s) => ({
   </div>
 
   <!-- Interactive Generator Island -->
-  <section class="mb-12 sm:mb-16">
+  <section class="mb-8">
     <GeneratorApp
       client:load
       initialGames={initialGames}
@@ -93,6 +94,9 @@ const initialStyles = styles.map((s) => ({
       defaultName="BGMI"
     />
   </section>
+
+  <!-- Responsive AdSense Placement -->
+  <AdSense slot="4567890123" format="auto" />
 
   <!-- Comprehensive 1,500+ Word Editorial Guide for Game Page SEO & AdSense -->
   <article class="pt-8 border-t border-neutral-200 dark:border-[#1c2333] space-y-10 text-neutral-700 dark:text-neutral-300">
@@ -150,7 +154,7 @@ const initialStyles = styles.map((s) => ({
             Utilizes framing symbols like crowns (<code class="text-xs">亗</code>) and angel wings (<code class="text-xs">꧁༺ ༻꧂</code>) combined with Small Caps typography.
           </p>
           <div class="text-xs font-mono font-bold text-sky-600 dark:text-sky-400 bg-neutral-50 dark:bg-[#0b0e14] p-2 rounded-xl border border-neutral-100 dark:border-[#171e2c]">
-            亗 Kᴀᴅɪʀ 亗  •  ꧁༺Kᴀᴅɪʀ༻꧂  •  👑 Kᴀᴅɪʀ 👑
+            亗 ʙɢᴍɪ 亗  •  ꧁༺ʙɢᴍɪ༻꧂  •  👑 ʙɢᴍɪ 👑
           </div>
         </div>
 
@@ -162,7 +166,7 @@ const initialStyles = styles.map((s) => ({
             Incorporates subtle East Asian cultural end-markers such as <code class="text-xs">メ</code>, <code class="text-xs">々</code>, and squad brackets <code class="text-xs">『 』</code>.
           </p>
           <div class="text-xs font-mono font-bold text-sky-600 dark:text-sky-400 bg-neutral-50 dark:bg-[#0b0e14] p-2 rounded-xl border border-neutral-100 dark:border-[#171e2c]">
-            『Kᴀᴅɪʀ』メ  •  【Kᴀᴅɪʀ】〆  •  么Kᴀᴅɪʀ么
+            『ʙɢᴍɪ』メ  •  【ʙɢᴍɪ】〆  •  么ʙɢᴍɪ么
           </div>
         </div>
       </div>

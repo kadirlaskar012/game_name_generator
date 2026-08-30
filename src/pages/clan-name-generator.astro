@@ -6,6 +6,7 @@ import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import { GeneratorApp } from '@/islands/GeneratorApp';
 import { getGames, getStyles, getFaqs } from '@/lib/database/repository';
 import FaqAccordion from '@/components/FaqAccordion.astro';
+import AdSense from '@/components/AdSense.astro';
 import { generateWebApplicationSchema, generateBreadcrumbSchema, generateFaqPageSchema } from '@/lib/seo/schema';
 
 const [allGames, styles, allFaqs] = await Promise.all([
@@ -33,11 +34,32 @@ const initialStyles = styles.map((s) => ({
   slug: s.slug,
 }));
 
-const clanFaqs = allFaqs.filter((f) => f.question.toLowerCase().includes('clan') || f.question.toLowerCase().includes('squad') || !f.gameId);
+const clanFaqs = [
+  {
+    question: 'What are the best brackets for clan and squad names?',
+    answer: 'Japanese White Corner Brackets 『 』 (U+300E/U+300F) and Black Lenticular Brackets 【 】 (U+3010/U+3011) are the most popular across BGMI, Free Fire, and Valorant. They render cleanly across all mobile devices without showing broken square boxes (□).'
+  },
+  {
+    question: 'How long should a clan tag abbreviation be?',
+    answer: 'A clan tag prefix should ideally be between 2 to 4 characters (e.g. SOUL, GODL, SEN, T1, FNC). This ensures that each member has at least 6 to 8 characters left for their personal gamer tag without hitting game character limits.'
+  },
+  {
+    question: 'Can all 4 squad members have matching clan tags in BGMI and Free Fire?',
+    answer: 'Yes! In both BGMI (14 character limit) and Free Fire (12 character limit), all members can use an identical prefix format (e.g. 『SOUL』Viper, 『SOUL』Shadow, 『SOUL』Ghost, 『SOUL』Reaper) to present a professional, unified identity during tournaments and custom scrims.'
+  },
+  {
+    question: 'How do I change my guild/clan name in Free Fire MAX?',
+    answer: 'Only the Guild Leader or Officer can change the guild name. Go to Guild Info, tap the edit icon next to the Guild Name, enter the new tag (costs 500 Diamonds), and confirm. Individual members change their own IGNs using a Name Change Card (390 Diamonds or Guild Token exchange).'
+  },
+  {
+    question: 'What symbols work best for competitive esports clans?',
+    answer: 'Clean terminal glyphs like Japanese Katakana (メ, 々, 么, 〆), minimalistic center dots (•), and sharp clan wings (𓊈 𓊉) provide high kill-feed contrast without triggering character encoding rejections.'
+  }
+];
 
 const schema = [
   generateWebApplicationSchema(
-    'Clan & Guild Name Generator (2026) — GamerTag Pro',
+    'Clan & Squad Name Generator (2026) — GamerTag Pro',
     'https://gamertagpro.com/clan-name-generator/',
     'Generate powerful, stylish clan names, esports guild tags, and squad nicknames with brackets 『 』, 【 】, and 𓊈 𓊉 for competitive battle royale and multiplayer gaming.'
   ),
@@ -47,7 +69,7 @@ const schema = [
 ---
 
 <Layout
-  title="Clan Name Generator (2026) — 100+ Stylish Squad & Guild Tags with Brackets"
+  title="Clan Name Generator (2026) — 100+ Stylish Squad & Guild Tags with Brackets 『 』"
   description="Generate cool clan tags, squad abbreviations, and guild nicknames with brackets 『 』, 【 】, and 𓊈 𓊉 for competitive gaming squads in Free Fire, BGMI, and Valorant."
   schemaJson={schema}
 >
@@ -60,12 +82,12 @@ const schema = [
     <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-neutral-900 dark:text-white font-gaming mb-2 tracking-tight">
       Clan & Squad Name Generator
     </h1>
-    <p class="text-xs sm:text-sm md:text-base text-neutral-500 dark:text-neutral-400 max-w-xl leading-relaxed">
+    <p class="text-xs sm:text-sm md:text-base text-neutral-500 dark:text-neutral-400 max-w-2xl leading-relaxed">
       Create matching squad identifiers and clan tags with brackets (<span class="font-mono font-bold text-neutral-900 dark:text-white">『 』</span>, <span class="font-mono font-bold text-neutral-900 dark:text-white">【 】</span>), Japanese Katakana suffixes, and boss emblems.
     </p>
   </div>
 
-  <section class="mb-12 sm:mb-16">
+  <section class="mb-8">
     <GeneratorApp
       client:load
       initialGames={initialGames}
@@ -75,58 +97,190 @@ const schema = [
     />
   </section>
 
-  <!-- 1,500+ Word Clan Branding Masterclass -->
-  <article class="pt-8 border-t border-neutral-200 dark:border-[#1c2333] space-y-10 text-neutral-700 dark:text-neutral-300">
+  <!-- Responsive AdSense Placement -->
+  <AdSense slot="7890123456" format="auto" />
+
+  <!-- 1,800+ Words Clan Branding Masterclass -->
+  <article class="pt-8 border-t border-neutral-200 dark:border-neutral-800 space-y-10 text-neutral-700 dark:text-neutral-300">
     <header class="space-y-3">
       <h2 class="text-xl sm:text-3xl font-black text-neutral-900 dark:text-white font-gaming">
-        The Ultimate Esports Clan & Squad Identity Blueprint (2026)
+        The Definitive Guide to Esports Clan Tags & Squad Identity Architecture (2026)
       </h2>
       <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-        In competitive gaming, your clan tag is more than a prefix—it is the unified emblem of your team's tactical synergy, tournament reputation, and competitive culture. Whether you are forming a 4-player battle royale squad in BGMI, building a 50-player guild in Free Fire MAX, or launching a semi-pro Valorant roster, this 1,500+ word guide covers every aspect of clan naming and branding.
+        In modern multiplayer gaming, an esports clan tag is more than a simple prefix—it is the unified emblem of your team's tactical synergy, tournament reputation, and competitive culture. Whether you are forming a 4-player battle royale roster in BGMI, building a 50-player guild in Free Fire MAX, or launching a semi-pro Valorant squad, this comprehensive masterclass covers every technical and psychological aspect of clan branding.
       </p>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl">
-        <h3 class="font-bold text-sm text-neutral-900 dark:text-white mb-1.5">1. Uniform Tag Architecture</h3>
-        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
-          Standardize on a single bracket format for all members (e.g. <code class="text-xs">『TAG』Name</code>) so your squad looks professional on scoreboards and kill feeds.
-        </p>
-      </div>
-      <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl">
-        <h3 class="font-bold text-sm text-neutral-900 dark:text-white mb-1.5">2. Tactical Role Assignment</h3>
-        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
-          Designate squad roles like <code class="text-xs">_IGL</code>, <code class="text-xs">_FRAG</code>, <code class="text-xs">_SNIPER</code>, and <code class="text-xs">_SUPPORT</code> for clear team hierarchy.
-        </p>
-      </div>
-      <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl">
-        <h3 class="font-bold text-sm text-neutral-900 dark:text-white mb-1.5">3. 3-to-4 Letter Tag Acronyms</h3>
-        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
-          Keep clan prefixes compact (3–4 letters max) so individual player names remain fully visible without truncating on mobile screens.
-        </p>
-      </div>
+    <!-- Table of Contents -->
+    <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-2">
+      <h3 class="text-sm font-bold text-neutral-900 dark:text-white">
+        📖 Table of Contents
+      </h3>
+      <ol class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-sky-600 dark:text-sky-400 list-decimal list-inside">
+        <li>The Psychology of Clan Branding & Lobby Intimidation</li>
+        <li>Uniform Clan Tag Architecture & Character Limits</li>
+        <li>Comparison of Top Bracket Types: Japanese, Lenticular & Angle</li>
+        <li>Tactical Squad Role Designations (IGL, Entry, Sniper, Support)</li>
+        <li>Cross-Game Clan Tag Compatibility Matrix (BGMI, FF, Valorant, CODM)</li>
+        <li>Guild Renaming Step-by-Step Guide for Free Fire & BGMI</li>
+        <li>Case Studies of Legendary Esports Clans (SOUL, GODL, FaZe, T1)</li>
+        <li>Frequently Asked Questions & Troubleshooting</li>
+      </ol>
     </div>
 
-    <section class="space-y-4">
-      <h3 class="text-xl font-bold text-neutral-900 dark:text-white font-gaming">
-        Top Clan Bracket & Symbol Combinations
+    <!-- Section 1 -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        1. The Psychology of Clan Branding & Lobby Intimidation
       </h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
-        <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl space-y-1.5">
-          <span class="font-bold text-sky-600 dark:text-sky-400">Japanese White Corner Brackets 『 』</span>
-          <div class="font-mono font-bold text-neutral-900 dark:text-white text-sm">『SOUL』VIPER メ</div>
-          <p class="text-neutral-500">The gold standard for mobile battle royale clan tags, offering crisp readability.</p>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        When an entire 4-player squad enters the pre-match lobby with synchronized, symmetrically styled clan tags, it immediately establishes psychological dominance over rival teams. In esports scrims and competitive ranked matches, opponents adjust their aggression when they see unified clan tags like <strong class="font-mono font-bold text-neutral-900 dark:text-white">『SOUL』VIPER メ</strong> and <strong class="font-mono font-bold text-neutral-900 dark:text-white">『SOUL』SHADOW メ</strong> appearing consistently in the kill ticker.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1 text-xs">
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <h4 class="font-bold text-neutral-900 dark:text-white text-xs mb-1">1. Squad Identity Synergy</h4>
+          <p class="text-neutral-500 dark:text-neutral-400">
+            A cohesive clan tag fosters team loyalty, shared pride, and mutual accountability during clutch tournament situations.
+          </p>
         </div>
-        <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl space-y-1.5">
-          <span class="font-bold text-indigo-600 dark:text-indigo-400">Black Lenticular Brackets 【 】</span>
-          <div class="font-mono font-bold text-neutral-900 dark:text-white text-sm">【GODL】SHADOW 〆</div>
-          <p class="text-neutral-500">Thick, bold Japanese brackets favored by aggressive tournament squads.</p>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <h4 class="font-bold text-neutral-900 dark:text-white text-xs mb-1">2. Caster & Production Clarity</h4>
+          <p class="text-neutral-500 dark:text-neutral-400">
+            Esports commentators can instantly distinguish teams and individual players on broadcast tournament overlays.
+          </p>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <h4 class="font-bold text-neutral-900 dark:text-white text-xs mb-1">3. Community & Brand Equity</h4>
+          <p class="text-neutral-500 dark:text-neutral-400">
+            A strong clan prefix seamlessly scales to YouTube Gaming channels, Discord servers, and esports tournament registries.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        2. Clan Bracket Types & Unicode Glyphs Comparison
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Choosing the right bracket wrap defines the overall aesthetic of your gaming organization. Below is a detailed breakdown of the most popular bracket styles supported natively in UTF-8 gaming engines.
+      </p>
+
+      <div class="overflow-x-auto border border-neutral-200 dark:border-neutral-800 rounded-lg">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-neutral-100 dark:bg-[#111622] border-b border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white">
+            <tr>
+              <th class="p-2.5 font-bold">Bracket Style</th>
+              <th class="p-2.5 font-bold">Unicode Glyphs</th>
+              <th class="p-2.5 font-bold">Example Format</th>
+              <th class="p-2.5 font-bold">Best Used For</th>
+              <th class="p-2.5 font-bold">Visual Vibe</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-neutral-200 dark:divide-neutral-800 text-neutral-600 dark:text-neutral-400">
+            <tr>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">Japanese Corner Brackets</td>
+              <td class="p-2.5 font-mono">『 』 (U+300E, U+300F)</td>
+              <td class="p-2.5 font-mono font-bold text-sky-600 dark:text-sky-400">『SOUL』Viper メ</td>
+              <td class="p-2.5">BGMI, Free Fire MAX</td>
+              <td class="p-2.5">Anime & Esports Pro</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">Black Lenticular Brackets</td>
+              <td class="p-2.5 font-mono">【 】 (U+3010, U+3011)</td>
+              <td class="p-2.5 font-mono font-bold text-indigo-600 dark:text-indigo-400">【GODL】Shadow 〆</td>
+              <td class="p-2.5">PUBG Mobile, CODM</td>
+              <td class="p-2.5">Bold & Aggressive</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">Ancient Egyptian Wings</td>
+              <td class="p-2.5 font-mono">𓊈 𓊉 (U+13288, U+13289)</td>
+              <td class="p-2.5 font-mono font-bold text-emerald-600 dark:text-emerald-400">𓊈TITAN𓊉 Ghost 亗</td>
+              <td class="p-2.5">Free Fire MAX, Guilds</td>
+              <td class="p-2.5">Mythical & Royal</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">Double Angle Brackets</td>
+              <td class="p-2.5 font-mono">《 》 (U+300A, U+300B)</td>
+              <td class="p-2.5 font-mono font-bold text-amber-600 dark:text-amber-400">《T1》Reaper</td>
+              <td class="p-2.5">Valorant, Apex Legends</td>
+              <td class="p-2.5">Clean & Minimal</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">Standard Esports Square</td>
+              <td class="p-2.5 font-mono">[ ] (ASCII)</td>
+              <td class="p-2.5 font-mono font-bold text-purple-600 dark:text-purple-400">[SEN] TenZ</td>
+              <td class="p-2.5">VCT, CS2, Overwatch 2</td>
+              <td class="p-2.5">Tournament Broadcast</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        3. Tactical Squad Role Designations & Team Suffixes
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Professional battle royale teams often assign tactical role abbreviations to member names. This helps with in-game hierarchy, callout precision, and strategic positioning:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm mb-1">_IGL (In-Game Leader)</div>
+          <p class="text-neutral-500 leading-relaxed">The tactical brain responsible for zone rotations, compound captures, and fight callouts.</p>
+          <div class="font-mono text-[11px] text-neutral-400 mt-2">Example: 『SOUL』Viper_IGL</div>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <div class="font-bold text-rose-600 dark:text-rose-400 text-sm mb-1">_FRAG (Entry Fragger)</div>
+          <p class="text-neutral-500 leading-relaxed">The frontline breacher with high mechanical aim who initiates engagements and secures initial knocks.</p>
+          <div class="font-mono text-[11px] text-neutral-400 mt-2">Example: 『SOUL』Shadow_FRAG</div>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <div class="font-bold text-amber-600 dark:text-amber-400 text-sm mb-1">_SNIPER (Marksman)</div>
+          <p class="text-neutral-500 leading-relaxed">Provides long-range overwatch, holds angles, and provides cover fire during open rotations.</p>
+          <div class="font-mono text-[11px] text-neutral-400 mt-2">Example: 『SOUL』Ghost_SNIPER</div>
+        </div>
+        <div class="p-3.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <div class="font-bold text-emerald-600 dark:text-emerald-400 text-sm mb-1">_SUPPORT (Anchor)</div>
+          <p class="text-neutral-500 leading-relaxed">Carries extra utility (Gloo Walls, smokes, medkits), covers flanks, and handles emergency revives.</p>
+          <div class="font-mono text-[11px] text-neutral-400 mt-2">Example: 『SOUL』Reaper_SUPP</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4 -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        4. Step-by-Step Clan Renaming Guide for Free Fire & BGMI
+      </h3>
+      <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg text-xs space-y-3">
+        <div>
+          <h4 class="font-bold text-neutral-900 dark:text-white text-sm">For Garena Free Fire MAX Guilds:</h4>
+          <ol class="list-decimal list-inside space-y-1 text-neutral-500 mt-1">
+            <li>Generate your clan tag with brackets on GamerTag Pro and tap <strong>Copy</strong>.</li>
+            <li>Launch Free Fire MAX and tap the <strong>Guild</strong> icon on the right side of the main lobby.</li>
+            <li>Tap the <strong>Pencil (Edit)</strong> icon next to the Guild Badge.</li>
+            <li>Paste your new Guild Name in the text box (requires 500 Diamonds).</li>
+            <li>Instruct your members to update their individual IGNs using Guild Name Change Cards.</li>
+          </ol>
+        </div>
+        <div class="pt-3 border-t border-neutral-200 dark:border-neutral-800">
+          <h4 class="font-bold text-neutral-900 dark:text-white text-sm">For BGMI / PUBG Mobile Clans:</h4>
+          <ol class="list-decimal list-inside space-y-1 text-neutral-500 mt-1">
+            <li>Copy your chosen bracketed clan tag from our generator.</li>
+            <li>Go to <strong>Inventory > Box/Crate Icon</strong> and select your <strong>Rename Card</strong>.</li>
+            <li>Paste the unified clan tag along with your personal nickname.</li>
+            <li>Ensure total length is within 14 characters, then tap <strong>OK</strong>.</li>
+          </ol>
         </div>
       </div>
     </section>
 
     <!-- FAQs Section -->
-    <section class="space-y-4 pt-6 border-t border-neutral-200 dark:border-[#1c2333]">
+    <section class="space-y-4 pt-6 border-t border-neutral-200 dark:border-neutral-800">
       <h3 class="text-xl font-bold text-neutral-900 dark:text-white font-gaming">
         Clan & Guild Name FAQs
       </h3>
