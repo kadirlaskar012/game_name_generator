@@ -17,17 +17,13 @@ export interface Props {
 const props = Astro.props;
 ---
 
-<doctype html>
+<!doctype html>
 <html lang="en" class="dark">
   <SeoHead {...props} />
-  <body class="bg-[#f8fafc] dark:bg-[#07090e] text-neutral-900 dark:text-neutral-100 min-h-screen flex flex-col antialiased selection:bg-sky-500 selection:text-white transition-colors relative">
-    <!-- Ambient Radial Mesh Glow Orbs -->
-    <div class="fixed inset-0 pointer-events-none z-[-1] mesh-bg opacity-80" />
-    <div class="fixed top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-gradient-to-b from-sky-500/15 via-indigo-500/10 to-transparent blur-[90px] rounded-full pointer-events-none z-[-1]" />
-
+  <body class="bg-white dark:bg-[#0b0f19] text-neutral-900 dark:text-neutral-100 min-h-screen flex flex-col antialiased">
     <Header />
 
-    <main class="flex-1 w-full max-w-6xl mx-auto px-3.5 sm:px-6 py-6 sm:py-10">
+    <main class="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
       <slot />
     </main>
 

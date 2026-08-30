@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { RefreshCw, SlidersHorizontal, Check, Copy, Layers, X, Dices, ChevronDown, ChevronUp, Palette, Sparkles } from 'lucide-react';
+import { RefreshCw, SlidersHorizontal, Check, Copy, Layers, X, Dices, ChevronDown, ChevronUp, Palette } from 'lucide-react';
 import { ResultCard } from './ResultCard';
 
 interface GameOption {
@@ -55,7 +55,6 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
   const [searchFilter, setSearchFilter] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showAllStylesDesktop, setShowAllStylesDesktop] = useState(false);
-  const [showMobileStyleModal, setShowMobileStyleModal] = useState(false);
 
   // Favorites tracking
   const [favoritedNames, setFavoritedNames] = useState<Set<string>>(new Set());
@@ -72,7 +71,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
   }, [initialGames, selectedGameSlug]);
 
   const activeStyleName = useMemo(() => {
-    if (selectedStyleSlug === 'all') return '✨ All Styles (Mixed)';
+    if (selectedStyleSlug === 'all') return 'All Styles (Mixed)';
     const found = initialStyles.find((s) => s.slug === selectedStyleSlug);
     return found ? found.name : 'Custom Style';
   }, [selectedStyleSlug, initialStyles]);
@@ -166,7 +165,6 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
   // Style select handler
   const handleSelectStyle = (slug: string) => {
     setSelectedStyleSlug(slug);
-    setShowMobileStyleModal(false);
     executeGenerate({ styleVal: slug, offsetVal: 0 });
   };
 
@@ -208,7 +206,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
     try {
       await navigator.clipboard.writeText(text);
       setCopiedAll(true);
-      setTimeout(() => setCopiedAll(false), 1800);
+      setTimeout(() => setCopiedAll(false), 1500);
     } catch {}
   };
 
@@ -219,213 +217,172 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
     return results.filter((r) => r.name.toLowerCase().includes(q) || r.styleName?.toLowerCase().includes(q));
   }, [results, searchFilter]);
 
-  // Desktop visible styles (first 10 when collapsed, all 32 when expanded)
+  // Desktop visible styles
   const visibleStylesDesktop = useMemo(() => {
     if (showAllStylesDesktop) return initialStyles;
-    return initialStyles.slice(0, 11);
+    return initialStyles.slice(0, 10);
   }, [initialStyles, showAllStylesDesktop]);
 
   return (
     <div className="w-full">
-      {/* Seamless Floating Glass Spotlight Bar (Non-Boxy) */}
-      <div className="glass-panel rounded-3xl p-4 sm:p-6 mb-8 shadow-xl shadow-sky-500/5 relative overflow-hidden">
-        {/* Subtle Ambient Radial Lighting */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20" />
-
-        {/* Floating Input Strip */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center relative z-10">
-          {/* 1. Name Input (Pill Shaped) */}
-          <div className="md:col-span-6 relative flex items-center">
+      {/* Simple Clean Input Controls (No Heavy Box Wrappers) */}
+      <div className="mb-6 space-y-4">
+        {/* Main Input Row */}
+        <div className="flex flex-col sm:flex-row gap-2">
+          {/* 1. Name Input */}
+          <div className="relative flex-1">
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter name (e.g. Kadir, Ghost, Shadow...)"
+              placeholder="Type your name (e.g. Kadir, Ghost...)"
               maxLength={25}
-              autoCapitalize="none"
-              autoCorrect="off"
-              spellCheck="false"
-              className="w-full pl-5 pr-20 py-3.5 bg-white/70 dark:bg-black/40 border border-neutral-200/80 dark:border-white/10 focus:border-sky-500 dark:focus:border-sky-500 rounded-full text-neutral-900 dark:text-white placeholder-neutral-400 text-sm sm:text-base outline-none transition-all shadow-inner backdrop-blur-sm"
+              className="w-full pl-4 pr-16 py-2.5 bg-white dark:bg-[#111622] border border-neutral-300 dark:border-neutral-700 rounded-lg text-neutral-900 dark:text-white placeholder-neutral-400 text-sm outline-none focus:border-sky-500 transition"
             />
-            <div className="absolute right-3 flex items-center gap-1.5">
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
               {name && (
                 <button
                   type="button"
                   onClick={() => setName('')}
                   title="Clear text"
-                  className="p-1.5 text-neutral-400 hover:text-neutral-600 dark:hover:text-white rounded-full transition-colors cursor-pointer"
+                  className="p-1 text-neutral-400 hover:text-neutral-600 dark:hover:text-white"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-3.5 h-3.5" />
                 </button>
               )}
               <button
                 type="button"
                 onClick={handleRandomDice}
-                title="Random Name Idea"
-                className="p-1.5 text-neutral-500 dark:text-neutral-300 hover:text-sky-600 dark:hover:text-sky-400 rounded-full hover:bg-neutral-200/50 dark:hover:bg-white/10 transition-colors cursor-pointer active:scale-95"
+                title="Random Name"
+                className="p-1 text-neutral-500 hover:text-sky-500 transition"
               >
-                <Dices className="w-5 h-5" />
+                <Dices className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          {/* 2. Game Selector Pill */}
-          <div className="md:col-span-4">
+          {/* 2. Game Selector */}
+          <div className="sm:w-56">
             <select
               value={selectedGameSlug}
               onChange={(e) => handleGameChange(e.target.value)}
-              className="w-full px-5 py-3.5 bg-white/70 dark:bg-black/40 border border-neutral-200/80 dark:border-white/10 focus:border-sky-500 dark:focus:border-sky-500 rounded-full text-neutral-900 dark:text-white text-xs sm:text-sm font-semibold outline-none transition-all cursor-pointer shadow-inner backdrop-blur-sm"
+              className="w-full px-3 py-2.5 bg-white dark:bg-[#111622] border border-neutral-300 dark:border-neutral-700 rounded-lg text-neutral-900 dark:text-white text-xs sm:text-sm font-medium outline-none focus:border-sky-500 cursor-pointer"
             >
               {initialGames.map((game) => (
                 <option key={game.id} value={game.slug}>
-                  {game.logo} {game.name} ({game.rules?.maxLength || 14} Chars)
+                  {game.logo} {game.name}
                 </option>
               ))}
             </select>
           </div>
 
-          {/* 3. Generate Button (Floating Pill) */}
-          <div className="md:col-span-2 flex">
-            <button
-              type="button"
-              onClick={() => executeGenerate({ offsetVal: 0 })}
-              disabled={loading}
-              className="w-full py-3.5 px-5 bg-gradient-to-r from-sky-600 via-indigo-600 to-sky-700 hover:from-sky-500 hover:via-indigo-500 hover:to-sky-600 text-white font-bold text-xs sm:text-sm rounded-full transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-sky-600/30 active:scale-95"
-            >
-              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-              <span>{loading ? 'Synthesizing...' : 'Generate'}</span>
-            </button>
-          </div>
+          {/* 3. Generate Button */}
+          <button
+            type="button"
+            onClick={() => executeGenerate({ offsetVal: 0 })}
+            disabled={loading}
+            className="py-2.5 px-5 bg-sky-600 hover:bg-sky-500 text-white font-semibold text-sm rounded-lg transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+          >
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            <span>{loading ? 'Generating...' : 'Generate'}</span>
+          </button>
         </div>
 
-        {/* Styles & Filters Row (Organic Pill Capsules) */}
-        <div className="mt-5 pt-4 border-t border-neutral-200/40 dark:border-white/5 relative z-10">
-          <div className="flex items-center justify-between gap-3 mb-3">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-sky-500" />
-              <span className="text-neutral-800 dark:text-neutral-200 font-bold text-xs sm:text-sm">
-                Styles & Fonts ({initialStyles.length + 1})
-              </span>
-              <span className="text-[11px] text-neutral-400 dark:text-neutral-500 hidden sm:inline">
-                • Active: <strong className="text-sky-600 dark:text-sky-400 font-bold">{activeStyleName}</strong>
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setShowAdvanced(!showAdvanced)}
-                className="flex items-center gap-1 text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors text-xs font-bold cursor-pointer"
-              >
-                <SlidersHorizontal className="w-3.5 h-3.5" />
-                {showAdvanced ? 'Less Options' : 'More Options'}
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Screen: Dedicated Floating Style Drawer Button */}
-          <div className="block sm:hidden mb-2">
+        {/* Styles Row */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-xs text-neutral-500">
+            <span className="font-semibold text-neutral-700 dark:text-neutral-300">
+              Styles: <span className="text-sky-500">{activeStyleName}</span>
+            </span>
             <button
               type="button"
-              onClick={() => setShowMobileStyleModal(true)}
-              className="w-full py-3 px-4 bg-white/70 dark:bg-white/5 hover:bg-neutral-100 dark:hover:bg-white/10 border border-neutral-200/80 dark:border-white/10 rounded-full text-xs font-bold text-neutral-800 dark:text-neutral-200 flex items-center justify-between transition-colors shadow-sm"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="text-sky-500 hover:underline flex items-center gap-1 cursor-pointer font-medium"
             >
-              <span className="flex items-center gap-2">
-                <Palette className="w-4 h-4 text-sky-500" />
-                <span>Selected: {activeStyleName}</span>
-              </span>
-              <span className="text-sky-600 dark:text-sky-400 font-bold flex items-center gap-1">
-                Choose Style <ChevronDown className="w-4 h-4" />
-              </span>
+              <SlidersHorizontal className="w-3 h-3" />
+              {showAdvanced ? 'Fewer options' : 'More filters'}
             </button>
           </div>
 
-          {/* Desktop & Tablet: Floating Organic Pill Chips */}
-          <div className="hidden sm:block">
-            <div className="flex flex-wrap gap-1.5 max-w-full">
+          {/* Style Buttons List */}
+          <div className="flex flex-wrap gap-1.5">
+            <button
+              type="button"
+              onClick={() => handleSelectStyle('all')}
+              className={`px-3 py-1 rounded-md text-xs font-semibold transition cursor-pointer ${
+                selectedStyleSlug === 'all'
+                  ? 'bg-sky-600 text-white'
+                  : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'
+              }`}
+            >
+              All Styles
+            </button>
+            {visibleStylesDesktop.map((style) => (
               <button
+                key={style.id}
                 type="button"
-                onClick={() => handleSelectStyle('all')}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
-                  selectedStyleSlug === 'all'
-                    ? 'bg-gradient-to-r from-sky-600 to-indigo-600 text-white shadow-md shadow-sky-600/30'
-                    : 'bg-white/70 dark:bg-white/5 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200/50 dark:hover:bg-white/10 border border-neutral-200/60 dark:border-white/5'
+                onClick={() => handleSelectStyle(style.slug)}
+                className={`px-3 py-1 rounded-md text-xs font-medium transition cursor-pointer ${
+                  selectedStyleSlug === style.slug
+                    ? 'bg-sky-600 text-white font-semibold'
+                    : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'
                 }`}
               >
-                ✨ All Styles (Mixed)
+                {style.name}
               </button>
-              {visibleStylesDesktop.map((style) => (
-                <button
-                  key={style.id}
-                  type="button"
-                  onClick={() => handleSelectStyle(style.slug)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                    selectedStyleSlug === style.slug
-                      ? 'bg-gradient-to-r from-sky-600 to-indigo-600 text-white shadow-md shadow-sky-600/30'
-                      : 'bg-white/70 dark:bg-white/5 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200/50 dark:hover:bg-white/10 border border-neutral-200/60 dark:border-white/5'
-                  }`}
-                >
-                  {style.name}
-                </button>
-              ))}
+            ))}
 
-              <button
-                type="button"
-                onClick={() => setShowAllStylesDesktop(!showAllStylesDesktop)}
-                className="px-3.5 py-1.5 rounded-full text-xs font-bold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/40 hover:bg-sky-100 dark:hover:bg-sky-950/70 border border-sky-200 dark:border-sky-900/40 transition-colors flex items-center gap-1 cursor-pointer"
-              >
-                {showAllStylesDesktop ? (
-                  <>
-                    Show Less <ChevronUp className="w-3.5 h-3.5" />
-                  </>
-                ) : (
-                  <>
-                    + {initialStyles.length - visibleStylesDesktop.length} More Styles <ChevronDown className="w-3.5 h-3.5" />
-                  </>
-                )}
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => setShowAllStylesDesktop(!showAllStylesDesktop)}
+              className="px-2.5 py-1 text-xs text-sky-500 hover:underline font-semibold flex items-center gap-0.5 cursor-pointer"
+            >
+              {showAllStylesDesktop ? (
+                <>Less ▴</>
+              ) : (
+                <>+ {initialStyles.length - visibleStylesDesktop.length} more ▾</>
+              )}
+            </button>
           </div>
         </div>
 
-        {/* Expandable Advanced Options */}
+        {/* Expandable Filters */}
         {showAdvanced && (
-          <div className="mt-4 pt-4 border-t border-neutral-200/40 dark:border-white/5 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs animate-fadeInFast relative z-10">
+          <div className="p-3 bg-neutral-50 dark:bg-[#111622] rounded-lg grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
             <div className="flex flex-col gap-1">
-              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-bold uppercase tracking-wider">Category</label>
+              <label className="text-neutral-500 font-medium">Category</label>
               <select
                 value={gender}
                 onChange={(e) => handleGenderChange(e.target.value)}
-                className="px-3.5 py-2 bg-white/70 dark:bg-black/40 border border-neutral-200/80 dark:border-white/10 rounded-full text-neutral-800 dark:text-neutral-200 text-xs font-semibold outline-none cursor-pointer"
+                className="px-2.5 py-1.5 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded text-neutral-800 dark:text-neutral-200 outline-none"
               >
-                <option value="all">All Genders & Squads</option>
-                <option value="boy">Boys / Kings</option>
-                <option value="girl">Girls / Queens</option>
-                <option value="clan">Clan / Squad</option>
-                <option value="esports">Esports Pro</option>
+                <option value="all">All Categories</option>
+                <option value="boy">Boys</option>
+                <option value="girl">Girls</option>
+                <option value="clan">Clan</option>
+                <option value="esports">Esports</option>
               </select>
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-bold uppercase tracking-wider">Length</label>
+              <label className="text-neutral-500 font-medium">Length</label>
               <select
                 value={lengthCategory}
                 onChange={(e) => {
                   setLengthCategory(e.target.value as any);
                   executeGenerate({ lengthVal: e.target.value, offsetVal: 0 });
                 }}
-                className="px-3.5 py-2 bg-white/70 dark:bg-black/40 border border-neutral-200/80 dark:border-white/10 rounded-full text-neutral-800 dark:text-neutral-200 text-xs font-semibold outline-none cursor-pointer"
+                className="px-2.5 py-1.5 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded text-neutral-800 dark:text-neutral-200 outline-none"
               >
-                <option value="all">Any Length</option>
-                <option value="short">Short (&le; 8 chars)</option>
-                <option value="medium">Medium (8 - 12 chars)</option>
-                <option value="long">Long (12+ chars)</option>
+                <option value="all">Any</option>
+                <option value="short">Short (&le; 8)</option>
+                <option value="medium">Medium (8-12)</option>
+                <option value="long">Long (12+)</option>
               </select>
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-bold uppercase tracking-wider">Batch Size</label>
+              <label className="text-neutral-500 font-medium">Batch</label>
               <select
                 value={count}
                 onChange={(e) => {
@@ -433,27 +390,26 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
                   setCount(val);
                   executeGenerate({ countVal: val, offsetVal: 0 });
                 }}
-                className="px-3.5 py-2 bg-white/70 dark:bg-black/40 border border-neutral-200/80 dark:border-white/10 rounded-full text-neutral-800 dark:text-neutral-200 text-xs font-semibold outline-none cursor-pointer"
+                className="px-2.5 py-1.5 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded text-neutral-800 dark:text-neutral-200 outline-none"
               >
-                <option value={24}>24 Names</option>
-                <option value={36}>36 Names</option>
-                <option value={48}>48 Names</option>
-                <option value={60}>60 Names</option>
+                <option value={24}>24</option>
+                <option value={36}>36</option>
+                <option value={48}>48</option>
               </select>
             </div>
 
             <div className="flex flex-col justify-center gap-1">
-              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-bold uppercase tracking-wider">Special Symbols</label>
+              <label className="text-neutral-500 font-medium">Symbols</label>
               <button
                 type="button"
                 onClick={handleSymbolsToggle}
-                className={`py-2 px-3.5 rounded-full border text-xs font-bold flex items-center justify-center transition-colors cursor-pointer ${
+                className={`py-1.5 px-3 rounded text-xs font-medium border transition ${
                   includeSymbols
-                    ? 'border-sky-600 bg-sky-600 text-white shadow-sm'
-                    : 'border-neutral-200/80 dark:border-white/10 bg-white/60 dark:bg-white/5 text-neutral-500'
+                    ? 'border-sky-600 bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400'
+                    : 'border-neutral-300 dark:border-neutral-700 text-neutral-500'
                 }`}
               >
-                {includeSymbols ? '✓ Symbols (亗, ꧁꧂)' : 'Letters Only'}
+                {includeSymbols ? '✓ Symbols ON' : 'Letters Only'}
               </button>
             </div>
           </div>
@@ -462,77 +418,47 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
 
       {/* Error Alert */}
       {error && (
-        <div className="p-3.5 mb-5 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-2xl text-red-600 dark:text-red-400 text-xs flex items-center justify-between">
+        <div className="p-3 mb-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-md text-red-600 dark:text-red-400 text-xs flex items-center justify-between">
           <span>{error}</span>
-          <button onClick={() => setError(null)} className="text-red-500 hover:text-red-700">
-            ✕
-          </button>
+          <button onClick={() => setError(null)} className="text-red-500">✕</button>
         </div>
       )}
 
       {/* Results Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-2.5 mb-5">
-        <div className="flex items-center gap-2">
-          <h2 className="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
-            Generated Names ({filteredResults.length})
-          </h2>
-          {selectedGame && (
-            <span className="text-[11px] sm:text-xs text-neutral-500 dark:text-neutral-400">
-              for {selectedGame.name} (max {selectedGame.rules?.maxLength || 14})
-            </span>
-          )}
-        </div>
+      <div className="flex items-center justify-between py-2 border-b border-neutral-200 dark:border-neutral-800 mb-2">
+        <h2 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">
+          Generated Names ({filteredResults.length})
+        </h2>
 
         <div className="flex items-center gap-2">
           <input
             type="text"
-            placeholder="Filter list..."
+            placeholder="Search in list..."
             value={searchFilter}
             onChange={(e) => setSearchFilter(e.target.value)}
-            className="px-3.5 py-1.5 bg-white/70 dark:bg-white/5 border border-neutral-200/80 dark:border-white/10 rounded-full text-neutral-900 dark:text-white text-xs outline-none focus:border-sky-500 w-32 sm:w-44 shadow-sm backdrop-blur-sm"
+            className="px-2.5 py-1 bg-white dark:bg-[#111622] border border-neutral-300 dark:border-neutral-700 rounded text-neutral-900 dark:text-white text-xs outline-none focus:border-sky-500 w-32 sm:w-40"
           />
 
           <button
             type="button"
             onClick={handleCopyAll}
-            className="px-3.5 py-1.5 bg-white/70 dark:bg-white/5 hover:bg-neutral-200/50 dark:hover:bg-white/10 border border-neutral-200/80 dark:border-white/10 text-neutral-700 dark:text-neutral-200 rounded-full text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
+            className="px-2.5 py-1 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 rounded text-xs font-medium transition cursor-pointer"
           >
-            {copiedAll ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-emerald-500" /> Copied
-              </>
-            ) : (
-              <>
-                <Copy className="w-3.5 h-3.5" /> Copy All
-              </>
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => executeGenerate({ offsetVal: 0 })}
-            disabled={loading}
-            title="Refresh Batch"
-            className="p-2 bg-white/70 dark:bg-white/5 border border-neutral-200/80 dark:border-white/10 text-neutral-600 dark:text-neutral-300 rounded-full hover:bg-neutral-200/50 dark:hover:bg-white/10 transition-colors cursor-pointer active:scale-95"
-          >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            {copiedAll ? 'Copied' : 'Copy All'}
           </button>
         </div>
       </div>
 
-      {/* Results Feed (Completely Non-Boxy, Seamless Stream) */}
+      {/* Results Simple List (No Boxes) */}
       {loading && results.length === 0 ? (
-        <div className="space-y-2.5 py-4">
+        <div className="divide-y divide-neutral-100 dark:divide-neutral-800/60 py-4">
           {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="h-16 rounded-full bg-white/40 dark:bg-white/[0.02] animate-pulse"
-            />
+            <div key={i} className="h-12 bg-neutral-100 dark:bg-neutral-800/40 animate-pulse my-1 rounded" />
           ))}
         </div>
       ) : filteredResults.length > 0 ? (
         <div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5">
+          <div className="divide-y divide-neutral-100 dark:divide-neutral-800/60">
             {filteredResults.map((item) => (
               <ResultCard
                 key={item.id}
@@ -553,96 +479,22 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
             ))}
           </div>
 
-          {/* Infinite Load More Button */}
-          <div className="mt-8 text-center">
+          {/* Load More Button */}
+          <div className="mt-6 text-center">
             <button
               type="button"
               onClick={handleLoadMore}
               disabled={loadingMore}
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm rounded-full shadow-lg shadow-sky-600/30 hover:shadow-sky-600/40 transition-all cursor-pointer disabled:opacity-50 active:scale-95"
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-neutral-900 font-semibold text-xs sm:text-sm rounded-lg transition cursor-pointer disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${loadingMore ? 'animate-spin' : ''}`} />
-              <span>{loadingMore ? 'Synthesizing 24 More Names...' : '✨ Load 24 More Names (Infinite)'}</span>
+              <span>{loadingMore ? 'Loading more...' : 'Load 24 More Names'}</span>
             </button>
           </div>
         </div>
       ) : (
-        <div className="text-center py-16 glass-panel rounded-3xl p-6">
-          <Layers className="w-10 h-10 text-neutral-400 mx-auto mb-2" />
-          <h3 className="text-base font-bold text-neutral-900 dark:text-white mb-1">No Matching Names Found</h3>
-          <p className="text-xs text-neutral-500 mb-4 max-w-sm mx-auto">
-            Try adjusting your search query or picking a different style pack.
-          </p>
-          <button
-            type="button"
-            onClick={() => {
-              setSearchFilter('');
-              setSelectedStyleSlug('all');
-              executeGenerate({ styleVal: 'all', offsetVal: 0 });
-            }}
-            className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-full transition-colors cursor-pointer shadow-md"
-          >
-            Reset All Filters
-          </button>
-        </div>
-      )}
-
-      {/* Mobile Styles Bottom Sheet Modal */}
-      {showMobileStyleModal && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm p-0 animate-fadeInFast">
-          <div className="w-full max-h-[80vh] bg-white dark:bg-[#111620] rounded-t-3xl border-t border-neutral-200 dark:border-white/10 p-5 flex flex-col shadow-2xl overflow-hidden">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between pb-3.5 border-b border-neutral-200/40 dark:border-white/5">
-              <div className="flex items-center gap-2">
-                <Palette className="w-5 h-5 text-sky-500" />
-                <h3 className="text-base font-bold text-neutral-900 dark:text-white font-gaming">
-                  Choose Style & Font ({initialStyles.length + 1})
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowMobileStyleModal(false)}
-                className="p-1.5 text-neutral-400 hover:text-neutral-600 dark:hover:text-white rounded-full"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Modal Styles List (Scrollable) */}
-            <div className="overflow-y-auto py-3 space-y-1.5 flex-1 smooth-scroll no-scrollbar">
-              <button
-                type="button"
-                onClick={() => handleSelectStyle('all')}
-                className={`w-full p-3 rounded-2xl text-left text-xs font-bold flex items-center justify-between transition-colors ${
-                  selectedStyleSlug === 'all'
-                    ? 'bg-gradient-to-r from-sky-600 to-indigo-600 text-white shadow-md shadow-sky-600/30'
-                    : 'bg-neutral-100 dark:bg-white/5 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-200'
-                }`}
-              >
-                <span className="flex items-center gap-2">
-                  <span>✨</span>
-                  <span>All Styles (Mixed Infinite Variety)</span>
-                </span>
-                {selectedStyleSlug === 'all' && <Check className="w-4 h-4" />}
-              </button>
-
-              {initialStyles.map((s) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => handleSelectStyle(s.slug)}
-                  className={`w-full p-3 rounded-2xl text-left text-xs font-semibold flex items-center justify-between transition-colors ${
-                    selectedStyleSlug === s.slug
-                      ? 'bg-gradient-to-r from-sky-600 to-indigo-600 text-white font-bold shadow-md shadow-sky-600/30'
-                      : 'bg-neutral-100 dark:bg-white/5 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-200'
-                  }`}
-                >
-                  <span>{s.name}</span>
-                  {selectedStyleSlug === s.slug && <Check className="w-4 h-4" />}
-                </button>
-              ))}
-            </div>
-          </div>
+        <div className="text-center py-12 text-neutral-500 text-xs">
+          No names found. Try adjusting your input.
         </div>
       )}
     </div>

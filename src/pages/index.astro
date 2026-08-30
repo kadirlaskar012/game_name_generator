@@ -46,22 +46,21 @@ const homeSchema = [
   schemaJson={homeSchema}
 >
   <!-- Hero Section -->
-  <section class="text-center pt-4 sm:pt-8 pb-6 sm:pb-10 max-w-3xl mx-auto px-2">
-    <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-4 rounded-full text-xs font-bold bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 border border-sky-200/60 dark:border-sky-900/40 shadow-sm">
-      <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-      <span>100% In-Game Acceptable Unicode Engine (32+ Styles)</span>
+  <section class="text-center pt-2 pb-6 max-w-2xl mx-auto">
+    <div class="inline-block px-3 py-1 mb-2 rounded-full text-xs font-semibold bg-sky-100 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300">
+      ⚡ 100% In-Game Acceptable (32+ Styles)
     </div>
 
-    <h1 class="text-3xl sm:text-5xl md:text-6xl font-black text-neutral-900 dark:text-white font-gaming tracking-tight mb-3">
+    <h1 class="text-2xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white mb-2 tracking-tight">
       Gaming Name Generator
     </h1>
-    <p class="text-xs sm:text-sm md:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-xl mx-auto">
-      Create stylish nicknames, boss crowns (<span class="font-mono text-neutral-900 dark:text-white font-bold">亗</span>), Japanese Katakana, and clan tags for Free Fire, BGMI, Valorant, and Esports squads.
+    <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
+      Create stylish nicknames, boss crowns (亗), wings, and clan tags for Free Fire, BGMI, Valorant, and Esports.
     </p>
   </section>
 
   <!-- Real-Time Interactive Generator Island -->
-  <section class="mb-12 sm:mb-16">
+  <section class="mb-10">
     <GeneratorApp
       client:load
       initialGames={initialGames}
@@ -72,25 +71,25 @@ const homeSchema = [
   </section>
 
   <!-- Games Catalogue Section -->
-  <section class="mb-12 sm:mb-16">
-    <div class="flex items-center justify-between mb-5">
+  <section class="mb-10 pt-6 border-t border-neutral-200 dark:border-neutral-800">
+    <div class="flex items-center justify-between mb-4">
       <div>
-        <h2 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+        <h2 class="text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
           Game-Specific Generators
         </h2>
-        <p class="text-xs text-neutral-500 dark:text-neutral-400">
+        <p class="text-xs text-neutral-500">
           Tailored with exact character limits and supported symbols
         </p>
       </div>
       <a
         href="/games/"
-        class="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline transition-colors"
+        class="text-xs font-semibold text-sky-600 dark:text-sky-400 hover:underline"
       >
-        View All 8 Games →
+        View All →
       </a>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
       {games.slice(0, 8).map((game) => (
         <GameCard game={game as any} />
       ))}
@@ -98,21 +97,21 @@ const homeSchema = [
   </section>
 
   <!-- Live Trending Leaderboard -->
-  <section class="mb-12 sm:mb-16">
-    <div class="flex items-center justify-between mb-5">
+  <section class="mb-10 pt-6 border-t border-neutral-200 dark:border-neutral-800">
+    <div class="flex items-center justify-between mb-4">
       <div>
-        <h2 class="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming flex items-center gap-2">
-          <span>🔥</span> Trending In-Game Nicknames
+        <h2 class="text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
+          🔥 Trending Nicknames
         </h2>
-        <p class="text-xs text-neutral-500 dark:text-neutral-400">
-          Most copied and favorited gamer tags across all games
+        <p class="text-xs text-neutral-500">
+          Most copied and favorited gamer tags
         </p>
       </div>
       <a
         href="/trending/"
-        class="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline transition-colors"
+        class="text-xs font-semibold text-sky-600 dark:text-sky-400 hover:underline"
       >
-        Full Leaderboard →
+        Leaderboard →
       </a>
     </div>
 
@@ -120,25 +119,22 @@ const homeSchema = [
   </section>
 
   <!-- 1,500+ Words SEO Authority Masterclass -->
-  <article class="pt-10 border-t border-neutral-200/40 dark:border-white/5 space-y-12 text-neutral-700 dark:text-neutral-300">
-    <header class="space-y-3">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 border border-sky-200/60 dark:border-sky-900/40">
-        <span>📖 Complete 2026 Gaming Nickname Guide</span>
-      </div>
-      <h2 class="text-2xl sm:text-4xl font-black text-neutral-900 dark:text-white font-gaming tracking-tight">
-        The Definitive Guide to Stylish Gaming Nicknames & Unicode Gamer Tags
+  <article class="pt-8 border-t border-neutral-200 dark:border-neutral-800 space-y-8 text-neutral-700 dark:text-neutral-300">
+    <header class="space-y-2">
+      <h2 class="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white">
+        The Definitive Guide to Stylish Gaming Nicknames & Unicode Gamer Tags (2026)
       </h2>
-      <p class="text-xs sm:text-sm md:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-4xl">
+      <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
         In modern multiplayer gaming, your in-game name (IGN) is your primary digital identity, competitive brand, and psychological signature on the kill feed. Discover how pro players craft memorable nicknames, bypass character limits safely, and combine rare Unicode symbols without getting broken question mark boxes.
       </p>
     </header>
 
     <!-- Table of Contents -->
-    <div class="glass-panel rounded-3xl p-6 shadow-sm space-y-3">
-      <h3 class="text-sm sm:text-base font-bold text-neutral-900 dark:text-white font-gaming flex items-center gap-2">
-        <span>📖</span> Table of Contents
+    <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-2">
+      <h3 class="text-sm font-bold text-neutral-900 dark:text-white">
+        📖 Table of Contents
       </h3>
-      <ol class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-semibold text-sky-600 dark:text-sky-400 list-decimal list-inside pl-1">
+      <ol class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-sky-600 dark:text-sky-400 list-decimal list-inside">
         <li>The Psychology Behind Viral Gaming Nicknames</li>
         <li>Character Limits & Encoding Rules Across Top Games</li>
         <li>How Unicode Mathematical Fonts Render in UTF-8</li>
@@ -151,97 +147,97 @@ const homeSchema = [
     </div>
 
     <!-- Section 1 -->
-    <section class="space-y-4">
-      <h3 class="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
         1. The Psychology Behind Viral Gaming Nicknames
       </h3>
       <p class="text-xs sm:text-sm leading-relaxed">
         A top-tier gaming nickname does far more than label your account—it projects psychological dominance inside the pre-match lobby and the kill feed. When enemies see a symmetrical, carefully styled alias like <strong class="text-neutral-900 dark:text-white font-mono">亗 Kᴀᴅɪʀ 亗</strong> or <strong class="text-neutral-900 dark:text-white font-mono">『Kᴀᴅɪʀ』メ</strong> appear repeatedly on the elimination ticker, it establishes immediate authority and tactical intimidation.
       </p>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-        <div class="glass-panel rounded-3xl p-5">
-          <h4 class="font-bold text-neutral-900 dark:text-white text-sm mb-1.5">1. Comms Clarity</h4>
-          <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            In fast-paced esports, callouts happen in milliseconds. Names between 4 and 8 characters with 1 to 2 syllables allow your In-Game Leader (IGL) and squadmates to communicate effortlessly.
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+        <div class="p-3 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <h4 class="font-bold text-neutral-900 dark:text-white text-xs mb-1">1. Comms Clarity</h4>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400">
+            In fast-paced esports, callouts happen in milliseconds. Names with 1 to 2 syllables allow squadmates to communicate effortlessly.
           </p>
         </div>
-        <div class="glass-panel rounded-3xl p-5">
-          <h4 class="font-bold text-neutral-900 dark:text-white text-sm mb-1.5">2. Kill Feed Symmetrical Framing</h4>
-          <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            Framing symbols like wings (<code class="text-xs">꧁༺ ༻꧂</code>), crowns (<code class="text-xs">亗</code>), and brackets (<code class="text-xs">【 】</code>) draw the eye instantly on high-resolution displays.
+        <div class="p-3 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <h4 class="font-bold text-neutral-900 dark:text-white text-xs mb-1">2. Kill Feed Symmetrical Framing</h4>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400">
+            Framing symbols like wings (<code class="text-xs">꧁༺ ༻꧂</code>) and crowns (<code class="text-xs">亗</code>) draw the eye instantly.
           </p>
         </div>
-        <div class="glass-panel rounded-3xl p-5">
-          <h4 class="font-bold text-neutral-900 dark:text-white text-sm mb-1.5">3. Multi-Platform Brand Scalability</h4>
-          <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            A great alias transitions seamlessly from your mobile game to YouTube Gaming channels, Discord servers, Twitch streams, and tournament rosters.
+        <div class="p-3 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <h4 class="font-bold text-neutral-900 dark:text-white text-xs mb-1">3. Brand Scalability</h4>
+          <p class="text-xs text-neutral-500 dark:text-neutral-400">
+            A great alias transitions seamlessly to YouTube Gaming channels, Discord servers, and tournament rosters.
           </p>
         </div>
       </div>
     </section>
 
     <!-- Section 2 -->
-    <section class="space-y-4">
-      <h3 class="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
         2. In-Game Character Limits & Encoding Rules Across Top Games (2026)
       </h3>
       <p class="text-xs sm:text-sm leading-relaxed">
-        Game engines process player names through different text sanitizers. Some games count raw bytes (where multi-byte Unicode characters consume 3 bytes), while others count Unicode code points (where each glyph counts as 1 character). Exceeding these limits causes the game client to reject the Rename Card.
+        Game engines process player names through different text sanitizers. Exceeding these limits causes the game client to reject the Rename Card.
       </p>
 
-      <div class="overflow-x-auto glass-panel rounded-3xl shadow-sm">
+      <div class="overflow-x-auto border border-neutral-200 dark:border-neutral-800 rounded-lg">
         <table class="w-full text-left text-xs">
-          <thead class="bg-neutral-100/50 dark:bg-white/5 border-b border-neutral-200/40 dark:border-white/5 text-neutral-900 dark:text-white">
+          <thead class="bg-neutral-100 dark:bg-[#111622] border-b border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white">
             <tr>
-              <th class="p-4 font-bold">Game Title</th>
-              <th class="p-4 font-bold">Max Limit</th>
-              <th class="p-4 font-bold">Min Limit</th>
-              <th class="p-4 font-bold">Supported Unicode Symbols</th>
-              <th class="p-4 font-bold">Rename Cost</th>
+              <th class="p-2.5 font-bold">Game Title</th>
+              <th class="p-2.5 font-bold">Max Limit</th>
+              <th class="p-2.5 font-bold">Min Limit</th>
+              <th class="p-2.5 font-bold">Supported Symbols</th>
+              <th class="p-2.5 font-bold">Rename Cost</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-neutral-200/30 dark:divide-white/5 text-neutral-600 dark:text-neutral-400">
+          <tbody class="divide-y divide-neutral-200 dark:divide-neutral-800 text-neutral-600 dark:text-neutral-400">
             <tr>
-              <td class="p-4 font-semibold text-neutral-900 dark:text-white">Garena Free Fire / MAX</td>
-              <td class="p-4 font-mono font-bold text-amber-600 dark:text-amber-400">12 Characters</td>
-              <td class="p-4 font-mono">3 Chars</td>
-              <td class="p-4 font-mono">亗, 👑, ☬, ꧁༺ ༻꧂, ࿐, 么, 々, メ, ⚡, ✿</td>
-              <td class="p-4">390 Diamonds / Name Card</td>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">Garena Free Fire / MAX</td>
+              <td class="p-2.5 font-mono font-bold text-amber-600">12 Chars</td>
+              <td class="p-2.5 font-mono">3</td>
+              <td class="p-2.5 font-mono">亗, 👑, ☬, ꧁༺ ༻꧂, ࿐, 么, 々, メ</td>
+              <td class="p-2.5">390 Diamonds</td>
             </tr>
             <tr>
-              <td class="p-4 font-semibold text-neutral-900 dark:text-white">BGMI / PUBG Mobile</td>
-              <td class="p-4 font-mono font-bold text-sky-600 dark:text-sky-400">14 Characters</td>
-              <td class="p-4 font-mono">3 Chars</td>
-              <td class="p-4 font-mono">メ, 〆, 々, 么, 乡, 『 』, 【 】, 父, 气, 𓊈 𓊉</td>
-              <td class="p-4">180 UC / Rename Card</td>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">BGMI / PUBG Mobile</td>
+              <td class="p-2.5 font-mono font-bold text-sky-600">14 Chars</td>
+              <td class="p-2.5 font-mono">3</td>
+              <td class="p-2.5 font-mono">メ, 〆, 々, 么, 乡, 『 』, 【 】, 𓊈 𓊉</td>
+              <td class="p-2.5">180 UC</td>
             </tr>
             <tr>
-              <td class="p-4 font-semibold text-neutral-900 dark:text-white">Riot Valorant</td>
-              <td class="p-4 font-mono font-bold text-emerald-600 dark:text-emerald-400">16 Characters</td>
-              <td class="p-4 font-mono">3 Chars</td>
-              <td class="p-4 font-mono">Small Caps (ᴋᴀᴅɪʀ), •, ·, /, —, ×, ø, †</td>
-              <td class="p-4">Free (Every 30 Days)</td>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">Riot Valorant</td>
+              <td class="p-2.5 font-mono font-bold text-emerald-600">16 Chars</td>
+              <td class="p-2.5 font-mono">3</td>
+              <td class="p-2.5 font-mono">Small Caps (ᴋᴀᴅɪʀ), •, ·, /, —, ×</td>
+              <td class="p-2.5">Free (Every 30 Days)</td>
             </tr>
             <tr>
-              <td class="p-4 font-semibold text-neutral-900 dark:text-white">Call of Duty: Mobile (CODM)</td>
-              <td class="p-4 font-mono font-bold text-purple-600 dark:text-purple-400">14 Characters</td>
-              <td class="p-4 font-mono">3 Chars</td>
-              <td class="p-4 font-mono">☠, ⚔, ⚡, ☣, ✘, 𝕏, 🎯, ×, •, ✞</td>
-              <td class="p-4">200 CP / 1000 Credits</td>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">Call of Duty: Mobile (CODM)</td>
+              <td class="p-2.5 font-mono font-bold text-purple-600">14 Chars</td>
+              <td class="p-2.5 font-mono">3</td>
+              <td class="p-2.5 font-mono">☠, ⚔, ⚡, ☣, ✘, 𝕏, 🎯, ×, •</td>
+              <td class="p-2.5">200 CP / 1000 Credits</td>
             </tr>
             <tr>
-              <td class="p-4 font-semibold text-neutral-900 dark:text-white">Roblox</td>
-              <td class="p-4 font-mono font-bold text-pink-600 dark:text-pink-400">20 Characters</td>
-              <td class="p-4 font-mono">3 Chars</td>
-              <td class="p-4 font-mono">✿, ♡, ✧, ⋆, 🧸, ʚɞ, ✰ (Display Name)</td>
-              <td class="p-4">Free (Display Name) / 1000 R$</td>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">Roblox</td>
+              <td class="p-2.5 font-mono font-bold text-pink-600">20 Chars</td>
+              <td class="p-2.5 font-mono">3</td>
+              <td class="p-2.5 font-mono">✿, ♡, ✧, ⋆, 🧸, ʚɞ, ✰</td>
+              <td class="p-2.5">Free (Display Name)</td>
             </tr>
             <tr>
-              <td class="p-4 font-semibold text-neutral-900 dark:text-white">Minecraft Java & Bedrock</td>
-              <td class="p-4 font-mono font-bold text-neutral-700 dark:text-neutral-300">16 Characters</td>
-              <td class="p-4 font-mono">3 Chars</td>
-              <td class="p-4 font-mono">Alphanumeric + Underscores (_)</td>
-              <td class="p-4">Free (Every 30 Days)</td>
+              <td class="p-2.5 font-semibold text-neutral-900 dark:text-white">Minecraft</td>
+              <td class="p-2.5 font-mono font-bold text-neutral-700 dark:text-neutral-300">16 Chars</td>
+              <td class="p-2.5 font-mono">3</td>
+              <td class="p-2.5 font-mono">Alphanumeric + _</td>
+              <td class="p-2.5">Free (Every 30 Days)</td>
             </tr>
           </tbody>
         </table>
@@ -249,99 +245,74 @@ const homeSchema = [
     </section>
 
     <!-- Section 3 -->
-    <section class="space-y-4">
-      <h3 class="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
         3. How Unicode Mathematical Fonts Render in UTF-8
       </h3>
       <p class="text-xs sm:text-sm leading-relaxed">
-        Many gamers wonder how styled text like <span class="font-bold text-neutral-900 dark:text-white">ᴋᴀᴅɪʀ</span> or <span class="font-bold text-neutral-900 dark:text-white">𝕶𝖆𝖉𝖎𝖗</span> works in games that do not have custom font pickers. The secret lies in the **Unicode Standard (UTF-8)**.
-      </p>
-      <p class="text-xs sm:text-sm leading-relaxed">
-        Instead of modifying the game's font files, our generator maps standard ASCII characters (A–Z) to specialized Unicode code points such as **Latin Letter Small Capitals (U+1D00–U+1D7F)**, **Mathematical Fraktur (U+1D56C–U+1D59F)**, and **Mathematical Double-Struck (U+1D538–U+1D56B)**. Because modern gaming clients support UTF-8 character encoding, they render these characters natively as universal symbols without requiring third-party keyboards.
+        Instead of modifying the game's font files, our generator maps standard ASCII characters (A–Z) to specialized Unicode code points such as **Latin Letter Small Capitals (U+1D00–U+1D7F)** and **Mathematical Fraktur (U+1D56C–U+1D59F)**. Modern gaming clients support UTF-8 character encoding and render these characters natively.
       </p>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
-        <div class="glass-panel rounded-3xl p-5">
-          <span class="text-[10px] font-bold font-mono text-sky-500 uppercase">Small Caps</span>
-          <div class="text-base font-bold font-gaming text-neutral-900 dark:text-white mt-1">ᴋ ᴀ ᴅ ɪ ʀ</div>
-          <p class="text-[11px] text-neutral-500 mt-1">Clean, tournament-legal esports font widely used in Valorant and Apex Legends.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-1">
+        <div class="p-3 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <span class="text-[10px] font-bold text-sky-500 uppercase">Small Caps</span>
+          <div class="text-sm font-bold text-neutral-900 dark:text-white mt-0.5">ᴋ ᴀ ᴅ ɪ ʀ</div>
         </div>
-        <div class="glass-panel rounded-3xl p-5">
-          <span class="text-[10px] font-bold font-mono text-amber-500 uppercase">Gothic Fraktur</span>
-          <div class="text-base font-bold font-gaming text-neutral-900 dark:text-white mt-1">𝕶 𝖆 𝖉 𝖎 𝖗</div>
-          <p class="text-[11px] text-neutral-500 mt-1">Dark, aggressive medieval lettering favored in Free Fire and PUBG Mobile.</p>
+        <div class="p-3 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <span class="text-[10px] font-bold text-amber-500 uppercase">Gothic Fraktur</span>
+          <div class="text-sm font-bold text-neutral-900 dark:text-white mt-0.5">𝕶 𝖆 𝖉 𝖎 𝖗</div>
         </div>
-        <div class="glass-panel rounded-3xl p-5">
-          <span class="text-[10px] font-bold font-mono text-indigo-500 uppercase">Double Struck</span>
-          <div class="text-base font-bold font-gaming text-neutral-900 dark:text-white mt-1">𝕂 𝕒 𝕕 𝕚 𝕣</div>
-          <p class="text-[11px] text-neutral-500 mt-1">Modern blackboard bold font that gives IGNs a high-tech hacker look.</p>
+        <div class="p-3 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <span class="text-[10px] font-bold text-indigo-500 uppercase">Double Struck</span>
+          <div class="text-sm font-bold text-neutral-900 dark:text-white mt-0.5">𝕂 𝕒 𝕕 𝕚 𝕣</div>
         </div>
-        <div class="glass-panel rounded-3xl p-5">
-          <span class="text-[10px] font-bold font-mono text-pink-500 uppercase">Bold Script</span>
-          <div class="text-base font-bold font-gaming text-neutral-900 dark:text-white mt-1">𝓚 𝓪 𝓭 𝓲 𝓻</div>
-          <p class="text-[11px] text-neutral-500 mt-1">Elegant cursive calligraphy popular in Roblox and aesthetic gaming clans.</p>
+        <div class="p-3 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <span class="text-[10px] font-bold text-pink-500 uppercase">Bold Script</span>
+          <div class="text-sm font-bold text-neutral-900 dark:text-white mt-0.5">𝓚 𝓪 𝓭 𝓲 𝓻</div>
         </div>
       </div>
     </section>
 
     <!-- Section 4 -->
-    <section class="space-y-4">
-      <h3 class="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
-        4. Cultural Symbols Breakdown: Boss Crowns, Wings & Japanese Katakana
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
+        4. Cultural Symbols Breakdown
       </h3>
-      <p class="text-xs sm:text-sm leading-relaxed">
-        Gaming symbols carry specific cultural meanings and status across gaming communities:
-      </p>
-      <ul class="space-y-3 text-xs sm:text-sm">
-        <li class="glass-panel rounded-3xl p-5">
-          <strong class="text-neutral-900 dark:text-white font-bold text-sm">Boss Crown (亗):</strong> Originally the Chinese character for "year/age" (岁), the Free Fire community transformed this glyph into the universal "Boss Crown" emblem, signifying guild leaders and top-tier fraggers.
+      <ul class="space-y-2 text-xs sm:text-sm">
+        <li class="p-2.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <strong class="text-neutral-900 dark:text-white">Boss Crown (亗):</strong> Originally Chinese for year/age (岁), transformed by the Free Fire community into the universal Boss Crown.
         </li>
-        <li class="glass-panel rounded-3xl p-5">
-          <strong class="text-neutral-900 dark:text-white font-bold text-sm">Japanese Katakana (メ, 々, 么, 〆):</strong> Katakana characters like "Me" (メ) and "Iteration Mark" (々) are widely used by BGMI and PUBG Mobile pros (like Jonathan Gaming and Mortal) as stylish end-tags for clean visual balance.
+        <li class="p-2.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <strong class="text-neutral-900 dark:text-white">Japanese Katakana (メ, 々, 么, 〆):</strong> Katakana characters used by BGMI/PUBG Mobile pros as stylish end-tags.
         </li>
-        <li class="glass-panel rounded-3xl p-5">
-          <strong class="text-neutral-900 dark:text-white font-bold text-sm">Angel Wings (꧁༺ ༻꧂):</strong> Symmetrical ornamental wing brackets create a prestigious frame around player names in battle royale titles.
+        <li class="p-2.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <strong class="text-neutral-900 dark:text-white">Angel Wings (꧁༺ ༻꧂):</strong> Symmetrical ornamental wing brackets that frame player names.
         </li>
       </ul>
     </section>
 
     <!-- Section 5 -->
-    <section class="space-y-4">
-      <h3 class="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
-        5. Step-by-Step: How to Change Your In-Game Name Without Missing Box (□) Errors
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
+        5. How to Change Your Name In-Game
       </h3>
-      <div class="space-y-3 text-xs sm:text-sm">
-        <div class="flex items-start gap-3.5 glass-panel rounded-3xl p-5">
-          <span class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-md shadow-sky-600/30">1</span>
-          <div>
-            <strong class="text-neutral-900 dark:text-white text-sm">Select & Copy:</strong> Choose your favorite synthesized nickname from our generator above and click the vibrant <strong>Copy Name</strong> button.
-          </div>
+      <div class="space-y-2 text-xs sm:text-sm">
+        <div class="p-2.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <strong>1. Select & Copy:</strong> Click the Copy button next to any name above.
         </div>
-        <div class="flex items-start gap-3.5 glass-panel rounded-3xl p-5">
-          <span class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-md shadow-sky-600/30">2</span>
-          <div>
-            <strong class="text-neutral-900 dark:text-white text-sm">Open Profile Banner:</strong> Launch Free Fire, BGMI, or Valorant on your mobile or PC and tap your avatar/profile icon in the top-left corner.
-          </div>
+        <div class="p-2.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <strong>2. Open Profile:</strong> Launch your game and tap your avatar/profile icon.
         </div>
-        <div class="flex items-start gap-3.5 glass-panel rounded-3xl p-5">
-          <span class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-md shadow-sky-600/30">3</span>
-          <div>
-            <strong class="text-neutral-900 dark:text-white text-sm">Paste into Nickname Field:</strong> Tap the pencil/edit icon next to your nickname, long press inside the input dialog, select Paste, and verify the live character counter.
-          </div>
-        </div>
-        <div class="flex items-start gap-3.5 glass-panel rounded-3xl p-5">
-          <span class="w-8 h-8 rounded-2xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-md shadow-sky-600/30">4</span>
-          <div>
-            <strong class="text-neutral-900 dark:text-white text-sm">Confirm with Rename Card:</strong> Use your Rename Card or in-game diamonds/UC to lock in your new alias.
-          </div>
+        <div class="p-2.5 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <strong>3. Paste & Save:</strong> Tap edit name, paste your new nickname, and confirm with your Rename Card.
         </div>
       </div>
     </section>
 
     <!-- Section 6: FAQs -->
-    <section class="space-y-4 pt-6 border-t border-neutral-200/40 dark:border-white/5">
-      <h3 class="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming">
-        Frequently Asked Questions (FAQ)
+    <section class="space-y-3 pt-4 border-t border-neutral-200 dark:border-neutral-800">
+      <h3 class="text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
+        Frequently Asked Questions
       </h3>
       <FaqAccordion faqs={faqs as any} />
     </section>
