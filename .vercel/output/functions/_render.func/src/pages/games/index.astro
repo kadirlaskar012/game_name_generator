@@ -1,0 +1,41 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import GameCard from '@/components/GameCard.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { getGames } from '@/lib/database/repository';
+import { generateBreadcrumbSchema } from '@/lib/seo/schema';
+
+const games = await getGames();
+
+const breadcrumbItems = [
+  { name: 'Home', url: '/' },
+  { name: 'Games Directory', url: '/games/' },
+];
+
+const schema = [
+  generateBreadcrumbSchema(breadcrumbItems),
+];
+---
+
+<Layout
+  title="All Supported Games — Gaming Name Generators"
+  description="Explore gaming nickname generators for Free Fire, BGMI, Valorant, Fortnite, Roblox, Minecraft, CODM, and Esports Clans with game-specific character limits."
+  schemaJson={schema}
+>
+  <Breadcrumbs items={breadcrumbItems} />
+
+  <div class="mb-8">
+    <h1 class="text-2xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white font-gaming mb-2">
+      All Supported Games
+    </h1>
+    <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-xl">
+      Select your game below to generate formatted nicknames compliant with specific character lengths and supported symbols.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mb-12">
+    {games.map((game) => (
+      <GameCard game={game as any} />
+    ))}
+  </div>
+</Layout>

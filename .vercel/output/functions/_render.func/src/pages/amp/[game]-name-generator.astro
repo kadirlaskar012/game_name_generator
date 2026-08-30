@@ -1,0 +1,74 @@
+---
+import { getGames, getGameBySlug, getFaqs, getSeoPageBySlug } from '@/lib/database/repository';
+
+const { game: gameSlug } = Astro.params;
+const game = (await getGameBySlug(gameSlug || 'free-fire')) || (await getGames())[0];
+const faqs = await getFaqs(game.id);
+const seoPage = await getSeoPageBySlug(`${game.slug}-name-generator`);
+
+const canonicalUrl = `https://gamertagpro.com/${game.slug}-name-generator/`;
+const pageTitle = `AMP: ${game.name} Name Rules & Nickname Ideas 2025`;
+---
+
+<!doctype html>
+<html amp lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{pageTitle}</title>
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1" />
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+    <style amp-custom>
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #06080c; color: #f3f4f6; margin: 0; padding: 16px; line-height: 1.6; }
+      .header { border-bottom: 1px solid #1f293d; padding-bottom: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+      .logo { font-weight: 800; font-size: 18px; color: #00f0ff; text-decoration: none; }
+      h1 { font-size: 24px; color: #ffffff; margin-bottom: 8px; }
+      .box { background: #111622; border: 1px solid #1f293d; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+      .tag { background: rgba(0, 240, 255, 0.1); border: 1px solid #00f0ff; color: #00f0ff; padding: 4px 8px; border-radius: 6px; font-size: 12px; }
+      .cta-btn { display: inline-block; background: #00f0ff; color: #000000; font-weight: bold; padding: 12px 20px; border-radius: 8px; text-decoration: none; margin-top: 12px; text-align: center; width: 100%; box-sizing: border-box; }
+      .faq-item { margin-bottom: 12px; border-bottom: 1px solid #1f293d; padding-bottom: 8px; }
+      .faq-q { font-weight: bold; color: #ffffff; font-size: 14px; }
+      .faq-a { font-size: 13px; color: #9ca3af; margin-top: 4px; }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <a href="/" class="logo">⚡ GAMERTAG PRO (AMP)</a>
+      <a href={canonicalUrl} class="tag">Open Full Generator →</a>
+    </div>
+
+    <h1>{game.name} Gaming Nickname Guide</h1>
+    <p style="color: #9ca3af; font-size: 14px;">
+      Official character limits, popular symbols, and rules for {game.name}.
+    </p>
+
+    <div class="box">
+      <h2 style="font-size: 16px; margin-top: 0; color: #00f0ff;">Game Rules Summary</h2>
+      <p><strong>Max Length:</strong> {game.rules?.maxLength || 14} Characters</p>
+      <p><strong>Min Length:</strong> {game.rules?.minLength || 3} Characters</p>
+      <p><strong>Preferred Symbols:</strong> {game.rules?.preferredSymbols?.join(' ') || '亗 メ 々 么'}</p>
+      <a href={canonicalUrl} class="cta-btn">Generate Interactive Names →</a>
+    </div>
+
+    {seoPage?.content && (
+      <div class="box">
+        <div style="font-size: 14px; color: #d1d5db;">
+          {seoPage.content}
+        </div>
+      </div>
+    )}
+
+    {faqs.length > 0 && (
+      <div class="box">
+        <h2 style="font-size: 16px; margin-top: 0; color: #00f0ff;">Frequently Asked Questions</h2>
+        {faqs.map((faq) => (
+          <div class="faq-item">
+            <div class="faq-q">{faq.question}</div>
+            <div class="faq-a">{faq.answer}</div>
+          </div>
+        ))}
+      </div>
+    )}
+  </body>
+</html>
