@@ -80,4 +80,25 @@ describe('Gaming Name Generator Engine', () => {
     expect(output.results.length).toBe(10);
     expect(output.inputName.length).toBeGreaterThan(0);
   });
+
+  it('generates distinct names matching boss-crown style', async () => {
+    const output = await generateGamingNames({ name: 'BGMI', styleSlug: 'boss-crown', count: 10 });
+    expect(output.results.length).toBeGreaterThan(0);
+    const hasCrowns = output.results.some((r) => r.name.includes('亗') || r.name.includes('👑') || r.name.includes('☬') || r.name.includes('♛'));
+    expect(hasCrowns).toBe(true);
+  });
+
+  it('generates distinct names matching wings style', async () => {
+    const output = await generateGamingNames({ name: 'VIPER', styleSlug: 'wings', count: 10 });
+    expect(output.results.length).toBeGreaterThan(0);
+    const hasWings = output.results.some((r) => r.name.includes('꧁') || r.name.includes('༺') || r.name.includes('ʚ') || r.name.includes('࿐'));
+    expect(hasWings).toBe(true);
+  });
+
+  it('generates distinct names matching small-caps style', async () => {
+    const output = await generateGamingNames({ name: 'soul', styleSlug: 'small-caps', count: 10 });
+    expect(output.results.length).toBeGreaterThan(0);
+    const hasSmallCaps = output.results.some((r) => r.name.includes('ꜱ') || r.name.includes('ᴏ') || r.name.includes('ᴜ') || r.name.includes('ʟ'));
+    expect(hasSmallCaps).toBe(true);
+  });
 });
