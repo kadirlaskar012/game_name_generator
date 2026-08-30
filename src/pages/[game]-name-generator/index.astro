@@ -1,0 +1,120 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { GeneratorApp } from '@/islands/GeneratorApp';
+import FaqAccordion from '@/components/FaqAccordion.astro';
+import { getGameBySlug, getGames, getStyles, getFaqs } from '@/lib/database/repository';
+import { generateWebApplicationSchema, generateFaqPageSchema, generateBreadcrumbSchema } from '@/lib/seo/schema';
+
+const { game: gameSlug } = Astro.params;
+
+const [game, allGames, styles, allFaqs] = await Promise.all([
+  getGameBySlug(gameSlug as string),
+  getGames(),
+  getStyles(),
+  getFaqs(),
+]);
+
+if (!game) {
+  return Astro.redirect('/404');
+}
+
+const gameFaqs = allFaqs.filter((f) => !f.gameId || f.gameId === game.id);
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Games', url: '/games/' },
+  { name: `${game.name} Generator`, url: `/${game.slug}-name-generator/` },
+];
+
+const schema = [
+  generateWebApplicationSchema(),
+  generateBreadcrumbSchema(breadcrumbs),
+  generateFaqPageSchema(gameFaqs),
+];
+
+const initialGames = allGames.map((g) => ({
+  id: g.id,
+  name: g.name,
+  slug: g.slug,
+  logo: g.logo || '🎮',
+  rules: g.rules,
+}));
+
+const initialStyles = styles.map((s) => ({
+  id: s.id,
+  name: s.name,
+  slug: s.slug,
+}));
+---
+
+<Layout
+  title={game.seoTitle || `${game.name} Name Generator — Stylish Nicknames & Symbols`}
+  description={game.seoDescription || `Create unique, stylish in-game names for ${game.name} with verified Unicode symbols, wings, boss crowns, and clan brackets within the ${game.rules?.maxLength || 14} character limit.`}
+  schemaJson={schema}
+>
+  <Breadcrumbs items={breadcrumbs} />
+
+  <!-- Minimal Header -->
+  <div class="mb-6">
+    <div class="flex items-center gap-3 mb-2">
+      <span class="text-3xl">{game.logo}</span>
+      <div>
+        <h1 class="text-2xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white font-gaming">
+          {game.name} Name Generator
+        </h1>
+        <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">
+          Max {game.rules?.maxLength || 14} characters • Min {game.rules?.minLength || 3} characters • Verified Symbols
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Generator Island -->
+  <section class="mb-12">
+    <GeneratorApp
+      client:load
+      initialGames={initialGames}
+      initialStyles={initialStyles}
+      defaultGameSlug={game.slug}
+      defaultName="Kadir"
+    />
+  </section>
+
+  <!-- Game Details & Guidelines -->
+  <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-6 border-t border-neutral-200 dark:border-neutral-800/80 mb-12">
+    <div class="lg:col-span-7 space-y-4">
+      <h2 class="text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        {game.name} Nickname Rules & Guide
+      </h2>
+      <div class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed space-y-2.5">
+        <p>
+          {game.description}
+        </p>
+        <div class="p-4 bg-white dark:bg-surface-dark border border-neutral-200 dark:border-neutral-800 rounded-xl space-y-2">
+          <div class="flex justify-between">
+            <span class="text-neutral-400">Maximum Allowed Length:</span>
+            <span class="font-bold font-mono text-neutral-900 dark:text-white">{game.rules?.maxLength || 14} Characters</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-neutral-400">Minimum Length:</span>
+            <span class="font-bold font-mono text-neutral-900 dark:text-white">{game.rules?.minLength || 3} Characters</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-neutral-400">Popular In-Game Symbols:</span>
+            <span class="font-mono text-neutral-900 dark:text-white">
+              {game.rules?.preferredSymbols?.join('  ') || '亗  メ  々  么  ꧂'}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-5">
+      <h2 class="text-xl font-bold text-neutral-900 dark:text-white font-gaming mb-3">
+        {game.name} FAQs
+      </h2>
+      <FaqAccordion faqs={gameFaqs as any} />
+    </div>
+  </section>
+</Layout>

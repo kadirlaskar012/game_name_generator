@@ -1,0 +1,35 @@
+---
+import SeoHead from '@/components/SeoHead.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import '@/styles/global.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: string;
+  robots?: string;
+  schemaJson?: Record<string, any> | Record<string, any>[];
+}
+
+const props = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <SeoHead {...props} />
+  <body class="bg-neutral-50 dark:bg-surface-darkMuted text-neutral-900 dark:text-neutral-100 min-h-screen flex flex-col antialiased selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-neutral-900 transition-colors">
+    <!-- Subtle Dot Pattern -->
+    <div class="fixed inset-0 pointer-events-none z-[-1] dot-grid opacity-60" />
+
+    <Header />
+
+    <main class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

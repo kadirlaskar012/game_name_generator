@@ -1,0 +1,36 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { FavoritesManager } from '@/islands/FavoritesManager';
+import { generateBreadcrumbSchema } from '@/lib/seo/schema';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'My Favorites', url: '/favorites/' },
+];
+
+const schema = [
+  generateBreadcrumbSchema(breadcrumbs),
+];
+---
+
+<Layout
+  title="Saved Favorite Gaming Names & Nicknames"
+  description="Manage, export, and copy your favorite saved gaming names and nicknames for Free Fire, BGMI, and Valorant."
+  schemaJson={schema}
+>
+  <Breadcrumbs items={breadcrumbs} />
+
+  <div class="mb-8">
+    <h1 class="text-2xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white font-gaming mb-2">
+      Saved Gamer Tags
+    </h1>
+    <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-xl">
+      Your personal collection of saved nicknames, synced to your device and database.
+    </p>
+  </div>
+
+  <section class="mb-12">
+    <FavoritesManager client:load />
+  </section>
+</Layout>

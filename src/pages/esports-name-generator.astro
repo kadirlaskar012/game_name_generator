@@ -1,0 +1,63 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { GeneratorApp } from '@/islands/GeneratorApp';
+import { getGames, getStyles } from '@/lib/database/repository';
+import { generateWebApplicationSchema, generateBreadcrumbSchema } from '@/lib/seo/schema';
+
+const [allGames, styles] = await Promise.all([
+  getGames(),
+  getStyles(),
+]);
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Esports Name Generator', url: '/esports-name-generator/' },
+];
+
+const initialGames = allGames.map((g) => ({
+  id: g.id,
+  name: g.name,
+  slug: g.slug,
+  logo: g.logo || '🎮',
+  rules: g.rules,
+}));
+
+const initialStyles = styles.map((s) => ({
+  id: s.id,
+  name: s.name,
+  slug: s.slug,
+}));
+
+const schema = [
+  generateWebApplicationSchema(),
+  generateBreadcrumbSchema(breadcrumbs),
+];
+---
+
+<Layout
+  title="Esports Pro Name Generator — Professional Gamer Tags & Small Caps"
+  description="Generate clean, minimalist, pro gamer tags in Small Caps, Gothic Fraktur, and impact fonts used by tier-1 esports athletes."
+  schemaJson={schema}
+>
+  <Breadcrumbs items={breadcrumbs} />
+
+  <div class="mb-6">
+    <h1 class="text-2xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white font-gaming mb-2">
+      Esports Pro Name Generator
+    </h1>
+    <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-xl">
+      Create clean, professional player aliases in Small Caps (ᴋᴀᴅɪʀ) and subtle typography for tournament leaderboards.
+    </p>
+  </div>
+
+  <section class="mb-12">
+    <GeneratorApp
+      client:load
+      initialGames={initialGames}
+      initialStyles={initialStyles}
+      defaultGameSlug="valorant"
+      defaultName="SHADOW"
+    />
+  </section>
+</Layout>
