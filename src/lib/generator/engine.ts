@@ -25,13 +25,14 @@ export interface GeneratedResultItem {
   plainName: string;
   gameName: string;
   styleName: string;
+  styleSlug?: string;
   validation: RuleValidationResult;
   font: string;
   isPopular?: boolean;
 }
 
 const DEFAULT_GAMER_NAMES = [
-  'Kadir', 'Ghost', 'Shadow', 'Titan', 'Hunter', 'Viper', 'Blade', 'Phoenix',
+  'BGMI', 'PUBG', 'SOUL', 'GODL', 'Ghost', 'Shadow', 'Titan', 'Hunter', 'Viper', 'Blade', 'Phoenix',
   'Raven', 'Wolf', 'Storm', 'Reaper', 'Nomad', 'Echo', 'Nova', 'Frost',
   'Maverick', 'Apex', 'Cipher', 'Venom', 'Blaze', 'Ninja', 'Samurai', 'Legend',
   'Knight', 'Slayer', 'Spectre', 'Valkyrie', 'Rogue', 'Hydra', 'Vortex', 'Kaiser'
@@ -349,6 +350,7 @@ export async function generateGamingNames(options: GenerateOptions = {}): Promis
         plainName: rawName,
         gameName: selectedGame?.name || 'All Games',
         styleName: selectedStyle?.name || fontKey.replace(/_/g, ' ').toUpperCase(),
+        styleSlug: selectedStyle?.slug || styleSlug || fontKey,
         validation: val,
         font: fontKey,
         isPopular: generatedPool.length < 4,

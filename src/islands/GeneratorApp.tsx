@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { RefreshCw, SlidersHorizontal, Check, Copy, Layers, X, Dices, ChevronDown, ChevronUp, Palette } from 'lucide-react';
+import { RefreshCw, SlidersHorizontal, Check, Copy, Layers, X, Dices } from 'lucide-react';
 import { ResultCard } from './ResultCard';
 
 interface GameOption {
@@ -28,7 +28,11 @@ interface GeneratorAppProps {
   defaultName?: string;
 }
 
-const SAMPLE_NAMES = ['Kadir', 'Ghost', 'Shadow', 'Viper', 'Titan', 'Reaper', 'Blade', 'Storm', 'Phoenix', 'Hunter', 'Samurai', 'Valkyrie', 'Rogue', 'Raven', 'Wolf', 'Apex'];
+const SAMPLE_NAMES = [
+  'BGMI', 'PUBG', 'SOUL', 'GODL', 'GHOST', 'SHADOW', 'VIPER', 'TITAN', 
+  'REAPER', 'BLADE', 'STORM', 'PHOENIX', 'HUNTER', 'SAMURAI', 'VALKYRIE', 
+  'ROGUE', 'RAVEN', 'WOLF', 'APEX'
+];
 
 export const GeneratorApp: React.FC<GeneratorAppProps> = ({
   initialGames = [],
@@ -162,7 +166,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
     return () => clearTimeout(timer);
   }, [name]);
 
-  // Style select handler
+  // Style select handler with instant auto-generation
   const handleSelectStyle = (slug: string) => {
     setSelectedStyleSlug(slug);
     executeGenerate({ styleVal: slug, offsetVal: 0 });
@@ -225,7 +229,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
 
   return (
     <div className="w-full">
-      {/* Simple Clean Input Controls (No Heavy Box Wrappers) */}
+      {/* Simple Clean Input Controls */}
       <div className="mb-6 space-y-4">
         {/* Main Input Row */}
         <div className="flex flex-col sm:flex-row gap-2">
@@ -235,7 +239,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Type your name (e.g. Kadir, Ghost...)"
+              placeholder="Enter name (e.g. BGMI, PUBG, SOUL, Ghost...)"
               maxLength={25}
               className="w-full pl-4 pr-16 py-2.5 bg-white dark:bg-[#111622] border border-neutral-300 dark:border-neutral-700 rounded-lg text-neutral-900 dark:text-white placeholder-neutral-400 text-sm outline-none focus:border-sky-500 transition"
             />
@@ -292,7 +296,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-neutral-500">
             <span className="font-semibold text-neutral-700 dark:text-neutral-300">
-              Styles: <span className="text-sky-500">{activeStyleName}</span>
+              Styles: <span className="text-sky-500 font-bold">{activeStyleName}</span>
             </span>
             <button
               type="button"
@@ -449,7 +453,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
         </div>
       </div>
 
-      {/* Results Simple List (No Boxes) */}
+      {/* Results Simple List */}
       {loading && results.length === 0 ? (
         <div className="divide-y divide-neutral-100 dark:divide-neutral-800/60 py-4">
           {[...Array(6)].map((_, i) => (
@@ -467,8 +471,10 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
                 plainName={item.plainName}
                 gameName={item.gameName}
                 styleName={item.styleName}
+                styleSlug={item.styleSlug || item.font}
                 validation={item.validation}
                 isFavorited={favoritedNames.has(item.name)}
+                onSelectStyle={handleSelectStyle}
                 onToggleFavorite={(name, isFav) => {
                   const next = new Set(favoritedNames);
                   if (isFav) next.add(name);

@@ -8,6 +8,7 @@ export interface ResultCardProps {
   plainName: string;
   gameName: string;
   styleName: string;
+  styleSlug?: string;
   validation: {
     isValid: boolean;
     length: number;
@@ -18,15 +19,18 @@ export interface ResultCardProps {
   };
   isFavorited?: boolean;
   onToggleFavorite?: (name: string, isFav: boolean) => void;
+  onSelectStyle?: (styleSlug: string) => void;
 }
 
 const ResultCardComponent: React.FC<ResultCardProps> = ({
   name,
   gameName,
   styleName,
+  styleSlug,
   validation,
   isFavorited = false,
   onToggleFavorite,
+  onSelectStyle,
 }) => {
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
@@ -105,9 +109,16 @@ const ResultCardComponent: React.FC<ResultCardProps> = ({
     setShowCardModal(true);
   };
 
+  const handleStyleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onSelectStyle && styleSlug) {
+      onSelectStyle(styleSlug);
+    }
+  };
+
   return (
     <>
-      {/* Simple Clean HTML Row (No Box/Card Wrapping) */}
+      {/* Simple Clean HTML Row */}
       <div
         onClick={handleCopy}
         className="group flex items-center justify-between py-3 px-3 hover:bg-neutral-100 dark:hover:bg-neutral-800/60 rounded-lg transition-colors cursor-pointer border-b border-neutral-100 dark:border-neutral-800/80"
@@ -118,7 +129,18 @@ const ResultCardComponent: React.FC<ResultCardProps> = ({
             {name}
           </div>
           <div className="flex items-center gap-2 mt-0.5 text-xs text-neutral-400">
-            <span>{styleName}</span>
+            {styleSlug && onSelectStyle ? (
+              <button
+                type="button"
+                onClick={handleStyleClick}
+                title={`Filter by ${styleName}`}
+                className="hover:text-sky-500 hover:underline cursor-pointer font-medium"
+              >
+                {styleName}
+              </button>
+            ) : (
+              <span>{styleName}</span>
+            )}
             <span>•</span>
             <span className={validation.isValid ? 'text-emerald-500' : 'text-amber-500'}>
               {validation.length}/{validation.maxLength} {validation.isValid ? '✓' : '⚠️'}
@@ -152,7 +174,7 @@ const ResultCardComponent: React.FC<ResultCardProps> = ({
             type="button"
             onClick={handleFavorite}
             title={favorited ? 'Favorited' : 'Add to Favorites'}
-            className="p-1.5 text-neutral-400 hover:text-red-500 transition-colors"
+            className="p-1.5 text-neutral-400 hover:text-red-500 transition-colors cursor-pointer"
           >
             <Heart className={`w-4 h-4 ${favorited ? 'fill-red-500 text-red-500' : ''}`} />
           </button>
@@ -161,7 +183,7 @@ const ResultCardComponent: React.FC<ResultCardProps> = ({
             type="button"
             onClick={handleOpenBanner}
             title="Download Card Banner"
-            className="hidden sm:block p-1.5 text-neutral-400 hover:text-sky-500 transition-colors"
+            className="hidden sm:block p-1.5 text-neutral-400 hover:text-sky-500 transition-colors cursor-pointer"
           >
             <ImageIcon className="w-4 h-4" />
           </button>
@@ -170,7 +192,7 @@ const ResultCardComponent: React.FC<ResultCardProps> = ({
             type="button"
             onClick={handleShare}
             title="Share"
-            className="hidden sm:block p-1.5 text-neutral-400 hover:text-neutral-200 transition-colors"
+            className="hidden sm:block p-1.5 text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
           >
             {shared ? <Check className="w-4 h-4 text-emerald-500" /> : <Share2 className="w-4 h-4" />}
           </button>
