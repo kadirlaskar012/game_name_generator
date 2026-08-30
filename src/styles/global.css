@@ -11,7 +11,7 @@
 
   html.dark {
     color-scheme: dark;
-    background-color: #0b0e14;
+    background-color: #07090e;
     color: #f1f5f9;
   }
 
@@ -30,48 +30,68 @@
   }
 }
 
-/* Subtle dot grid pattern */
-.dot-grid {
-  background-size: 24px 24px;
-}
-.dark .dot-grid {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-}
-.light .dot-grid {
-  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+/* Ambient Radial Mesh Background */
+.mesh-bg {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.12) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(168, 85, 247, 0.08) 0px, transparent 50%);
 }
 
-/* Smooth Mobile Scroll */
+.light .mesh-bg {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.07) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.07) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(244, 114, 182, 0.05) 0px, transparent 50%);
+}
+
+/* Floating Glass Surface */
+.glass-panel {
+  background: rgba(17, 24, 39, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.light .glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+}
+
+/* Smooth Touch Momentum */
 .smooth-scroll {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Clean Scrollbar */
+/* Minimalist Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
 
 .dark ::-webkit-scrollbar-track {
-  background: #0b0e14;
+  background: transparent;
 }
 .dark ::-webkit-scrollbar-thumb {
-  background: #1e2638;
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 9999px;
 }
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .light ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: transparent;
 }
 .light ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 9999px;
 }
 .light ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: rgba(0, 0, 0, 0.25);
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -82,12 +102,21 @@
   scrollbar-width: none;
 }
 
-/* Fast Keyframe Animations */
-@keyframes fadeInFast {
-  from { opacity: 0; transform: translateY(3px); }
+/* Fluid Keyframe Animations */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+
+.animate-pulseGlow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes floatCard {
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fadeInFast {
-  animation: fadeInFast 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.animate-floatCard {
+  animation: floatCard 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

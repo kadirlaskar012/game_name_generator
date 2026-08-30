@@ -3,61 +3,61 @@ import { SiteSearch } from '@/islands/SiteSearch';
 import { ThemeToggle } from '@/islands/ThemeToggle';
 ---
 
-<header class="sticky top-0 z-40 w-full border-b border-neutral-200 dark:border-neutral-800/80 bg-white/80 dark:bg-surface-darkMuted/80 backdrop-blur-lg">
+<header class="sticky top-0 z-40 w-full glass-panel border-b border-neutral-200/50 dark:border-white/5 transition-all">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
     <!-- Brand Logo -->
     <a href="/" class="flex items-center gap-2.5 group shrink-0">
-      <div class="w-8 h-8 rounded-lg bg-neutral-900 dark:bg-white flex items-center justify-center font-display font-extrabold text-sm text-white dark:text-neutral-900 transition">
+      <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center font-display font-black text-sm text-white shadow-md shadow-sky-600/30 group-hover:scale-105 transition-transform">
         G
       </div>
       <div class="flex flex-col">
-        <span class="font-display font-extrabold text-base tracking-tight text-neutral-900 dark:text-white">
-          GAMERTAG<span class="text-sky-500 font-bold">PRO</span>
+        <span class="font-display font-black text-base tracking-tight text-neutral-900 dark:text-white">
+          GAMERTAG<span class="text-sky-500 font-extrabold">PRO</span>
         </span>
       </div>
     </a>
 
-    <!-- Desktop Navigation Links -->
-    <nav class="hidden md:flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-300">
+    <!-- Desktop Navigation Links (Pill Style) -->
+    <nav class="hidden md:flex items-center gap-1 text-xs font-semibold text-neutral-600 dark:text-neutral-300">
       <a
         href="/"
-        class="px-3 py-1.5 rounded-lg hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+        class="px-3.5 py-1.5 rounded-full hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/50 dark:hover:bg-white/10 transition-colors"
       >
         Generator
       </a>
       <a
         href="/games/"
-        class="px-3 py-1.5 rounded-lg hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+        class="px-3.5 py-1.5 rounded-full hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/50 dark:hover:bg-white/10 transition-colors"
       >
         Games
       </a>
       <a
         href="/free-fire-name-generator/"
-        class="px-3 py-1.5 rounded-lg hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+        class="px-3.5 py-1.5 rounded-full hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/50 dark:hover:bg-white/10 transition-colors"
       >
         Free Fire
       </a>
       <a
         href="/bgmi-name-generator/"
-        class="px-3 py-1.5 rounded-lg hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+        class="px-3.5 py-1.5 rounded-full hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/50 dark:hover:bg-white/10 transition-colors"
       >
         BGMI
       </a>
       <a
         href="/clan-name-generator/"
-        class="px-3 py-1.5 rounded-lg hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+        class="px-3.5 py-1.5 rounded-full hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-200/50 dark:hover:bg-white/10 transition-colors"
       >
         Clans
       </a>
       <a
         href="/trending/"
-        class="px-3 py-1.5 rounded-lg text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 transition flex items-center gap-1"
+        class="px-3.5 py-1.5 rounded-full text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40 transition-colors flex items-center gap-1 font-bold"
       >
         <span>🔥</span> Trending
       </a>
       <a
         href="/favorites/"
-        class="px-3 py-1.5 rounded-lg hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition"
+        class="px-3.5 py-1.5 rounded-full hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors"
       >
         Favorites
       </a>
@@ -70,21 +70,21 @@ import { ThemeToggle } from '@/islands/ThemeToggle';
 
       <a
         href="/admin/"
-        class="hidden sm:inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-mono font-medium border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+        class="hidden sm:inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold border border-neutral-200 dark:border-white/10 text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors"
       >
         Admin
       </a>
     </div>
   </div>
 
-  <!-- Mobile Quick Horizontal Bar -->
-  <div class="md:hidden flex items-center gap-1 px-4 py-2 border-t border-neutral-200 dark:border-neutral-800/80 overflow-x-auto no-scrollbar text-xs font-medium tracking-wide bg-neutral-50 dark:bg-surface-dark">
-    <a href="/" class="px-2.5 py-1 rounded-md text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white whitespace-nowrap">Generator</a>
-    <a href="/games/" class="px-2.5 py-1 rounded-md text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white whitespace-nowrap">Games</a>
-    <a href="/free-fire-name-generator/" class="px-2.5 py-1 rounded-md text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white whitespace-nowrap">Free Fire</a>
-    <a href="/bgmi-name-generator/" class="px-2.5 py-1 rounded-md text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white whitespace-nowrap">BGMI</a>
-    <a href="/clan-name-generator/" class="px-2.5 py-1 rounded-md text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white whitespace-nowrap">Clans</a>
-    <a href="/trending/" class="px-2.5 py-1 rounded-md text-amber-600 dark:text-amber-400 whitespace-nowrap">🔥 Trending</a>
-    <a href="/favorites/" class="px-2.5 py-1 rounded-md text-neutral-600 dark:text-neutral-300 whitespace-nowrap">Favorites</a>
+  <!-- Mobile Quick Horizontal Pill Bar -->
+  <div class="md:hidden flex items-center gap-1.5 px-4 py-2 border-t border-neutral-200/40 dark:border-white/5 overflow-x-auto no-scrollbar text-xs font-semibold smooth-scroll">
+    <a href="/" class="px-3 py-1 rounded-full bg-neutral-100 dark:bg-white/5 text-neutral-700 dark:text-neutral-200 whitespace-nowrap">Generator</a>
+    <a href="/games/" class="px-3 py-1 rounded-full text-neutral-600 dark:text-neutral-300 whitespace-nowrap">Games</a>
+    <a href="/free-fire-name-generator/" class="px-3 py-1 rounded-full text-neutral-600 dark:text-neutral-300 whitespace-nowrap">Free Fire</a>
+    <a href="/bgmi-name-generator/" class="px-3 py-1 rounded-full text-neutral-600 dark:text-neutral-300 whitespace-nowrap">BGMI</a>
+    <a href="/clan-name-generator/" class="px-3 py-1 rounded-full text-neutral-600 dark:text-neutral-300 whitespace-nowrap">Clans</a>
+    <a href="/trending/" class="px-3 py-1 rounded-full text-amber-600 dark:text-amber-400 whitespace-nowrap font-bold">🔥 Trending</a>
+    <a href="/favorites/" class="px-3 py-1 rounded-full text-neutral-600 dark:text-neutral-300 whitespace-nowrap">Favorites</a>
   </div>
 </header>
