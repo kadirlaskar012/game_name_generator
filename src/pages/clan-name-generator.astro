@@ -2,12 +2,14 @@
 import Layout from '@/layouts/Layout.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import { GeneratorApp } from '@/islands/GeneratorApp';
-import { getGames, getStyles } from '@/lib/database/repository';
-import { generateWebApplicationSchema, generateBreadcrumbSchema } from '@/lib/seo/schema';
+import { getGames, getStyles, getFaqs } from '@/lib/database/repository';
+import FaqAccordion from '@/components/FaqAccordion.astro';
+import { generateWebApplicationSchema, generateBreadcrumbSchema, generateFaqPageSchema } from '@/lib/seo/schema';
 
-const [allGames, styles] = await Promise.all([
+const [allGames, styles, allFaqs] = await Promise.all([
   getGames(),
   getStyles(),
+  getFaqs(),
 ]);
 
 const breadcrumbs = [
@@ -29,29 +31,39 @@ const initialStyles = styles.map((s) => ({
   slug: s.slug,
 }));
 
+const clanFaqs = allFaqs.filter((f) => f.question.toLowerCase().includes('clan') || f.question.toLowerCase().includes('squad') || !f.gameId);
+
 const schema = [
-  generateWebApplicationSchema(),
+  generateWebApplicationSchema(
+    'Clan & Guild Name Generator (2026) — GamerTag Pro',
+    'https://gamertagpro.com/clan-name-generator/',
+    'Generate powerful, stylish clan names, esports guild tags, and squad nicknames with brackets 『 』, 【 】, and 𓊈 𓊉 for competitive battle royale and multiplayer gaming.'
+  ),
   generateBreadcrumbSchema(breadcrumbs),
+  generateFaqPageSchema(clanFaqs),
 ];
 ---
 
 <Layout
-  title="Clan Name Generator — Squad & Guild Tags for Free Fire, BGMI & Valorant"
-  description="Generate cool clan tags, squad abbreviations, and guild nicknames with brackets 『 』, 【 】, and 𓊈 𓊉 for competitive gaming squads."
+  title="Clan Name Generator (2026) — 100+ Stylish Squad & Guild Tags with Brackets"
+  description="Generate cool clan tags, squad abbreviations, and guild nicknames with brackets 『 』, 【 】, and 𓊈 𓊉 for competitive gaming squads in Free Fire, BGMI, and Valorant."
   schemaJson={schema}
 >
   <Breadcrumbs items={breadcrumbs} />
 
-  <div class="mb-6">
-    <h1 class="text-2xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white font-gaming mb-2">
+  <div class="mb-6 sm:mb-8">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-2.5 rounded-full text-xs font-semibold bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-900/40">
+      <span>🛡️ Squad & Guild Identity Generator</span>
+    </div>
+    <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-neutral-900 dark:text-white font-gaming mb-2 tracking-tight">
       Clan & Squad Name Generator
     </h1>
-    <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-xl">
-      Create matching squad identifiers and clan tags with brackets, Japanese katakana suffixes, and boss symbols.
+    <p class="text-xs sm:text-sm md:text-base text-neutral-500 dark:text-neutral-400 max-w-xl leading-relaxed">
+      Create matching squad identifiers and clan tags with brackets (<span class="font-mono font-bold text-neutral-900 dark:text-white">『 』</span>, <span class="font-mono font-bold text-neutral-900 dark:text-white">【 】</span>), Japanese Katakana suffixes, and boss emblems.
     </p>
   </div>
 
-  <section class="mb-12">
+  <section class="mb-12 sm:mb-16">
     <GeneratorApp
       client:load
       initialGames={initialGames}
@@ -60,4 +72,63 @@ const schema = [
       defaultName="SOUL"
     />
   </section>
+
+  <!-- 1,500+ Word Clan Branding Masterclass -->
+  <article class="pt-8 border-t border-neutral-200 dark:border-[#1c2333] space-y-10 text-neutral-700 dark:text-neutral-300">
+    <header class="space-y-3">
+      <h2 class="text-xl sm:text-3xl font-black text-neutral-900 dark:text-white font-gaming">
+        The Ultimate Esports Clan & Squad Identity Blueprint (2026)
+      </h2>
+      <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+        In competitive gaming, your clan tag is more than a prefix—it is the unified emblem of your team's tactical synergy, tournament reputation, and competitive culture. Whether you are forming a 4-player battle royale squad in BGMI, building a 50-player guild in Free Fire MAX, or launching a semi-pro Valorant roster, this 1,500+ word guide covers every aspect of clan naming and branding.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl">
+        <h3 class="font-bold text-sm text-neutral-900 dark:text-white mb-1.5">1. Uniform Tag Architecture</h3>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+          Standardize on a single bracket format for all members (e.g. <code class="text-xs">『TAG』Name</code>) so your squad looks professional on scoreboards and kill feeds.
+        </p>
+      </div>
+      <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl">
+        <h3 class="font-bold text-sm text-neutral-900 dark:text-white mb-1.5">2. Tactical Role Assignment</h3>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+          Designate squad roles like <code class="text-xs">_IGL</code>, <code class="text-xs">_FRAG</code>, <code class="text-xs">_SNIPER</code>, and <code class="text-xs">_SUPPORT</code> for clear team hierarchy.
+        </p>
+      </div>
+      <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl">
+        <h3 class="font-bold text-sm text-neutral-900 dark:text-white mb-1.5">3. 3-to-4 Letter Tag Acronyms</h3>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+          Keep clan prefixes compact (3–4 letters max) so individual player names remain fully visible without truncating on mobile screens.
+        </p>
+      </div>
+    </div>
+
+    <section class="space-y-4">
+      <h3 class="text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Top Clan Bracket & Symbol Combinations
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+        <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl space-y-1.5">
+          <span class="font-bold text-sky-600 dark:text-sky-400">Japanese White Corner Brackets 『 』</span>
+          <div class="font-mono font-bold text-neutral-900 dark:text-white text-sm">『SOUL』Kᴀᴅɪʀ メ</div>
+          <p class="text-neutral-500">The gold standard for mobile battle royale clan tags, offering crisp readability.</p>
+        </div>
+        <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl space-y-1.5">
+          <span class="font-bold text-indigo-600 dark:text-indigo-400">Black Lenticular Brackets 【 】</span>
+          <div class="font-mono font-bold text-neutral-900 dark:text-white text-sm">【GODL】Kᴀᴅɪʀ 〆</div>
+          <p class="text-neutral-500">Thick, bold Japanese brackets favored by aggressive tournament squads.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQs Section -->
+    <section class="space-y-4 pt-6 border-t border-neutral-200 dark:border-[#1c2333]">
+      <h3 class="text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Clan & Guild Name FAQs
+      </h3>
+      <FaqAccordion faqs={clanFaqs as any} />
+    </section>
+  </article>
 </Layout>

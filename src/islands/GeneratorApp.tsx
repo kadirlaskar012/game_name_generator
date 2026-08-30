@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { RefreshCw, SlidersHorizontal, Check, Copy, Layers, X, Dices } from 'lucide-react';
+import { RefreshCw, SlidersHorizontal, Check, Copy, Layers, X, Dices, ChevronDown, ChevronUp, Palette, Sparkles } from 'lucide-react';
 import { ResultCard } from './ResultCard';
 
 interface GameOption {
@@ -54,6 +54,8 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
   const [copiedAll, setCopiedAll] = useState(false);
   const [searchFilter, setSearchFilter] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showAllStylesDesktop, setShowAllStylesDesktop] = useState(false);
+  const [showMobileStyleModal, setShowMobileStyleModal] = useState(false);
 
   // Favorites tracking
   const [favoritedNames, setFavoritedNames] = useState<Set<string>>(new Set());
@@ -68,6 +70,12 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
   const selectedGame = useMemo(() => {
     return initialGames.find((g) => g.slug === selectedGameSlug) || initialGames[0];
   }, [initialGames, selectedGameSlug]);
+
+  const activeStyleName = useMemo(() => {
+    if (selectedStyleSlug === 'all') return '✨ All Styles (Mixed)';
+    const found = initialStyles.find((s) => s.slug === selectedStyleSlug);
+    return found ? found.name : 'Custom Style';
+  }, [selectedStyleSlug, initialStyles]);
 
   // Core generator fetcher
   const executeGenerate = useCallback(
@@ -155,25 +163,26 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
     return () => clearTimeout(timer);
   }, [name]);
 
-  // Style click: Immediately auto-updates results
-  const handleStyleClick = (styleSlug: string) => {
-    setSelectedStyleSlug(styleSlug);
-    executeGenerate({ styleVal: styleSlug, offsetVal: 0 });
+  // Style select handler
+  const handleSelectStyle = (slug: string) => {
+    setSelectedStyleSlug(slug);
+    setShowMobileStyleModal(false);
+    executeGenerate({ styleVal: slug, offsetVal: 0 });
   };
 
-  // Game change: Immediately auto-updates results
+  // Game change
   const handleGameChange = (newGameSlug: string) => {
     setSelectedGameSlug(newGameSlug);
     executeGenerate({ gameVal: newGameSlug, offsetVal: 0 });
   };
 
-  // Category / Gender change: Immediately auto-updates results
+  // Category / Gender change
   const handleGenderChange = (newGender: any) => {
     setGender(newGender);
     executeGenerate({ genderVal: newGender, offsetVal: 0 });
   };
 
-  // Symbols toggle: Immediately auto-updates results
+  // Symbols toggle
   const handleSymbolsToggle = () => {
     const next = !includeSymbols;
     setIncludeSymbols(next);
@@ -210,30 +219,37 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
     return results.filter((r) => r.name.toLowerCase().includes(q) || r.styleName?.toLowerCase().includes(q));
   }, [results, searchFilter]);
 
+  // Desktop visible styles (first 10 when collapsed, all 32 when expanded)
+  const visibleStylesDesktop = useMemo(() => {
+    if (showAllStylesDesktop) return initialStyles;
+    return initialStyles.slice(0, 11);
+  }, [initialStyles, showAllStylesDesktop]);
+
   return (
     <div className="w-full">
-      {/* Sleek Minimalist Generator Controls */}
-      <div className="bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl p-3.5 sm:p-5 shadow-sm mb-6 sm:mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-2.5 sm:gap-3 items-center">
+      {/* Sleek Generator Controls Card */}
+      <div className="bg-white dark:bg-[#111620] border border-neutral-200/90 dark:border-[#1c2333] rounded-3xl p-4 sm:p-6 shadow-sm mb-6 sm:mb-8 overflow-hidden">
+        {/* Main Inputs Row */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
           {/* 1. Name Input */}
           <div className="md:col-span-6 relative flex items-center">
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Type nickname (e.g. Kadir, Ghost, Shadow...)"
+              placeholder="Enter name (e.g. Kadir, Ghost, Shadow...)"
               maxLength={25}
               autoCapitalize="none"
               autoCorrect="off"
               spellCheck="false"
-              className="w-full pl-3.5 pr-20 py-2.5 sm:py-3 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] focus:border-sky-500 dark:focus:border-sky-500 rounded-xl text-neutral-900 dark:text-white placeholder-neutral-400 text-sm sm:text-base outline-none transition-colors"
+              className="w-full pl-4 pr-20 py-3 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] focus:border-sky-500 dark:focus:border-sky-500 rounded-2xl text-neutral-900 dark:text-white placeholder-neutral-400 text-sm sm:text-base outline-none transition-all shadow-inner"
             />
-            <div className="absolute right-2 flex items-center gap-1">
+            <div className="absolute right-2.5 flex items-center gap-1">
               {name && (
                 <button
                   type="button"
                   onClick={() => setName('')}
-                  title="Clear"
+                  title="Clear text"
                   className="p-1.5 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 rounded-lg transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
@@ -243,9 +259,9 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
                 type="button"
                 onClick={handleRandomDice}
                 title="Random Name Idea"
-                className="p-1.5 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-lg hover:bg-neutral-200/60 dark:hover:bg-[#1c2333] transition-colors cursor-pointer"
+                className="p-1.5 text-neutral-500 dark:text-neutral-400 hover:text-sky-600 dark:hover:text-sky-400 rounded-lg hover:bg-neutral-200/60 dark:hover:bg-[#1c2333] transition-colors cursor-pointer active:scale-95"
               >
-                <Dices className="w-4 h-4" />
+                <Dices className="w-5 h-5" />
               </button>
             </div>
           </div>
@@ -255,23 +271,23 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
             <select
               value={selectedGameSlug}
               onChange={(e) => handleGameChange(e.target.value)}
-              className="w-full px-3.5 py-2.5 sm:py-3 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] focus:border-sky-500 dark:focus:border-sky-500 rounded-xl text-neutral-900 dark:text-white text-xs sm:text-sm outline-none transition-colors cursor-pointer"
+              className="w-full px-4 py-3 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] focus:border-sky-500 dark:focus:border-sky-500 rounded-2xl text-neutral-900 dark:text-white text-xs sm:text-sm font-medium outline-none transition-all cursor-pointer shadow-inner"
             >
               {initialGames.map((game) => (
                 <option key={game.id} value={game.slug}>
-                  {game.logo} {game.name} ({game.rules?.maxLength || 14} Chars Max)
+                  {game.logo} {game.name} (Max {game.rules?.maxLength || 14} Chars)
                 </option>
               ))}
             </select>
           </div>
 
-          {/* 3. Refresh / Generate Action */}
+          {/* 3. Generate Button */}
           <div className="md:col-span-2 flex">
             <button
               type="button"
               onClick={() => executeGenerate({ offsetVal: 0 })}
               disabled={loading}
-              className="w-full py-2.5 sm:py-3 px-4 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:opacity-90 font-semibold text-xs sm:text-sm rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-sm active:scale-95"
+              className="w-full py-3 px-4 bg-gradient-to-r from-sky-600 via-indigo-600 to-sky-700 hover:from-sky-500 hover:via-indigo-500 hover:to-sky-600 text-white font-bold text-xs sm:text-sm rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-md shadow-sky-600/20 active:scale-95"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
               <span>{loading ? 'Generating...' : 'Generate'}</span>
@@ -279,60 +295,105 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
           </div>
         </div>
 
-        {/* 31+ Style Filter Pills Bar with Smooth Touch Scroll */}
-        <div className="mt-3.5 pt-3.5 border-t border-neutral-100 dark:border-[#1c2333]">
-          <div className="flex items-center justify-between gap-3 mb-2">
-            <span className="text-neutral-400 dark:text-neutral-500 font-medium text-[10px] sm:text-[11px] uppercase tracking-wider">
-              Styles & Fonts ({initialStyles.length + 1}):
-            </span>
+        {/* Styles & Fonts Section — Fully Contained Responsive Box */}
+        <div className="mt-4 pt-4 border-t border-neutral-100 dark:border-[#1c2333]">
+          <div className="flex items-center justify-between gap-3 mb-2.5">
+            <div className="flex items-center gap-2">
+              <Palette className="w-4 h-4 text-sky-500" />
+              <span className="text-neutral-700 dark:text-neutral-300 font-bold text-xs sm:text-sm">
+                Styles & Fonts ({initialStyles.length + 1})
+              </span>
+              <span className="text-[11px] text-neutral-400 dark:text-neutral-500 hidden sm:inline">
+                • Active: <strong className="text-sky-600 dark:text-sky-400 font-semibold">{activeStyleName}</strong>
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="flex items-center gap-1 text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors text-xs font-semibold cursor-pointer"
+              >
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+                {showAdvanced ? 'Less Filters' : 'More Filters'}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Screen: Dedicated Style Drawer Button */}
+          <div className="block sm:hidden mb-2">
             <button
               type="button"
-              onClick={() => setShowAdvanced(!showAdvanced)}
-              className="flex items-center gap-1 text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors text-xs font-medium cursor-pointer"
+              onClick={() => setShowMobileStyleModal(true)}
+              className="w-full py-2.5 px-3.5 bg-neutral-100 dark:bg-[#151b27] hover:bg-neutral-200 dark:hover:bg-[#1c2333] border border-neutral-200 dark:border-[#1c2333] rounded-xl text-xs font-bold text-neutral-800 dark:text-neutral-200 flex items-center justify-between transition-colors shadow-sm"
             >
-              <SlidersHorizontal className="w-3.5 h-3.5" />
-              {showAdvanced ? 'Fewer Filters' : 'More Filters'}
+              <span className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-sky-500" />
+                <span>Selected: {activeStyleName}</span>
+              </span>
+              <span className="text-sky-600 dark:text-sky-400 font-bold flex items-center gap-1">
+                Change Style <ChevronDown className="w-4 h-4" />
+              </span>
             </button>
           </div>
 
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 max-w-full no-scrollbar smooth-scroll">
-            <button
-              type="button"
-              onClick={() => handleStyleClick('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors shrink-0 cursor-pointer ${
-                selectedStyleSlug === 'all'
-                  ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold shadow-sm'
-                  : 'bg-neutral-100 dark:bg-[#151b27] text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-[#1c2333]'
-              }`}
-            >
-              ✨ All Styles
-            </button>
-            {initialStyles.map((style) => (
+          {/* Desktop & Tablet: Responsive Grid Wrap Contained Inside Box */}
+          <div className="hidden sm:block">
+            <div className="flex flex-wrap gap-1.5 max-w-full">
               <button
-                key={style.id}
                 type="button"
-                onClick={() => handleStyleClick(style.slug)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors shrink-0 whitespace-nowrap cursor-pointer ${
-                  selectedStyleSlug === style.slug
-                    ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold shadow-sm'
+                onClick={() => handleSelectStyle('all')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  selectedStyleSlug === 'all'
+                    ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30'
                     : 'bg-neutral-100 dark:bg-[#151b27] text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-[#1c2333]'
                 }`}
               >
-                {style.name}
+                ✨ All Styles (Mixed)
               </button>
-            ))}
+              {visibleStylesDesktop.map((style) => (
+                <button
+                  key={style.id}
+                  type="button"
+                  onClick={() => handleSelectStyle(style.slug)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                    selectedStyleSlug === style.slug
+                      ? 'bg-sky-600 text-white font-bold shadow-md shadow-sky-600/30'
+                      : 'bg-neutral-100 dark:bg-[#151b27] text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-[#1c2333]'
+                  }`}
+                >
+                  {style.name}
+                </button>
+              ))}
+
+              <button
+                type="button"
+                onClick={() => setShowAllStylesDesktop(!showAllStylesDesktop)}
+                className="px-3 py-1.5 rounded-xl text-xs font-bold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/40 hover:bg-sky-100 dark:hover:bg-sky-950/70 border border-sky-200 dark:border-sky-900/40 transition-colors flex items-center gap-1 cursor-pointer"
+              >
+                {showAllStylesDesktop ? (
+                  <>
+                    Show Less <ChevronUp className="w-3.5 h-3.5" />
+                  </>
+                ) : (
+                  <>
+                    + {initialStyles.length - visibleStylesDesktop.length} More Styles <ChevronDown className="w-3.5 h-3.5" />
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Expandable Advanced Options */}
         {showAdvanced && (
-          <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-[#1c2333] grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs animate-fadeInFast">
+          <div className="mt-4 pt-4 border-t border-neutral-100 dark:border-[#1c2333] grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs animate-fadeInFast">
             <div className="flex flex-col gap-1">
-              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-medium uppercase">Category</label>
+              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-bold uppercase tracking-wider">Category</label>
               <select
                 value={gender}
                 onChange={(e) => handleGenderChange(e.target.value)}
-                className="px-2.5 py-2 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] rounded-lg text-neutral-800 dark:text-neutral-200 text-xs outline-none cursor-pointer"
+                className="px-3 py-2 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] rounded-xl text-neutral-800 dark:text-neutral-200 text-xs font-medium outline-none cursor-pointer"
               >
                 <option value="all">All Genders & Squads</option>
                 <option value="boy">Boys / Kings</option>
@@ -343,14 +404,14 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-medium uppercase">Length</label>
+              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-bold uppercase tracking-wider">Length</label>
               <select
                 value={lengthCategory}
                 onChange={(e) => {
                   setLengthCategory(e.target.value as any);
                   executeGenerate({ lengthVal: e.target.value, offsetVal: 0 });
                 }}
-                className="px-2.5 py-2 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] rounded-lg text-neutral-800 dark:text-neutral-200 text-xs outline-none cursor-pointer"
+                className="px-3 py-2 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] rounded-xl text-neutral-800 dark:text-neutral-200 text-xs font-medium outline-none cursor-pointer"
               >
                 <option value="all">Any Length</option>
                 <option value="short">Short (&le; 8 chars)</option>
@@ -360,7 +421,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-medium uppercase">Batch Size</label>
+              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-bold uppercase tracking-wider">Batch Size</label>
               <select
                 value={count}
                 onChange={(e) => {
@@ -368,7 +429,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
                   setCount(val);
                   executeGenerate({ countVal: val, offsetVal: 0 });
                 }}
-                className="px-2.5 py-2 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] rounded-lg text-neutral-800 dark:text-neutral-200 text-xs outline-none cursor-pointer"
+                className="px-3 py-2 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] rounded-xl text-neutral-800 dark:text-neutral-200 text-xs font-medium outline-none cursor-pointer"
               >
                 <option value={24}>24 Names</option>
                 <option value={36}>36 Names</option>
@@ -378,13 +439,13 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
             </div>
 
             <div className="flex flex-col justify-center gap-1">
-              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-medium uppercase">Special Symbols</label>
+              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-bold uppercase tracking-wider">Special Symbols</label>
               <button
                 type="button"
                 onClick={handleSymbolsToggle}
-                className={`py-2 px-2.5 rounded-lg border text-xs font-semibold flex items-center justify-center transition-colors cursor-pointer ${
+                className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center transition-colors cursor-pointer ${
                   includeSymbols
-                    ? 'border-neutral-900 dark:border-white bg-neutral-900 dark:bg-white text-white dark:text-neutral-900'
+                    ? 'border-sky-600 bg-sky-600 text-white shadow-sm'
                     : 'border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-[#151b27] text-neutral-500'
                 }`}
               >
@@ -397,7 +458,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
 
       {/* Error Alert */}
       {error && (
-        <div className="p-3 mb-5 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-xl text-red-600 dark:text-red-400 text-xs flex items-center justify-between">
+        <div className="p-3.5 mb-5 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-2xl text-red-600 dark:text-red-400 text-xs flex items-center justify-between">
           <span>{error}</span>
           <button onClick={() => setError(null)} className="text-red-500 hover:text-red-700">
             ✕
@@ -408,7 +469,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
       {/* Results Header Bar */}
       <div className="flex flex-wrap items-center justify-between gap-2.5 mb-4 sm:mb-5">
         <div className="flex items-center gap-2">
-          <h2 className="text-sm sm:text-lg font-bold text-neutral-900 dark:text-white font-gaming">
+          <h2 className="text-base sm:text-xl font-bold text-neutral-900 dark:text-white font-gaming">
             Generated Names ({filteredResults.length})
           </h2>
           {selectedGame && (
@@ -424,13 +485,13 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
             placeholder="Filter list..."
             value={searchFilter}
             onChange={(e) => setSearchFilter(e.target.value)}
-            className="px-2.5 py-1.5 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-lg text-neutral-900 dark:text-white text-xs outline-none focus:border-sky-500 w-32 sm:w-44"
+            className="px-3 py-1.5 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-xl text-neutral-900 dark:text-white text-xs outline-none focus:border-sky-500 w-32 sm:w-44 shadow-sm"
           />
 
           <button
             type="button"
             onClick={handleCopyAll}
-            className="px-2.5 sm:px-3 py-1.5 bg-neutral-100 dark:bg-[#151b27] hover:bg-neutral-200 dark:hover:bg-[#1c2333] border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-200 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-3 py-1.5 bg-neutral-100 dark:bg-[#151b27] hover:bg-neutral-200 dark:hover:bg-[#1c2333] border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-200 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
           >
             {copiedAll ? (
               <>
@@ -448,7 +509,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
             onClick={() => executeGenerate({ offsetVal: 0 })}
             disabled={loading}
             title="Refresh Batch"
-            className="p-1.5 bg-neutral-100 dark:bg-[#151b27] border border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300 rounded-lg hover:bg-neutral-200 dark:hover:bg-[#1c2333] transition-colors cursor-pointer"
+            className="p-2 bg-neutral-100 dark:bg-[#151b27] border border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300 rounded-xl hover:bg-neutral-200 dark:hover:bg-[#1c2333] transition-colors cursor-pointer active:scale-95"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -457,17 +518,17 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
 
       {/* Results Grid */}
       {loading && results.length === 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3.5 py-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 py-4">
           {[...Array(6)].map((_, i) => (
             <div
               key={i}
-              className="h-28 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-xl animate-pulse"
+              className="h-32 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl animate-pulse"
             />
           ))}
         </div>
       ) : filteredResults.length > 0 ? (
         <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {filteredResults.map((item) => (
               <ResultCard
                 key={item.id}
@@ -494,19 +555,19 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
               type="button"
               onClick={handleLoadMore}
               disabled={loadingMore}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-[#111620] hover:bg-neutral-100 dark:hover:bg-[#151b27] border border-neutral-200 dark:border-[#1c2333] text-neutral-900 dark:text-white font-semibold text-xs sm:text-sm rounded-xl shadow-sm transition-all cursor-pointer disabled:opacity-50 active:scale-95"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-lg shadow-sky-600/20 hover:shadow-sky-600/30 transition-all cursor-pointer disabled:opacity-50 active:scale-95"
             >
               <RefreshCw className={`w-4 h-4 ${loadingMore ? 'animate-spin' : ''}`} />
-              <span>{loadingMore ? 'Generating 24 More Names...' : '✨ Load 24 More Names (Infinite)'}</span>
+              <span>{loadingMore ? 'Synthesizing 24 More Names...' : '✨ Load 24 More Names (Infinite)'}</span>
             </button>
           </div>
         </div>
       ) : (
-        <div className="text-center py-16 bg-white dark:bg-[#111620] border border-dashed border-neutral-200 dark:border-[#1c2333] rounded-2xl p-6">
+        <div className="text-center py-16 bg-white dark:bg-[#111620] border border-dashed border-neutral-200 dark:border-[#1c2333] rounded-3xl p-6">
           <Layers className="w-10 h-10 text-neutral-400 mx-auto mb-2" />
-          <h3 className="text-base font-bold text-neutral-900 dark:text-white mb-1">No Matching Names</h3>
+          <h3 className="text-base font-bold text-neutral-900 dark:text-white mb-1">No Matching Names Found</h3>
           <p className="text-xs text-neutral-500 mb-4 max-w-sm mx-auto">
-            Try adjusting your search filter or clicking a different style above.
+            Try adjusting your search query or picking a different style pack.
           </p>
           <button
             type="button"
@@ -515,10 +576,69 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
               setSelectedStyleSlug('all');
               executeGenerate({ styleVal: 'all', offsetVal: 0 });
             }}
-            className="px-4 py-2 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold text-xs rounded-lg transition-colors cursor-pointer"
+            className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl transition-colors cursor-pointer shadow-md"
           >
-            Reset Filters
+            Reset All Filters
           </button>
+        </div>
+      )}
+
+      {/* Mobile Styles Bottom Sheet Modal */}
+      {showMobileStyleModal && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm p-0 animate-fadeInFast">
+          <div className="w-full max-h-[80vh] bg-white dark:bg-[#111620] rounded-t-3xl border-t border-neutral-200 dark:border-[#1c2333] p-5 flex flex-col shadow-2xl overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-3.5 border-b border-neutral-100 dark:border-[#1c2333]">
+              <div className="flex items-center gap-2">
+                <Palette className="w-5 h-5 text-sky-500" />
+                <h3 className="text-base font-bold text-neutral-900 dark:text-white font-gaming">
+                  Choose Style & Font ({initialStyles.length + 1})
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowMobileStyleModal(false)}
+                className="p-1.5 text-neutral-400 hover:text-neutral-600 dark:hover:text-white rounded-xl"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Styles List (Scrollable) */}
+            <div className="overflow-y-auto py-3 space-y-1.5 flex-1 smooth-scroll no-scrollbar">
+              <button
+                type="button"
+                onClick={() => handleSelectStyle('all')}
+                className={`w-full p-3 rounded-2xl text-left text-xs font-bold flex items-center justify-between transition-colors ${
+                  selectedStyleSlug === 'all'
+                    ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30'
+                    : 'bg-neutral-100 dark:bg-[#151b27] text-neutral-800 dark:text-neutral-200 hover:bg-neutral-200'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <span>✨</span>
+                  <span>All Styles (Mixed Infinite Variety)</span>
+                </span>
+                {selectedStyleSlug === 'all' && <Check className="w-4 h-4" />}
+              </button>
+
+              {initialStyles.map((s) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => handleSelectStyle(s.slug)}
+                  className={`w-full p-3 rounded-2xl text-left text-xs font-semibold flex items-center justify-between transition-colors ${
+                    selectedStyleSlug === s.slug
+                      ? 'bg-sky-600 text-white font-bold shadow-md shadow-sky-600/30'
+                      : 'bg-neutral-100 dark:bg-[#151b27] text-neutral-800 dark:text-neutral-200 hover:bg-neutral-200'
+                  }`}
+                >
+                  <span>{s.name}</span>
+                  {selectedStyleSlug === s.slug && <Check className="w-4 h-4" />}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>

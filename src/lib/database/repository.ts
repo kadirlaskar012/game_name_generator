@@ -1,6 +1,6 @@
 import { dbClient } from './db';
 import * as schema from './schema';
-import { eq, desc, ilike, or, and, sql } from 'drizzle-orm';
+import { eq, desc, and } from 'drizzle-orm';
 import {
   SEED_GAMES,
   SEED_STYLES,
@@ -70,20 +70,6 @@ const memoryStore = {
       isActive: true,
       createdAt: new Date(),
     },
-    {
-      id: 'gn-004',
-      name: '𝕶𝖆𝖉𝖎𝖗☠',
-      normalizedName: 'kadir',
-      gameId: '11111111-1111-1111-1111-111111111104',
-      styleId: '22222222-2222-2222-2222-222222222205',
-      usageCount: 290,
-      copyCount: 175,
-      shareCount: 30,
-      favoriteCount: 50,
-      isFeatured: false,
-      isActive: true,
-      createdAt: new Date(),
-    },
   ] as any[],
   favorites: [] as any[],
   blockedWords: SEED_BLOCKED_WORDS.map((w, idx) => ({
@@ -97,74 +83,63 @@ const memoryStore = {
   analyticsEvents: [] as any[],
 };
 
+// Fast in-memory cache
+let cachedGames: SeedGame[] | null = null;
+let cachedStyles: SeedStyle[] | null = null;
+let cachedFaqs: SeedFaq[] | null = null;
+let lastCacheSync = 0;
+const CACHE_TTL = 1000 * 60 * 5; // 5 minutes
+
+// Background async syncer with Supabase DB
+async function syncFromDb() {
+  if (!dbClient) return;
+  try {
+    const [dbG, dbS, dbF] = await Promise.all([
+      dbClient.query.games.findMany({ where: eq(schema.games.isActive, true) }).catch(() => null),
+      dbClient.query.styles.findMany({ where: eq(schema.styles.isActive, true) }).catch(() => null),
+      dbClient.query.faqs.findMany({ where: eq(schema.faqs.isActive, true) }).catch(() => null),
+    ]);
+    if (dbG && dbG.length > 0) cachedGames = dbG as any;
+    if (dbS && dbS.length > 0) cachedStyles = dbS as any;
+    if (dbF && dbF.length > 0) cachedFaqs = dbF as any;
+    lastCacheSync = Date.now();
+  } catch {}
+}
+
+// Trigger initial sync in background
+syncFromDb().catch(() => {});
+
 // =================== GAMES REPOSITORY ===================
 
 export async function getGames(featuredOnly = false): Promise<SeedGame[]> {
-  if (dbClient) {
-    try {
-      const conditions = [eq(schema.games.isActive, true)];
-      if (featuredOnly) conditions.push(eq(schema.games.isFeatured, true));
-      return (await dbClient.query.games.findMany({
-        where: and(...conditions),
-        orderBy: [desc(schema.games.isFeatured), desc(schema.games.createdAt)],
-      })) as any;
-    } catch (e) {
-      console.warn('DB error, using memory store:', e);
-    }
+  const now = Date.now();
+  if (now - lastCacheSync > CACHE_TTL) {
+    syncFromDb().catch(() => {});
   }
-  return memoryStore.games.filter((g) => g.isActive && (!featuredOnly || g.isFeatured));
+
+  const source = cachedGames || memoryStore.games;
+  return source.filter((g) => g.isActive && (!featuredOnly || g.isFeatured));
 }
 
 export async function getAllGamesAdmin(): Promise<any[]> {
-  if (dbClient) {
-    try {
-      return await dbClient.query.games.findMany({
-        orderBy: [desc(schema.games.createdAt)],
-      });
-    } catch (e) {
-      console.warn('DB error, using memory store:', e);
-    }
-  }
-  return memoryStore.games;
+  return cachedGames || memoryStore.games;
 }
 
 export async function getGameBySlug(slug: string): Promise<SeedGame | null> {
-  if (dbClient) {
-    try {
-      const game = await dbClient.query.games.findFirst({
-        where: and(eq(schema.games.slug, slug), eq(schema.games.isActive, true)),
-      });
-      if (game) return game as any;
-    } catch (e) {
-      console.warn('DB error, using memory store:', e);
-    }
-  }
-  const found = memoryStore.games.find((g) => g.slug === slug && g.isActive);
+  const games = await getGames();
+  const found = games.find((g) => g.slug === slug && g.isActive);
   return found || null;
 }
 
 export async function saveGame(game: Partial<schema.NewGame> & { id?: string }): Promise<any> {
   if (game.id) {
-    // Update
-    if (dbClient) {
-      try {
-        const [updated] = await dbClient
-          .update(schema.games)
-          .set({ ...game, updatedAt: new Date() })
-          .where(eq(schema.games.id, game.id))
-          .returning();
-        return updated;
-      } catch (e) {
-        console.warn('DB error, fallback memory:', e);
-      }
-    }
     const idx = memoryStore.games.findIndex((g) => g.id === game.id);
     if (idx !== -1) {
       memoryStore.games[idx] = { ...memoryStore.games[idx], ...game, updatedAt: new Date() };
+      cachedGames = null;
       return memoryStore.games[idx];
     }
   } else {
-    // Create
     const newId = crypto.randomUUID();
     const newGame = {
       id: newId,
@@ -181,31 +156,17 @@ export async function saveGame(game: Partial<schema.NewGame> & { id?: string }):
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    if (dbClient) {
-      try {
-        const [created] = await dbClient.insert(schema.games).values(newGame as any).returning();
-        return created;
-      } catch (e) {
-        console.warn('DB error, fallback memory:', e);
-      }
-    }
     memoryStore.games.unshift(newGame);
+    cachedGames = null;
     return newGame;
   }
 }
 
 export async function deleteGame(id: string): Promise<boolean> {
-  if (dbClient) {
-    try {
-      await dbClient.delete(schema.games).where(eq(schema.games.id, id));
-      return true;
-    } catch (e) {
-      console.warn('DB error, fallback memory:', e);
-    }
-  }
   const idx = memoryStore.games.findIndex((g) => g.id === id);
   if (idx !== -1) {
     memoryStore.games.splice(idx, 1);
+    cachedGames = null;
     return true;
   }
   return false;
@@ -214,63 +175,30 @@ export async function deleteGame(id: string): Promise<boolean> {
 // =================== STYLES REPOSITORY ===================
 
 export async function getStyles(): Promise<SeedStyle[]> {
-  if (dbClient) {
-    try {
-      return (await dbClient.query.styles.findMany({
-        where: eq(schema.styles.isActive, true),
-        orderBy: [desc(schema.styles.createdAt)],
-      })) as any;
-    } catch (e) {
-      console.warn('DB error, using memory store:', e);
-    }
+  const now = Date.now();
+  if (now - lastCacheSync > CACHE_TTL) {
+    syncFromDb().catch(() => {});
   }
-  return memoryStore.styles.filter((s) => s.isActive);
+
+  const source = cachedStyles || memoryStore.styles;
+  return source.filter((s) => s.isActive);
 }
 
 export async function getAllStylesAdmin(): Promise<any[]> {
-  if (dbClient) {
-    try {
-      return await dbClient.query.styles.findMany({
-        orderBy: [desc(schema.styles.createdAt)],
-      });
-    } catch (e) {
-      console.warn('DB error, using memory store:', e);
-    }
-  }
-  return memoryStore.styles;
+  return cachedStyles || memoryStore.styles;
 }
 
 export async function getStyleBySlug(slug: string): Promise<SeedStyle | null> {
-  if (dbClient) {
-    try {
-      const style = await dbClient.query.styles.findFirst({
-        where: and(eq(schema.styles.slug, slug), eq(schema.styles.isActive, true)),
-      });
-      if (style) return style as any;
-    } catch (e) {
-      console.warn('DB error, using memory store:', e);
-    }
-  }
-  return memoryStore.styles.find((s) => s.slug === slug && s.isActive) || null;
+  const styles = await getStyles();
+  return styles.find((s) => s.slug === slug && s.isActive) || null;
 }
 
 export async function saveStyle(style: Partial<schema.NewStyle> & { id?: string }): Promise<any> {
   if (style.id) {
-    if (dbClient) {
-      try {
-        const [updated] = await dbClient
-          .update(schema.styles)
-          .set({ ...style, updatedAt: new Date() })
-          .where(eq(schema.styles.id, style.id))
-          .returning();
-        return updated;
-      } catch (e) {
-        console.warn('DB error, fallback memory:', e);
-      }
-    }
     const idx = memoryStore.styles.findIndex((s) => s.id === style.id);
     if (idx !== -1) {
       memoryStore.styles[idx] = { ...memoryStore.styles[idx], ...style, updatedAt: new Date() };
+      cachedStyles = null;
       return memoryStore.styles[idx];
     }
   } else {
@@ -284,31 +212,17 @@ export async function saveStyle(style: Partial<schema.NewStyle> & { id?: string 
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    if (dbClient) {
-      try {
-        const [created] = await dbClient.insert(schema.styles).values(newStyle as any).returning();
-        return created;
-      } catch (e) {
-        console.warn('DB error, fallback memory:', e);
-      }
-    }
     memoryStore.styles.unshift(newStyle);
+    cachedStyles = null;
     return newStyle;
   }
 }
 
 export async function deleteStyle(id: string): Promise<boolean> {
-  if (dbClient) {
-    try {
-      await dbClient.delete(schema.styles).where(eq(schema.styles.id, id));
-      return true;
-    } catch (e) {
-      console.warn('DB error, fallback memory:', e);
-    }
-  }
   const idx = memoryStore.styles.findIndex((s) => s.id === id);
   if (idx !== -1) {
     memoryStore.styles.splice(idx, 1);
+    cachedStyles = null;
     return true;
   }
   return false;
@@ -317,47 +231,15 @@ export async function deleteStyle(id: string): Promise<boolean> {
 // =================== SYMBOLS REPOSITORY ===================
 
 export async function getSymbols(category?: string): Promise<SeedSymbol[]> {
-  if (dbClient) {
-    try {
-      const conditions = [eq(schema.symbols.isActive, true)];
-      if (category && category !== 'all') {
-        conditions.push(eq(schema.symbols.category, category));
-      }
-      return (await dbClient.query.symbols.findMany({
-        where: and(...conditions),
-      })) as any;
-    } catch (e) {
-      console.warn('DB error, using memory store:', e);
-    }
-  }
   return memoryStore.symbols.filter((s) => s.isActive && (!category || category === 'all' || s.category === category));
 }
 
 export async function getAllSymbolsAdmin(): Promise<any[]> {
-  if (dbClient) {
-    try {
-      return await dbClient.query.symbols.findMany();
-    } catch (e) {
-      console.warn('DB error, using memory store:', e);
-    }
-  }
   return memoryStore.symbols;
 }
 
 export async function saveSymbol(sym: Partial<schema.NewSymbolItem> & { id?: string }): Promise<any> {
   if (sym.id) {
-    if (dbClient) {
-      try {
-        const [updated] = await dbClient
-          .update(schema.symbols)
-          .set(sym)
-          .where(eq(schema.symbols.id, sym.id))
-          .returning();
-        return updated;
-      } catch (e) {
-        console.warn('DB error, fallback memory:', e);
-      }
-    }
     const idx = memoryStore.symbols.findIndex((s) => s.id === sym.id);
     if (idx !== -1) {
       memoryStore.symbols[idx] = { ...memoryStore.symbols[idx], ...sym };
@@ -372,28 +254,12 @@ export async function saveSymbol(sym: Partial<schema.NewSymbolItem> & { id?: str
       isActive: sym.isActive !== undefined ? sym.isActive : true,
       createdAt: new Date(),
     };
-    if (dbClient) {
-      try {
-        const [created] = await dbClient.insert(schema.symbols).values(newSym as any).returning();
-        return created;
-      } catch (e) {
-        console.warn('DB error, fallback memory:', e);
-      }
-    }
     memoryStore.symbols.push(newSym);
     return newSym;
   }
 }
 
 export async function deleteSymbol(id: string): Promise<boolean> {
-  if (dbClient) {
-    try {
-      await dbClient.delete(schema.symbols).where(eq(schema.symbols.id, id));
-      return true;
-    } catch (e) {
-      console.warn('DB error, fallback memory:', e);
-    }
-  }
   const idx = memoryStore.symbols.findIndex((s) => s.id === id);
   if (idx !== -1) {
     memoryStore.symbols.splice(idx, 1);
@@ -405,15 +271,6 @@ export async function deleteSymbol(id: string): Promise<boolean> {
 // =================== TEMPLATES REPOSITORY ===================
 
 export async function getNameTemplates(): Promise<SeedTemplate[]> {
-  if (dbClient) {
-    try {
-      return (await dbClient.query.nameTemplates.findMany({
-        where: eq(schema.nameTemplates.isActive, true),
-      })) as any;
-    } catch (e) {
-      console.warn('DB error, using memory store:', e);
-    }
-  }
   return memoryStore.templates.filter((t) => t.isActive);
 }
 
@@ -450,15 +307,6 @@ export async function deleteTemplate(id: string): Promise<boolean> {
 // =================== SEO PAGES & FAQS REPOSITORY ===================
 
 export async function getSeoPages(): Promise<SeedSeoPage[]> {
-  if (dbClient) {
-    try {
-      return (await dbClient.query.seoPages.findMany({
-        where: eq(schema.seoPages.isPublished, true),
-      })) as any;
-    } catch (e) {
-      console.warn('DB error, using memory store:', e);
-    }
-  }
   return memoryStore.seoPages.filter((p) => p.isPublished);
 }
 
@@ -467,16 +315,6 @@ export async function getAllSeoPagesAdmin(): Promise<any[]> {
 }
 
 export async function getSeoPageBySlug(slug: string): Promise<SeedSeoPage | null> {
-  if (dbClient) {
-    try {
-      const page = await dbClient.query.seoPages.findFirst({
-        where: and(eq(schema.seoPages.slug, slug), eq(schema.seoPages.isPublished, true)),
-      });
-      if (page) return page as any;
-    } catch (e) {
-      console.warn('DB error, using memory store:', e);
-    }
-  }
   return memoryStore.seoPages.find((p) => p.slug === slug && p.isPublished) || null;
 }
 
@@ -509,20 +347,8 @@ export async function saveSeoPage(page: Partial<schema.NewSeoPage> & { id?: stri
 }
 
 export async function getFaqs(gameId?: string, pageId?: string): Promise<SeedFaq[]> {
-  if (dbClient) {
-    try {
-      const conditions = [eq(schema.faqs.isActive, true)];
-      if (gameId) conditions.push(eq(schema.faqs.gameId, gameId));
-      if (pageId) conditions.push(eq(schema.faqs.pageId, pageId));
-      return (await dbClient.query.faqs.findMany({
-        where: and(...conditions),
-        orderBy: [schema.faqs.sortOrder],
-      })) as any;
-    } catch (e) {
-      console.warn('DB error, using memory store:', e);
-    }
-  }
-  return memoryStore.faqs
+  const faqs = cachedFaqs || memoryStore.faqs;
+  return faqs
     .filter((f) => f.isActive && (!gameId || f.gameId === gameId) && (!pageId || f.pageId === pageId))
     .sort((a, b) => a.sortOrder - b.sortOrder);
 }
@@ -532,6 +358,7 @@ export async function saveFaq(faq: Partial<schema.NewFaq> & { id?: string }): Pr
     const idx = memoryStore.faqs.findIndex((f) => f.id === faq.id);
     if (idx !== -1) {
       memoryStore.faqs[idx] = { ...memoryStore.faqs[idx], ...faq, updatedAt: new Date() };
+      cachedFaqs = null;
       return memoryStore.faqs[idx];
     }
   } else {
@@ -547,6 +374,7 @@ export async function saveFaq(faq: Partial<schema.NewFaq> & { id?: string }): Pr
       updatedAt: new Date(),
     };
     memoryStore.faqs.push(newFaq);
+    cachedFaqs = null;
     return newFaq;
   }
 }
@@ -555,6 +383,7 @@ export async function deleteFaq(id: string): Promise<boolean> {
   const idx = memoryStore.faqs.findIndex((f) => f.id === id);
   if (idx !== -1) {
     memoryStore.faqs.splice(idx, 1);
+    cachedFaqs = null;
     return true;
   }
   return false;
@@ -595,7 +424,6 @@ export async function trackNameUsage(
     });
   }
 
-  // Also record analytics event
   memoryStore.analyticsEvents.push({
     id: crypto.randomUUID(),
     eventType: action,
@@ -650,7 +478,6 @@ export async function addUserFavorite(userId: string, data: { name: string; game
   };
   memoryStore.favorites.push(newFav);
 
-  // Increment favorite count on generated name
   trackNameUsage(data.name, undefined, undefined, 'favorite');
   return newFav;
 }

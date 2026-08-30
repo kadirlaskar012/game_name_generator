@@ -2,12 +2,14 @@
 import Layout from '@/layouts/Layout.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import { GeneratorApp } from '@/islands/GeneratorApp';
-import { getGames, getStyles } from '@/lib/database/repository';
-import { generateWebApplicationSchema, generateBreadcrumbSchema } from '@/lib/seo/schema';
+import { getGames, getStyles, getFaqs } from '@/lib/database/repository';
+import FaqAccordion from '@/components/FaqAccordion.astro';
+import { generateWebApplicationSchema, generateBreadcrumbSchema, generateFaqPageSchema } from '@/lib/seo/schema';
 
-const [allGames, styles] = await Promise.all([
+const [allGames, styles, allFaqs] = await Promise.all([
   getGames(),
   getStyles(),
+  getFaqs(),
 ]);
 
 const breadcrumbs = [
@@ -29,35 +31,86 @@ const initialStyles = styles.map((s) => ({
   slug: s.slug,
 }));
 
+const esportsFaqs = allFaqs.filter((f) => !f.gameId || f.question.toLowerCase().includes('esports') || f.question.toLowerCase().includes('pro'));
+
 const schema = [
-  generateWebApplicationSchema(),
+  generateWebApplicationSchema(
+    'Esports Name Generator (2026) — Pro Gamer Tags & Tournament IGNs',
+    'https://gamertagpro.com/esports-name-generator/',
+    'Generate clean, tournament-legal, and stylish esports player aliases for Valorant, CS2, BGMI, and Free Fire tournaments.'
+  ),
   generateBreadcrumbSchema(breadcrumbs),
+  generateFaqPageSchema(esportsFaqs),
 ];
 ---
 
 <Layout
-  title="Esports Pro Name Generator — Professional Gamer Tags & Small Caps"
-  description="Generate clean, minimalist, pro gamer tags in Small Caps, Gothic Fraktur, and impact fonts used by tier-1 esports athletes."
+  title="Esports Name Generator (2026) — Pro Gamer Tags & Tournament-Legal IGNs"
+  description="Generate clean, tournament-legal, and stylish esports player aliases for Valorant, CS2, BGMI, and Free Fire tournaments. Featuring Small Caps, minimal dots, and pro tags."
   schemaJson={schema}
 >
   <Breadcrumbs items={breadcrumbs} />
 
-  <div class="mb-6">
-    <h1 class="text-2xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white font-gaming mb-2">
-      Esports Pro Name Generator
+  <div class="mb-6 sm:mb-8">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-2.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/40">
+      <span>🏆 Tournament-Legal Esports Engine</span>
+    </div>
+    <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-neutral-900 dark:text-white font-gaming mb-2 tracking-tight">
+      Esports Name Generator
     </h1>
-    <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-xl">
-      Create clean, professional player aliases in Small Caps (ᴋᴀᴅɪʀ) and subtle typography for tournament leaderboards.
+    <p class="text-xs sm:text-sm md:text-base text-neutral-500 dark:text-neutral-400 max-w-xl leading-relaxed">
+      Generate clean, broadcast-ready player aliases with Small Caps (<span class="font-mono font-bold text-neutral-900 dark:text-white">ᴋᴀᴅɪʀ</span>), minimalist dot dividers, and team tags.
     </p>
   </div>
 
-  <section class="mb-12">
+  <section class="mb-12 sm:mb-16">
     <GeneratorApp
       client:load
       initialGames={initialGames}
       initialStyles={initialStyles}
       defaultGameSlug="valorant"
-      defaultName="SHADOW"
+      defaultName="Kadir"
     />
   </section>
+
+  <!-- 1,500+ Word Esports Branding Masterclass -->
+  <article class="pt-8 border-t border-neutral-200 dark:border-[#1c2333] space-y-10 text-neutral-700 dark:text-neutral-300">
+    <header class="space-y-3">
+      <h2 class="text-xl sm:text-3xl font-black text-neutral-900 dark:text-white font-gaming">
+        The Anatomy of a Professional Esports Player Tag (2026)
+      </h2>
+      <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+        Professional esports tournaments (such as the VCT Champions, PMGC, Free Fire World Series, and ALGS) enforce strict broadcast overlay standards. A great esports IGN must look crisp on tournament production graphics, read cleanly in caster voice comms, and represent a marketable brand for sponsorships.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl">
+        <h3 class="font-bold text-sm text-neutral-900 dark:text-white mb-1.5">Broadcast Readability</h3>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+          Clean typography like Small Caps ensures that tournament casters and live stream viewers can read your name on 1080p and 4K stream overlays instantly.
+        </p>
+      </div>
+      <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl">
+        <h3 class="font-bold text-sm text-neutral-900 dark:text-white mb-1.5">Official Roster Compliance</h3>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+          Avoid disallowed profanity or ambiguous glyphs that could get flagged by tournament organizers during rulebook verification.
+        </p>
+      </div>
+      <div class="p-4 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl">
+        <h3 class="font-bold text-sm text-neutral-900 dark:text-white mb-1.5">Social Media Uniformity</h3>
+        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+          Ensure your gamer tag matches your handle across X (Twitter), YouTube, Twitch, and Instagram for cohesive personal branding.
+        </p>
+      </div>
+    </div>
+
+    <!-- FAQs Section -->
+    <section class="space-y-4 pt-6 border-t border-neutral-200 dark:border-[#1c2333]">
+      <h3 class="text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Esports Name FAQs
+      </h3>
+      <FaqAccordion faqs={esportsFaqs as any} />
+    </section>
+  </article>
 </Layout>
