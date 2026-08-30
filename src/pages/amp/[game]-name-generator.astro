@@ -1,5 +1,14 @@
 ---
+export const prerender = true;
+
 import { getGames, getGameBySlug, getFaqs, getSeoPageBySlug } from '@/lib/database/repository';
+
+export async function getStaticPaths() {
+  const games = await getGames();
+  return games.map((g) => ({
+    params: { game: g.slug },
+  }));
+}
 
 const { game: gameSlug } = Astro.params;
 const game = (await getGameBySlug(gameSlug || 'free-fire')) || (await getGames())[0];

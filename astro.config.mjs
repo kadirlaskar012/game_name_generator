@@ -10,6 +10,9 @@ export default defineConfig({
     webAnalytics: {
       enabled: false,
     },
+    isr: {
+      expiration: 60 * 60, // 1 hour edge ISR cache
+    },
   }),
   integrations: [
     react(),

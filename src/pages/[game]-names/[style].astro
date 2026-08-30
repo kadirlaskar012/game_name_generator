@@ -1,10 +1,25 @@
 ---
+export const prerender = true;
+
 import Layout from '@/layouts/Layout.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import { GeneratorApp } from '@/islands/GeneratorApp';
 import FaqAccordion from '@/components/FaqAccordion.astro';
 import { getGameBySlug, getStyleBySlug, getGames, getStyles, getFaqs } from '@/lib/database/repository';
 import { generateWebApplicationSchema, generateFaqPageSchema, generateBreadcrumbSchema } from '@/lib/seo/schema';
+
+export async function getStaticPaths() {
+  const [games, styles] = await Promise.all([getGames(), getStyles()]);
+  const paths: any[] = [];
+  for (const game of games) {
+    for (const style of styles) {
+      paths.push({
+        params: { game: game.slug, style: style.slug },
+      });
+    }
+  }
+  return paths;
+}
 
 const { game: gameSlug, style: styleSlug } = Astro.params;
 

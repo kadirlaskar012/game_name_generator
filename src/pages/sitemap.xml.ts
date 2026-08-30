@@ -1,3 +1,5 @@
+export const prerender = true;
+
 import type { APIRoute } from 'astro';
 import { getGames, getStyles, getSeoPages } from '@/lib/database/repository';
 
