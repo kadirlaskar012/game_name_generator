@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { Sparkles, Dices, RefreshCw, SlidersHorizontal, Check, Copy, Layers, X, PlusCircle } from 'lucide-react';
+import { RefreshCw, SlidersHorizontal, Check, Copy, Layers, X, Dices } from 'lucide-react';
 import { ResultCard } from './ResultCard';
 
 interface GameOption {
@@ -150,8 +150,8 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
       return;
     }
     const timer = setTimeout(() => {
-      executeGenerate({ nameVal: name });
-    }, 200);
+      executeGenerate({ nameVal: name, offsetVal: 0 });
+    }, 150);
     return () => clearTimeout(timer);
   }, [name]);
 
@@ -199,7 +199,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
     try {
       await navigator.clipboard.writeText(text);
       setCopiedAll(true);
-      setTimeout(() => setCopiedAll(false), 2000);
+      setTimeout(() => setCopiedAll(false), 1800);
     } catch {}
   };
 
@@ -212,9 +212,9 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
 
   return (
     <div className="w-full">
-      {/* Minimalist Generator Controls */}
-      <div className="bg-white dark:bg-surface-dark border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 sm:p-6 shadow-sm mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+      {/* Sleek Minimalist Generator Controls */}
+      <div className="bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-2xl p-3.5 sm:p-5 shadow-sm mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-2.5 sm:gap-3 items-center">
           {/* 1. Name Input */}
           <div className="md:col-span-6 relative flex items-center">
             <input
@@ -223,7 +223,10 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
               onChange={(e) => setName(e.target.value)}
               placeholder="Type nickname (e.g. Kadir, Ghost, Shadow...)"
               maxLength={25}
-              className="w-full pl-4 pr-20 py-3 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-neutral-400 dark:focus:border-neutral-600 rounded-xl text-neutral-900 dark:text-white placeholder-neutral-400 text-sm sm:text-base outline-none transition"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck="false"
+              className="w-full pl-3.5 pr-20 py-2.5 sm:py-3 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] focus:border-sky-500 dark:focus:border-sky-500 rounded-xl text-neutral-900 dark:text-white placeholder-neutral-400 text-sm sm:text-base outline-none transition-colors"
             />
             <div className="absolute right-2 flex items-center gap-1">
               {name && (
@@ -231,7 +234,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
                   type="button"
                   onClick={() => setName('')}
                   title="Clear"
-                  className="p-1.5 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 rounded-lg transition"
+                  className="p-1.5 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 rounded-lg transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -240,7 +243,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
                 type="button"
                 onClick={handleRandomDice}
                 title="Random Name Idea"
-                className="p-1.5 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-lg hover:bg-neutral-200/60 dark:hover:bg-neutral-800 transition"
+                className="p-1.5 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-lg hover:bg-neutral-200/60 dark:hover:bg-[#1c2333] transition-colors cursor-pointer"
               >
                 <Dices className="w-4 h-4" />
               </button>
@@ -252,7 +255,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
             <select
               value={selectedGameSlug}
               onChange={(e) => handleGameChange(e.target.value)}
-              className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-neutral-400 dark:focus:border-neutral-600 rounded-xl text-neutral-900 dark:text-white text-sm outline-none transition cursor-pointer"
+              className="w-full px-3.5 py-2.5 sm:py-3 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] focus:border-sky-500 dark:focus:border-sky-500 rounded-xl text-neutral-900 dark:text-white text-xs sm:text-sm outline-none transition-colors cursor-pointer"
             >
               {initialGames.map((game) => (
                 <option key={game.id} value={game.slug}>
@@ -268,38 +271,38 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
               type="button"
               onClick={() => executeGenerate({ offsetVal: 0 })}
               disabled={loading}
-              className="w-full py-3 px-4 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:opacity-90 font-semibold text-sm rounded-xl transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-sm"
+              className="w-full py-2.5 sm:py-3 px-4 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:opacity-90 font-semibold text-xs sm:text-sm rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-sm active:scale-95"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-              <span>{loading ? 'Updating...' : 'Generate'}</span>
+              <span>{loading ? 'Generating...' : 'Generate'}</span>
             </button>
           </div>
         </div>
 
-        {/* Massive 30+ Style Filter Pills Bar */}
-        <div className="mt-4 pt-4 border-t border-neutral-100 dark:border-neutral-800/80">
+        {/* 31+ Style Filter Pills Bar with Smooth Touch Scroll */}
+        <div className="mt-3.5 pt-3.5 border-t border-neutral-100 dark:border-[#1c2333]">
           <div className="flex items-center justify-between gap-3 mb-2">
-            <span className="text-neutral-400 dark:text-neutral-500 font-medium text-[11px] uppercase tracking-wider">
-              Popular Styles & Font Packs ({initialStyles.length + 1}):
+            <span className="text-neutral-400 dark:text-neutral-500 font-medium text-[10px] sm:text-[11px] uppercase tracking-wider">
+              Styles & Fonts ({initialStyles.length + 1}):
             </span>
             <button
               type="button"
               onClick={() => setShowAdvanced(!showAdvanced)}
-              className="flex items-center gap-1 text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition text-xs font-medium"
+              className="flex items-center gap-1 text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors text-xs font-medium cursor-pointer"
             >
               <SlidersHorizontal className="w-3.5 h-3.5" />
               {showAdvanced ? 'Fewer Filters' : 'More Filters'}
             </button>
           </div>
 
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 max-w-full no-scrollbar">
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 max-w-full no-scrollbar smooth-scroll">
             <button
               type="button"
               onClick={() => handleStyleClick('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition shrink-0 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors shrink-0 cursor-pointer ${
                 selectedStyleSlug === 'all'
                   ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold shadow-sm'
-                  : 'bg-neutral-100 dark:bg-neutral-800/60 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800'
+                  : 'bg-neutral-100 dark:bg-[#151b27] text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-[#1c2333]'
               }`}
             >
               ✨ All Styles
@@ -309,10 +312,10 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
                 key={style.id}
                 type="button"
                 onClick={() => handleStyleClick(style.slug)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition shrink-0 whitespace-nowrap ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors shrink-0 whitespace-nowrap cursor-pointer ${
                   selectedStyleSlug === style.slug
                     ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold shadow-sm'
-                    : 'bg-neutral-100 dark:bg-neutral-800/60 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-800'
+                    : 'bg-neutral-100 dark:bg-[#151b27] text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-[#1c2333]'
                 }`}
               >
                 {style.name}
@@ -323,13 +326,13 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
 
         {/* Expandable Advanced Options */}
         {showAdvanced && (
-          <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 grid grid-cols-2 sm:grid-cols-4 gap-3 animate-fadeIn text-xs">
+          <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-[#1c2333] grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs animate-fadeInFast">
             <div className="flex flex-col gap-1">
-              <label className="text-[11px] text-neutral-400 font-medium uppercase">Category</label>
+              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-medium uppercase">Category</label>
               <select
                 value={gender}
                 onChange={(e) => handleGenderChange(e.target.value)}
-                className="px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-neutral-800 dark:text-neutral-200 text-xs outline-none"
+                className="px-2.5 py-2 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] rounded-lg text-neutral-800 dark:text-neutral-200 text-xs outline-none cursor-pointer"
               >
                 <option value="all">All Genders & Squads</option>
                 <option value="boy">Boys / Kings</option>
@@ -340,14 +343,14 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-[11px] text-neutral-400 font-medium uppercase">Length</label>
+              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-medium uppercase">Length</label>
               <select
                 value={lengthCategory}
                 onChange={(e) => {
                   setLengthCategory(e.target.value as any);
                   executeGenerate({ lengthVal: e.target.value, offsetVal: 0 });
                 }}
-                className="px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-neutral-800 dark:text-neutral-200 text-xs outline-none"
+                className="px-2.5 py-2 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] rounded-lg text-neutral-800 dark:text-neutral-200 text-xs outline-none cursor-pointer"
               >
                 <option value="all">Any Length</option>
                 <option value="short">Short (&le; 8 chars)</option>
@@ -357,7 +360,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-[11px] text-neutral-400 font-medium uppercase">Batch Size</label>
+              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-medium uppercase">Batch Size</label>
               <select
                 value={count}
                 onChange={(e) => {
@@ -365,7 +368,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
                   setCount(val);
                   executeGenerate({ countVal: val, offsetVal: 0 });
                 }}
-                className="px-3 py-2 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-neutral-800 dark:text-neutral-200 text-xs outline-none"
+                className="px-2.5 py-2 bg-neutral-50 dark:bg-[#0b0e14] border border-neutral-200 dark:border-[#1c2333] rounded-lg text-neutral-800 dark:text-neutral-200 text-xs outline-none cursor-pointer"
               >
                 <option value={24}>24 Names</option>
                 <option value={36}>36 Names</option>
@@ -375,14 +378,14 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
             </div>
 
             <div className="flex flex-col justify-center gap-1">
-              <label className="text-[11px] text-neutral-400 font-medium uppercase">Special Symbols</label>
+              <label className="text-[10px] sm:text-[11px] text-neutral-400 font-medium uppercase">Special Symbols</label>
               <button
                 type="button"
                 onClick={handleSymbolsToggle}
-                className={`py-2 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center transition ${
+                className={`py-2 px-2.5 rounded-lg border text-xs font-semibold flex items-center justify-center transition-colors cursor-pointer ${
                   includeSymbols
                     ? 'border-neutral-900 dark:border-white bg-neutral-900 dark:bg-white text-white dark:text-neutral-900'
-                    : 'border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800/40 text-neutral-500'
+                    : 'border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-[#151b27] text-neutral-500'
                 }`}
               >
                 {includeSymbols ? '✓ Symbols (亗, ꧁꧂)' : 'Letters Only'}
@@ -394,7 +397,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
 
       {/* Error Alert */}
       {error && (
-        <div className="p-3.5 mb-6 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-xl text-red-600 dark:text-red-400 text-xs flex items-center justify-between">
+        <div className="p-3 mb-5 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-xl text-red-600 dark:text-red-400 text-xs flex items-center justify-between">
           <span>{error}</span>
           <button onClick={() => setError(null)} className="text-red-500 hover:text-red-700">
             ✕
@@ -403,14 +406,14 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
       )}
 
       {/* Results Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+      <div className="flex flex-wrap items-center justify-between gap-2.5 mb-4 sm:mb-5">
         <div className="flex items-center gap-2">
-          <h2 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-white font-gaming">
+          <h2 className="text-sm sm:text-lg font-bold text-neutral-900 dark:text-white font-gaming">
             Generated Names ({filteredResults.length})
           </h2>
           {selectedGame && (
-            <span className="text-xs text-neutral-500 dark:text-neutral-400">
-              for {selectedGame.name} (max {selectedGame.rules?.maxLength || 14} chars)
+            <span className="text-[11px] sm:text-xs text-neutral-500 dark:text-neutral-400">
+              for {selectedGame.name} (max {selectedGame.rules?.maxLength || 14})
             </span>
           )}
         </div>
@@ -421,17 +424,17 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
             placeholder="Filter list..."
             value={searchFilter}
             onChange={(e) => setSearchFilter(e.target.value)}
-            className="px-3 py-1.5 bg-white dark:bg-surface-dark border border-neutral-200 dark:border-neutral-800 rounded-lg text-neutral-900 dark:text-white text-xs outline-none focus:border-neutral-400 w-36 sm:w-48"
+            className="px-2.5 py-1.5 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-lg text-neutral-900 dark:text-white text-xs outline-none focus:border-sky-500 w-32 sm:w-44"
           />
 
           <button
             type="button"
             onClick={handleCopyAll}
-            className="px-3 py-1.5 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-200 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition"
+            className="px-2.5 sm:px-3 py-1.5 bg-neutral-100 dark:bg-[#151b27] hover:bg-neutral-200 dark:hover:bg-[#1c2333] border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-200 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             {copiedAll ? (
               <>
-                <Check className="w-3.5 h-3.5 text-emerald-500" /> Copied!
+                <Check className="w-3.5 h-3.5 text-emerald-500" /> Copied
               </>
             ) : (
               <>
@@ -445,7 +448,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
             onClick={() => executeGenerate({ offsetVal: 0 })}
             disabled={loading}
             title="Refresh Batch"
-            className="p-1.5 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-700 transition"
+            className="p-1.5 bg-neutral-100 dark:bg-[#151b27] border border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300 rounded-lg hover:bg-neutral-200 dark:hover:bg-[#1c2333] transition-colors cursor-pointer"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -454,17 +457,17 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
 
       {/* Results Grid */}
       {loading && results.length === 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 py-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3.5 py-4">
           {[...Array(6)].map((_, i) => (
             <div
               key={i}
-              className="h-28 bg-white dark:bg-surface-dark border border-neutral-200 dark:border-neutral-800 rounded-xl animate-pulse"
+              className="h-28 bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] rounded-xl animate-pulse"
             />
           ))}
         </div>
       ) : filteredResults.length > 0 ? (
         <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3.5">
             {filteredResults.map((item) => (
               <ResultCard
                 key={item.id}
@@ -475,7 +478,6 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
                 styleName={item.styleName}
                 validation={item.validation}
                 isFavorited={favoritedNames.has(item.name)}
-                onGenerateSimilar={(style) => handleStyleClick(style)}
                 onToggleFavorite={(name, isFav) => {
                   const next = new Set(favoritedNames);
                   if (isFav) next.add(name);
@@ -492,7 +494,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
               type="button"
               onClick={handleLoadMore}
               disabled={loadingMore}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-surface-dark hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white font-semibold text-sm rounded-xl shadow-sm transition cursor-pointer disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-[#111620] hover:bg-neutral-100 dark:hover:bg-[#151b27] border border-neutral-200 dark:border-[#1c2333] text-neutral-900 dark:text-white font-semibold text-xs sm:text-sm rounded-xl shadow-sm transition-all cursor-pointer disabled:opacity-50 active:scale-95"
             >
               <RefreshCw className={`w-4 h-4 ${loadingMore ? 'animate-spin' : ''}`} />
               <span>{loadingMore ? 'Generating 24 More Names...' : '✨ Load 24 More Names (Infinite)'}</span>
@@ -500,7 +502,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
           </div>
         </div>
       ) : (
-        <div className="text-center py-16 bg-white dark:bg-surface-dark border border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl">
+        <div className="text-center py-16 bg-white dark:bg-[#111620] border border-dashed border-neutral-200 dark:border-[#1c2333] rounded-2xl p-6">
           <Layers className="w-10 h-10 text-neutral-400 mx-auto mb-2" />
           <h3 className="text-base font-bold text-neutral-900 dark:text-white mb-1">No Matching Names</h3>
           <p className="text-xs text-neutral-500 mb-4 max-w-sm mx-auto">
@@ -513,7 +515,7 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
               setSelectedStyleSlug('all');
               executeGenerate({ styleVal: 'all', offsetVal: 0 });
             }}
-            className="px-4 py-2 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold text-xs rounded-lg transition"
+            className="px-4 py-2 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold text-xs rounded-lg transition-colors cursor-pointer"
           >
             Reset Filters
           </button>

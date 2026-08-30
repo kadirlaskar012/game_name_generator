@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Copy, Check, Heart, Share2, Image as ImageIcon, Sparkles } from 'lucide-react';
+import React, { useState, memo } from 'react';
+import { Copy, Check, Heart, Share2, Image as ImageIcon } from 'lucide-react';
 import { CanvasCardGenerator } from './CanvasCardGenerator';
 
 export interface ResultCardProps {
@@ -16,17 +16,15 @@ export interface ResultCardProps {
     issues: string[];
     score: number;
   };
-  onGenerateSimilar?: (styleName: string) => void;
   isFavorited?: boolean;
   onToggleFavorite?: (name: string, isFav: boolean) => void;
 }
 
-export const ResultCard: React.FC<ResultCardProps> = ({
+const ResultCardComponent: React.FC<ResultCardProps> = ({
   name,
   gameName,
   styleName,
   validation,
-  onGenerateSimilar,
   isFavorited = false,
   onToggleFavorite,
 }) => {
@@ -39,7 +37,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
     try {
       await navigator.clipboard.writeText(name);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setCopied(false), 1800);
 
       fetch('/api/track', {
         method: 'POST',
@@ -96,46 +94,46 @@ export const ResultCard: React.FC<ResultCardProps> = ({
     try {
       await navigator.clipboard.writeText(`${name}`);
       setShared(true);
-      setTimeout(() => setShared(false), 2000);
+      setTimeout(() => setShared(false), 1800);
     } catch {}
   };
 
   return (
     <>
-      <div className="group relative bg-white dark:bg-surface-dark border border-neutral-200 dark:border-neutral-800/80 hover:border-neutral-300 dark:hover:border-neutral-700 rounded-xl p-4 transition-all duration-150 flex flex-col justify-between shadow-sm hover:shadow-md">
-        {/* Header Badges */}
-        <div className="flex items-center justify-between gap-2 mb-2">
-          <span className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
+      <div className="bg-white dark:bg-[#111620] border border-neutral-200 dark:border-[#1c2333] hover:border-neutral-300 dark:hover:border-neutral-700 rounded-xl p-3.5 sm:p-4 flex flex-col justify-between shadow-sm transition-colors duration-150">
+        {/* Header Tag Info */}
+        <div className="flex items-center justify-between gap-2 mb-1.5">
+          <span className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400 truncate">
             {styleName}
           </span>
           <span
-            className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+            className={`text-[10px] font-mono px-1.5 py-0.5 rounded shrink-0 ${
               validation.isValid
-                ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400'
-                : 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400'
+                ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-900/40'
+                : 'bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 border border-amber-200/60 dark:border-amber-900/40'
             }`}
           >
             {validation.length}/{validation.maxLength} {validation.isValid ? '✓' : '⚠️'}
           </span>
         </div>
 
-        {/* Clean Name Display */}
+        {/* Big Crisp Name Display */}
         <div
           onClick={handleCopy}
           title="Click to copy name"
-          className="my-2 py-3 px-2 bg-neutral-50 dark:bg-neutral-900/60 rounded-lg text-center cursor-pointer select-all group-hover:bg-neutral-100 dark:group-hover:bg-neutral-900 transition"
+          className="my-2 py-3 px-2 bg-neutral-50 dark:bg-[#0b0e14] rounded-lg text-center cursor-pointer select-all hover:bg-neutral-100 dark:hover:bg-[#151b27] transition-colors"
         >
-          <span className="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white font-gaming tracking-wide break-all">
+          <span className="text-lg sm:text-xl md:text-2xl font-bold text-neutral-900 dark:text-white font-gaming tracking-wide break-all select-all">
             {name}
           </span>
         </div>
 
-        {/* Minimal Actions Bar */}
-        <div className="flex items-center justify-between gap-1.5 mt-2 pt-2 border-t border-neutral-100 dark:border-neutral-800/60">
+        {/* Minimal Mobile-Friendly Actions Bar */}
+        <div className="flex items-center justify-between gap-1.5 mt-2 pt-2 border-t border-neutral-100 dark:border-[#1c2333]">
           <button
             type="button"
             onClick={handleCopy}
-            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1.5 ${
+            className={`flex-1 min-h-[38px] py-1.5 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer active:scale-95 ${
               copied
                 ? 'bg-emerald-600 text-white'
                 : 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:opacity-90'
@@ -143,7 +141,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
           >
             {copied ? (
               <>
-                <Check className="w-3.5 h-3.5" /> Copied!
+                <Check className="w-3.5 h-3.5" /> Copied
               </>
             ) : (
               <>
@@ -155,11 +153,11 @@ export const ResultCard: React.FC<ResultCardProps> = ({
           <button
             type="button"
             onClick={handleFavorite}
-            title={favorited ? 'Remove from favorites' : 'Save to favorites'}
-            className={`p-2 rounded-lg border transition ${
+            title={favorited ? 'Remove favorite' : 'Save favorite'}
+            className={`w-9 h-9 flex items-center justify-center rounded-lg border transition-colors cursor-pointer active:scale-95 ${
               favorited
                 ? 'border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/40 text-red-500'
-                : 'border-neutral-200 dark:border-neutral-800 text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                : 'border-neutral-200 dark:border-neutral-800 text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-[#151b27]'
             }`}
           >
             <Heart className={`w-3.5 h-3.5 ${favorited ? 'fill-red-500 text-red-500' : ''}`} />
@@ -169,7 +167,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
             type="button"
             onClick={() => setShowCardModal(true)}
             title="Download Card Banner"
-            className="p-2 rounded-lg border border-neutral-200 dark:border-neutral-800 text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+            className="w-9 h-9 flex items-center justify-center rounded-lg border border-neutral-200 dark:border-neutral-800 text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-[#151b27] transition-colors cursor-pointer active:scale-95"
           >
             <ImageIcon className="w-3.5 h-3.5" />
           </button>
@@ -178,21 +176,10 @@ export const ResultCard: React.FC<ResultCardProps> = ({
             type="button"
             onClick={handleShare}
             title="Share"
-            className="p-2 rounded-lg border border-neutral-200 dark:border-neutral-800 text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+            className="w-9 h-9 flex items-center justify-center rounded-lg border border-neutral-200 dark:border-neutral-800 text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-[#151b27] transition-colors cursor-pointer active:scale-95"
           >
             {shared ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Share2 className="w-3.5 h-3.5" />}
           </button>
-
-          {onGenerateSimilar && (
-            <button
-              type="button"
-              onClick={() => onGenerateSimilar(styleName)}
-              title="Generate similar names"
-              className="p-2 rounded-lg border border-neutral-200 dark:border-neutral-800 text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-            </button>
-          )}
         </div>
       </div>
 
@@ -207,3 +194,5 @@ export const ResultCard: React.FC<ResultCardProps> = ({
     </>
   );
 };
+
+export const ResultCard = memo(ResultCardComponent);

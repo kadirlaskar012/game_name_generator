@@ -23,6 +23,7 @@ export const ThemeToggle: React.FC = () => {
     const isCurrentlyDark = document.documentElement.classList.contains('dark');
     const nextTheme = isCurrentlyDark ? 'light' : 'dark';
 
+    // Instant DOM update with zero lag
     if (nextTheme === 'dark') {
       document.documentElement.classList.add('dark');
       document.documentElement.classList.remove('light');
@@ -41,7 +42,7 @@ export const ThemeToggle: React.FC = () => {
 
   if (!mounted) {
     return (
-      <div className="w-9 h-9 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-surface-dark" />
+      <div className="w-9 h-9 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111620]" />
     );
   }
 
@@ -51,7 +52,7 @@ export const ThemeToggle: React.FC = () => {
       onClick={toggleTheme}
       aria-label={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} mode`}
       title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} mode`}
-      className="p-2 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-surface-dark text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white hover:border-neutral-300 dark:hover:border-neutral-700 shadow-sm transition"
+      className="w-9 h-9 flex items-center justify-center rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#111620] text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white hover:border-neutral-300 dark:hover:border-neutral-700 shadow-sm transition-colors cursor-pointer active:scale-95"
     >
       {theme === 'dark' ? (
         <Sun className="w-4 h-4 text-amber-400" />

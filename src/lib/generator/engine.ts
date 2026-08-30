@@ -2,7 +2,7 @@ import { applyUnicodeFont, AVAILABLE_FONTS } from './unicode';
 import { BRACKET_PAIRS, SYMBOL_COLLECTIONS, COMMON_PREFIXES, COMMON_SUFFIXES, GAME_SPECIFIC_AFFIXES, getRandomElement } from './symbols';
 import { validateGameRules, type GameRules, type RuleValidationResult } from './rules';
 import { validateContentSafety } from './safety';
-import { getGames, getStyles, getSymbols } from '../database/repository';
+import { getGames, getStyles } from '../database/repository';
 
 export interface GenerateOptions {
   name?: string;
@@ -47,7 +47,19 @@ function createPrng(seed: number) {
 }
 
 /**
- * Core Gaming Name Generator Engine with Infinite Procedural Variety
+ * Shuffles array in-place using deterministic RNG
+ */
+function shuffleArray<T>(array: T[], rng: () => number): T[] {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+/**
+ * Core Gaming Name Generator Engine with Auto-Shuffled Natural Patterns
  */
 export async function generateGamingNames(options: GenerateOptions = {}): Promise<{
   results: GeneratedResultItem[];
@@ -92,7 +104,7 @@ export async function generateGamingNames(options: GenerateOptions = {}): Promis
     throw new Error(`The provided name violates safety filters: "${safetyCheck.flaggedWord}"`);
   }
 
-  const results: GeneratedResultItem[] = [];
+  const generatedPool: GeneratedResultItem[] = [];
   const seenNames = new Set<string>();
 
   const gameRules: GameRules = selectedGame?.rules || {
@@ -121,14 +133,22 @@ export async function generateGamingNames(options: GenerateOptions = {}): Promis
     ...COMMON_SUFFIXES.esports,
   ];
 
-  let attempts = 0;
-  const maxAttempts = count * 15;
+  // Fonts pool for natural mixing
+  const fontPool = [
+    'small_caps', 'bold_gothic', 'bold_cursive', 'sans_bold',
+    'double_struck', 'monospace', 'sans_italic', 'circled',
+    'square', 'gothic', 'cursive', 'serif_bold', 'spaced',
+    'dot_spaced', 'slash_spaced', 'normal'
+  ];
 
-  while (results.length < count && attempts < maxAttempts) {
+  let attempts = 0;
+  const maxAttempts = count * 20;
+
+  while (generatedPool.length < count * 2 && attempts < maxAttempts) {
     attempts++;
     const stepSeed = attempts + offset;
 
-    // Pick font based on selected style or random
+    // Pick font based on selected style or auto-shuffled pool
     let fontKey = 'small_caps';
     if (selectedStyle?.configuration?.unicodeFont) {
       fontKey = selectedStyle.configuration.unicodeFont;
@@ -163,9 +183,7 @@ export async function generateGamingNames(options: GenerateOptions = {}): Promis
     } else if (styleSlug === 'slash-minimal') {
       fontKey = 'slash_spaced';
     } else {
-      // Pick varied font for general mode
-      const fontList = ['small_caps', 'bold_gothic', 'bold_cursive', 'sans_bold', 'double_struck', 'monospace', 'sans_italic', 'circled', 'square', 'normal'];
-      fontKey = fontList[stepSeed % fontList.length];
+      fontKey = fontPool[Math.floor(rng() * fontPool.length)];
     }
 
     let styledBase = applyUnicodeFont(rawName, fontKey);
@@ -177,9 +195,9 @@ export async function generateGamingNames(options: GenerateOptions = {}): Promis
 
     let candidate = styledBase;
 
-    // Build specific styles if style selected
+    // Pattern Synthesis
     if (styleSlug === 'boss-crown') {
-      const crown = getRandomElement(['亗', '👑', '♛', '☬', '⚜', '♚', '𒆜', '霸', '王'], rng);
+      const crown = getRandomElement(['亗', '👑', '♛', '☬', '⚜', '♚', '𒆜'], rng);
       const variants = [
         `${crown}${styledBase}${crown}`,
         `亗 ${styledBase} 亗`,
@@ -188,10 +206,10 @@ export async function generateGamingNames(options: GenerateOptions = {}): Promis
         `☬ ${styledBase} ☬`,
         `『${styledBase}』亗`,
         `【${styledBase}】👑`,
-        `亗 ${styledBase}_VIP`,
         `BOSS • ${styledBase} 亗`,
+        `亗 ${styledBase}_VIP`,
       ];
-      candidate = variants[stepSeed % variants.length];
+      candidate = getRandomElement(variants, rng);
     } else if (styleSlug === 'wings') {
       const wings = [
         `꧁༺${styledBase}༻꧂`,
@@ -205,7 +223,7 @@ export async function generateGamingNames(options: GenerateOptions = {}): Promis
         `꧁༺ ${styledBase} ༻꧂`,
         `ʚ ${styledBase} ɞ`,
       ];
-      candidate = wings[stepSeed % wings.length];
+      candidate = getRandomElement(wings, rng);
     } else if (styleSlug === 'japanese-katakana') {
       const sfx = getRandomElement(['メ', '々', '么', '〆', '乡', 'ッ', '彡'], rng);
       const variants = [
@@ -219,10 +237,8 @@ export async function generateGamingNames(options: GenerateOptions = {}): Promis
         `鬼${styledBase}鬼`,
         `${styledBase}メ`,
         `${styledBase}〆`,
-        `『${styledBase}』メ`,
-        `【${styledBase}】〆`,
       ];
-      candidate = variants[stepSeed % variants.length];
+      candidate = getRandomElement(variants, rng);
     } else if (styleSlug === 'clan-brackets') {
       const pair = getRandomElement(BRACKET_PAIRS, rng);
       const pfx = getRandomElement(activePrefixes, rng);
@@ -236,168 +252,86 @@ export async function generateGamingNames(options: GenerateOptions = {}): Promis
         `『${styledBase}』メ`,
         `【${styledBase}】〆`,
         `𓊈${styledBase}𓊉`,
-        `❮${styledBase}❯`,
       ];
-      candidate = variants[stepSeed % variants.length];
+      candidate = getRandomElement(variants, rng);
     } else if (styleSlug === 'attitude-cross') {
       const wpn = getRandomElement(['⚔', '☠', '⚡', '☣', '✞', '乂', '†', '✘', '𝕏'], rng);
-      const variants = [
-        `${wpn}${styledBase}${wpn}`,
-        `乂${styledBase}乂`,
-        `⚡${styledBase}⚡`,
-        `☠${styledBase}☠`,
-        `⚔ ${styledBase} ⚔`,
-        `† ${styledBase} †`,
-        `𝕏 ${styledBase} 𝕏`,
-        `× ${styledBase} ×`,
-      ];
-      candidate = variants[stepSeed % variants.length];
+      candidate = `${wpn}${styledBase}${wpn}`;
     } else if (styleSlug === 'esports-pro') {
-      const team = getRandomElement(['SOUL', 'GODL', 'T1', 'SEN', 'FNC', 'PRX', 'TSG', 'FAZE', 'OPTIC', 'NAVI', 'VLR', 'RASTAR'], rng);
+      const team = getRandomElement(['SOUL', 'GODL', 'T1', 'SEN', 'FNC', 'PRX', 'TSG', 'FAZE'], rng);
       const variants = [
         `[${team}] ${styledBase}`,
         `『${team}』${styledBase}`,
-        `【${team}】${styledBase}`,
         `${team} • ${styledBase}`,
-        `${styledBase} • ${team}`,
         `PRO • ${styledBase}`,
         `${styledBase} .`,
         `iAm${styledBase}`,
         `${styledBase} 1tap`,
       ];
-      candidate = variants[stepSeed % variants.length];
-    } else if (styleSlug === 'sniper-guns') {
-      const sym = getRandomElement(['×', '•', '—', 'ø', '†', '::', '🎯', '🔫'], rng);
-      const variants = [
-        `${sym} ${styledBase} ${sym}`,
-        `• ${styledBase} •`,
-        `× ${styledBase} ×`,
-        `ø ${styledBase} ø`,
-        `🎯 ${styledBase}`,
-        `${styledBase} • 999`,
-        `${styledBase} • 007`,
-        `— ${styledBase} —`,
-      ];
-      candidate = variants[stepSeed % variants.length];
+      candidate = getRandomElement(variants, rng);
     } else if (styleSlug === 'aesthetic-cute') {
-      const sym = getRandomElement(['✿', '♡', '✧', '⋆', '✰', '╰‿╯', 'ツ', 'ヅ', '🧸', '❀'], rng);
-      const variants = [
-        `${sym}${styledBase}${sym}`,
-        `✿ ${styledBase} ✿`,
-        `♡ ${styledBase} ♡`,
-        `✧ ${styledBase} ✧`,
-        `⋆ ${styledBase} ⋆`,
-        `╰‿╯ ${styledBase}`,
-        `ツ ${styledBase}`,
-        `🧸 ${styledBase}`,
-        `${styledBase} vibes ♡`,
-        `sweet_${styledBase}`,
-      ];
-      candidate = variants[stepSeed % variants.length];
-    } else if (styleSlug === 'japanese-kanji') {
-      const kanji = getRandomElement(['神', '鬼', '侍', '竜', '影', '極', '龍', '雷', '愛', '死', '魔', '狼', '零', '天'], rng);
-      const variants = [
-        `${kanji}${styledBase}${kanji}`,
-        `${kanji} • ${styledBase}`,
-        `${styledBase} • ${kanji}`,
-        `『${kanji}』${styledBase}`,
-        `${styledBase} ${kanji}`,
-      ];
-      candidate = variants[stepSeed % variants.length];
-    } else if (styleSlug === 'villain-demon') {
-      const pfx = getRandomElement(['VILLAIN', 'DEVIL', 'DARK', 'GHOST', 'SHADOW', 'DEATH', 'TOXIC', 'REAPER'], rng);
-      candidate = `${pfx} • ${styledBase}`;
-    } else if (styleSlug === 'king-royal') {
-      const pfx = getRandomElement(['KING', 'LORD', 'TITAN', 'ALPHA', 'PRINCE', 'LEGEND', 'EMPEROR'], rng);
-      candidate = `${pfx} • ${styledBase}`;
-    } else if (styleSlug === 'queen-angel') {
-      const pfx = getRandomElement(['QUEEN', 'PRINCESS', 'ANGEL', 'GODDESS', 'LADY', 'VALKYRIE', 'DOLL'], rng);
-      candidate = `${pfx} ♡ ${styledBase}`;
-    } else if (styleSlug === 'freefire-legend') {
-      const variants = [
-        `亗 ${styledBase} 亗`,
-        `V • ${styledBase}`,
-        `Raistar • ${styledBase}`,
-        `Badge99 • ${styledBase}`,
-        `Total • ${styledBase}`,
-        `亗 OP ${styledBase} 亗`,
-        `SK • ${styledBase} 亗`,
-        `${styledBase}࿐`,
-        `${styledBase} 么`,
-      ];
-      candidate = variants[stepSeed % variants.length];
-    } else if (styleSlug === 'bgmi-pro') {
-      const variants = [
-        `『${styledBase}』メ`,
-        `【${styledBase}】〆`,
-        `么${styledBase}么`,
-        `乡${styledBase}乡`,
-        `[SOUL] ${styledBase}`,
-        `[GODL] ${styledBase}`,
-        `Mortal • ${styledBase}`,
-        `Jonathan • ${styledBase}`,
-        `Tx_${styledBase}`,
-        `父${styledBase}气`,
-      ];
-      candidate = variants[stepSeed % variants.length];
-    } else if (styleSlug === 'gamer-numbers') {
-      const num = getRandomElement(['999', '777', '007', '444', '100', '01', '69', '333', '888'], rng);
-      const sep = getRandomElement([' • ', '_', ' ', '-'], rng);
-      candidate = `${styledBase}${sep}${num}`;
+      const sym = getRandomElement(['✿', '♡', '✧', '⋆', '✰', '╰‿╯', 'ツ', '🧸'], rng);
+      candidate = `${sym} ${styledBase} ${sym}`;
+    } else if (styleSlug === 'sniper-guns') {
+      const sym = getRandomElement(['×', '•', '—', 'ø', '†', '🎯'], rng);
+      candidate = `${sym} ${styledBase} ${sym}`;
     } else {
-      // General Mode with High Procedural Variation & Game Affinity
-      if (includeSymbols) {
-        const patternIndex = stepSeed % 20;
-        if (patternIndex === 0 && gameAffixes.templates.length > 0) {
-          const tpl = getRandomElement(gameAffixes.templates, rng);
-          candidate = tpl.replace('{name}', styledBase);
-        } else if (patternIndex === 1) {
-          candidate = `亗${styledBase}亗`;
-        } else if (patternIndex === 2) {
-          const pair = getRandomElement(BRACKET_PAIRS, rng);
-          const sfx = getRandomElement(['メ', '々', '么', '〆', '★', '⚡', '✿', '亗'], rng);
-          candidate = `${pair[0]}${styledBase}${pair[1]}${sfx}`;
-        } else if (patternIndex === 3) {
-          candidate = `꧁༺${styledBase}༻꧂`;
-        } else if (patternIndex === 4) {
-          candidate = `${styledBase}々`;
-        } else if (patternIndex === 5) {
-          candidate = `么${styledBase}么`;
-        } else if (patternIndex === 6) {
-          const pfx = getRandomElement(activePrefixes, rng);
-          candidate = `[${pfx}] ${styledBase}`;
-        } else if (patternIndex === 7) {
-          candidate = `乂${styledBase}乂`;
-        } else if (patternIndex === 8) {
-          candidate = `乡${styledBase}乡`;
-        } else if (patternIndex === 9) {
-          const royal = getRandomElement(['👑', '♛', '☬', '⚜', '♚'], rng);
-          candidate = `${royal}${styledBase}${royal}`;
-        } else if (patternIndex === 10) {
-          candidate = `${styledBase}࿐`;
-        } else if (patternIndex === 11) {
-          const combat = getRandomElement(['⚔', '☠', '⚡', '✞', '†'], rng);
-          candidate = `${combat}${styledBase}${combat}`;
-        } else if (patternIndex === 12) {
-          const kanji = getRandomElement(['神', '鬼', '侍', '竜', '影', '極'], rng);
-          candidate = `${kanji}${styledBase}${kanji}`;
-        } else if (patternIndex === 13) {
-          candidate = `• ${styledBase} •`;
-        } else if (patternIndex === 14) {
-          candidate = `× ${styledBase} ×`;
-        } else if (patternIndex === 15) {
-          const soft = getRandomElement(['✿', '♡', '✧', '⋆', '╰‿╯', 'ツ', '🧸'], rng);
-          candidate = `${soft}${styledBase}${soft}`;
-        } else if (patternIndex === 16) {
-          const sfx = getRandomElement(activeSuffixes, rng);
-          candidate = `${styledBase} • ${sfx}`;
-        } else if (patternIndex === 17) {
-          candidate = `𓊈${styledBase}𓊉`;
-        } else if (patternIndex === 18) {
-          candidate = `【${styledBase}】〆`;
-        } else {
-          candidate = `༺${styledBase}༻`;
-        }
+      // General Mode Auto-Shuffle: Interweaves diverse patterns
+      const randPattern = Math.floor(rng() * 22);
+
+      if (randPattern === 0 && gameAffixes.templates.length > 0) {
+        const tpl = getRandomElement(gameAffixes.templates, rng);
+        candidate = tpl.replace('{name}', styledBase);
+      } else if (randPattern === 1) {
+        candidate = `亗${styledBase}亗`;
+      } else if (randPattern === 2) {
+        const pair = getRandomElement(BRACKET_PAIRS, rng);
+        const sfx = getRandomElement(['メ', '々', '么', '〆', '★', '⚡', '✿', '亗'], rng);
+        candidate = `${pair[0]}${styledBase}${pair[1]}${sfx}`;
+      } else if (randPattern === 3) {
+        candidate = `꧁༺${styledBase}༻꧂`;
+      } else if (randPattern === 4) {
+        candidate = `${styledBase}々`;
+      } else if (randPattern === 5) {
+        candidate = `么${styledBase}么`;
+      } else if (randPattern === 6) {
+        const pfx = getRandomElement(activePrefixes, rng);
+        candidate = `[${pfx}] ${styledBase}`;
+      } else if (randPattern === 7) {
+        candidate = `乂${styledBase}乂`;
+      } else if (randPattern === 8) {
+        candidate = `乡${styledBase}乡`;
+      } else if (randPattern === 9) {
+        const royal = getRandomElement(['👑', '♛', '☬', '⚜', '♚'], rng);
+        candidate = `${royal}${styledBase}${royal}`;
+      } else if (randPattern === 10) {
+        candidate = `${styledBase}࿐`;
+      } else if (randPattern === 11) {
+        const combat = getRandomElement(['⚔', '☠', '⚡', '✞', '†'], rng);
+        candidate = `${combat}${styledBase}${combat}`;
+      } else if (randPattern === 12) {
+        const kanji = getRandomElement(['神', '鬼', '侍', '竜', '影', '極'], rng);
+        candidate = `${kanji}${styledBase}${kanji}`;
+      } else if (randPattern === 13) {
+        candidate = `• ${styledBase} •`;
+      } else if (randPattern === 14) {
+        candidate = `× ${styledBase} ×`;
+      } else if (randPattern === 15) {
+        const soft = getRandomElement(['✿', '♡', '✧', '⋆', '╰‿╯', 'ツ', '🧸'], rng);
+        candidate = `${soft}${styledBase}${soft}`;
+      } else if (randPattern === 16) {
+        const sfx = getRandomElement(activeSuffixes, rng);
+        candidate = `${styledBase} • ${sfx}`;
+      } else if (randPattern === 17) {
+        candidate = `𓊈${styledBase}𓊉`;
+      } else if (randPattern === 18) {
+        candidate = `【${styledBase}】〆`;
+      } else if (randPattern === 19) {
+        candidate = `V • ${styledBase}`;
+      } else if (randPattern === 20) {
+        candidate = `『${styledBase}』メ`;
+      } else {
+        candidate = `༺${styledBase}༻`;
       }
     }
 
@@ -409,22 +343,26 @@ export async function generateGamingNames(options: GenerateOptions = {}): Promis
 
     if (!seenNames.has(candidate)) {
       seenNames.add(candidate);
-      results.push({
-        id: `gen-${results.length + 1}-${Date.now().toString(36)}-${stepSeed}`,
+      generatedPool.push({
+        id: `gen-${generatedPool.length + 1}-${Date.now().toString(36)}-${stepSeed}`,
         name: candidate,
         plainName: rawName,
         gameName: selectedGame?.name || 'All Games',
         styleName: selectedStyle?.name || fontKey.replace(/_/g, ' ').toUpperCase(),
         validation: val,
         font: fontKey,
-        isPopular: results.length < 4,
+        isPopular: generatedPool.length < 4,
       });
     }
   }
 
+  // Auto-Shuffle the pool so consecutive items have distinct styles
+  const shuffled = shuffleArray(generatedPool, rng);
+  const finalResults = shuffled.slice(0, count);
+
   return {
-    results,
-    total: results.length,
+    results: finalResults,
+    total: finalResults.length,
     inputName: rawName,
     gameName: selectedGame?.name || 'General',
     styleName: selectedStyle?.name || 'All Styles',
