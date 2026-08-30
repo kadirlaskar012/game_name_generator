@@ -520,19 +520,19 @@ export const GeneratorApp: React.FC<GeneratorAppProps> = ({
         </div>
       </div>
 
-      {/* Results Grid */}
+      {/* Results Feed (Completely Non-Boxy, Seamless Stream) */}
       {loading && results.length === 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 py-4">
+        <div className="space-y-2.5 py-4">
           {[...Array(6)].map((_, i) => (
             <div
               key={i}
-              className="h-32 glass-panel rounded-3xl animate-pulse"
+              className="h-16 rounded-full bg-white/40 dark:bg-white/[0.02] animate-pulse"
             />
           ))}
         </div>
       ) : filteredResults.length > 0 ? (
         <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5">
             {filteredResults.map((item) => (
               <ResultCard
                 key={item.id}

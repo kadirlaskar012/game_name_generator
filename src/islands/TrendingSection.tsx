@@ -19,7 +19,7 @@ export const TrendingSection: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/trending?limit=15')
+    fetch('/api/trending?limit=12')
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -34,7 +34,7 @@ export const TrendingSection: React.FC = () => {
     try {
       await navigator.clipboard.writeText(name);
       setCopiedName(name);
-      setTimeout(() => setCopiedName(null), 2000);
+      setTimeout(() => setCopiedName(null), 1800);
 
       fetch('/api/track', {
         method: 'POST',
@@ -47,59 +47,66 @@ export const TrendingSection: React.FC = () => {
   return (
     <div className="w-full">
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-20 bg-white dark:bg-surface-dark border border-neutral-200 dark:border-neutral-800 rounded-xl animate-pulse" />
+            <div key={i} className="h-16 rounded-full bg-white/40 dark:bg-white/[0.02] animate-pulse" />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
           {trendingList.map((item, index) => (
             <div
               key={item.id || index}
-              className="bg-white dark:bg-surface-dark border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 rounded-xl p-3 flex items-center justify-between transition shadow-sm hover:shadow-md"
+              onClick={() => handleCopy(item.name)}
+              className="group relative p-3 sm:p-3.5 rounded-full bg-white/60 dark:bg-white/[0.03] hover:bg-white dark:hover:bg-white/[0.08] backdrop-blur-md transition-all duration-200 cursor-pointer flex items-center justify-between gap-2.5 border-b border-neutral-200/40 dark:border-white/5 hover:shadow-lg hover:shadow-amber-500/10 active:scale-[0.99]"
             >
-              <div className="flex items-center gap-3 overflow-hidden pr-2">
+              <div className="flex items-center gap-2.5 overflow-hidden pr-1">
                 <div
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs font-mono shrink-0 ${
+                  className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs font-mono shrink-0 ${
                     index === 0
-                      ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300'
+                      ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30'
                       : index === 1
-                      ? 'bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200'
+                      ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
                       : index === 2
-                      ? 'bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300'
-                      : 'bg-neutral-100 dark:bg-neutral-900 text-neutral-500'
+                      ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
+                      : 'bg-neutral-100 dark:bg-white/5 text-neutral-400'
                   }`}
                 >
                   {index < 3 ? <Trophy className="w-3.5 h-3.5" /> : `#${index + 1}`}
                 </div>
 
                 <div className="truncate">
-                  <div className="text-base font-bold text-neutral-900 dark:text-white font-gaming truncate select-all">
+                  <div className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white font-gaming truncate select-all group-hover:text-amber-500 transition-colors">
                     {item.name}
                   </div>
                   <div className="text-[10px] text-neutral-400 font-mono">
-                    {item.copyCount} copies • {item.favoriteCount} likes
+                    {item.copyCount} copies
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-1 shrink-0">
+              <div className="flex items-center gap-1.5 shrink-0">
                 <button
                   type="button"
-                  onClick={() => setSelectedCard(item.name)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedCard(item.name);
+                  }}
                   title="Card Banner"
-                  className="p-1.5 border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-500 rounded-lg transition"
+                  className="w-8 h-8 flex items-center justify-center rounded-full text-neutral-400 hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors"
                 >
                   <ImageIcon className="w-3.5 h-3.5" />
                 </button>
                 <button
                   type="button"
-                  onClick={() => handleCopy(item.name)}
-                  className={`py-1 px-2.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition ${
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCopy(item.name);
+                  }}
+                  className={`py-1.5 px-3 rounded-full text-xs font-bold flex items-center gap-1 transition-all shadow-sm ${
                     copiedName === item.name
-                      ? 'bg-emerald-600 text-white'
-                      : 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:opacity-90'
+                      ? 'bg-emerald-500 text-white'
+                      : 'bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-400 hover:to-orange-500'
                   }`}
                 >
                   {copiedName === item.name ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
