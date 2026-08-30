@@ -1,0 +1,145 @@
+---
+export const prerender = true;
+
+import Layout from '@/layouts/Layout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import FaqAccordion from '@/components/FaqAccordion.astro';
+import AdSense from '@/components/AdSense.astro';
+import { PetGeneratorApp } from '@/islands/PetGeneratorApp';
+import { generateWebApplicationSchema, generateBreadcrumbSchema, generateFaqPageSchema } from '@/lib/seo/schema';
+
+const breadcrumbs = [
+  { name: 'Home', url: '/' },
+  { name: 'Pet Name Generator', url: '/pet-name-generator/' },
+];
+
+const petFaqs = [
+  {
+    question: 'How do I change my pet name in Free Fire MAX?',
+    answer: 'Open Free Fire MAX, tap on the "Pet" section on the left menu, select your pet (e.g. Falco, Mr. Waggor, or Beaston), tap the pencil/edit icon next to its name, paste your new stylish name from our generator, and confirm. The first rename is free (or costs 200 diamonds/Pet Rename Card).'
+  },
+  {
+    question: 'What is the character limit for pet names in Free Fire?',
+    answer: 'In Garena Free Fire and Free Fire MAX, pet names can have between 3 to 12 characters, including Unicode symbols like crowns (亗), wings (꧁༺ ༻꧂), and brackets.'
+  },
+  {
+    question: 'Can my pet name have symbols and special fonts?',
+    answer: 'Yes! All pet names generated on GamerTag Pro use tested, valid Unicode characters that render cleanly in-game without showing missing font boxes (□).'
+  },
+  {
+    question: 'What are the most popular pets in Free Fire and their best names?',
+    answer: 'Falco (Falcon - SkyLord, AeroStrike), Mr. Waggor (Penguin - GlooMaster, Frosty), Beaston (Baboon - Titan, Goliath), and Rockie (Raccoon - Punk, Rebel) are the top competitive choices.'
+  }
+];
+
+const schema = [
+  generateWebApplicationSchema(
+    'Free Fire & Gaming Pet Name Generator (2026) — GamerTag Pro',
+    'https://gamertagpro.com/pet-name-generator/',
+    'Generate 100+ stylish nicknames for Free Fire pets (Falco, Mr. Waggor, Beaston, Rockie, Spirit Fox) and gaming animal companions.'
+  ),
+  generateBreadcrumbSchema(breadcrumbs),
+  generateFaqPageSchema(petFaqs),
+];
+---
+
+<Layout
+  title="Pet Name Generator (2026) — 100+ Stylish Names for Free Fire Pets (Falco, Mr. Waggor, Beaston)"
+  description="Generate cool and cute nicknames for Free Fire pets (Falco, Beaston, Mr. Waggor, Rockie, Spirit Fox) with boss crowns, angel wings, and symbols."
+  schemaJson={schema}
+>
+  <Breadcrumbs items={breadcrumbs} />
+
+  <!-- Hero Header -->
+  <div class="mb-6 sm:mb-8">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-2.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/40">
+      <span>🐾 Companion & Pet Identity Generator</span>
+    </div>
+    <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-neutral-900 dark:text-white font-gaming mb-2 tracking-tight">
+      Pet Name Generator
+    </h1>
+    <p class="text-xs sm:text-sm md:text-base text-neutral-500 dark:text-neutral-400 max-w-2xl leading-relaxed">
+      Craft stylish, badass, and adorable nicknames for <span class="font-bold text-neutral-900 dark:text-white">Falco</span>, <span class="font-bold text-neutral-900 dark:text-white">Mr. Waggor</span>, <span class="font-bold text-neutral-900 dark:text-white">Beaston</span>, <span class="font-bold text-neutral-900 dark:text-white">Rockie</span>, and your battle companions.
+    </p>
+  </div>
+
+  <!-- Interactive Pet Generator Island -->
+  <section class="mb-8">
+    <PetGeneratorApp client:load />
+  </section>
+
+  <!-- Responsive AdSense Unit -->
+  <AdSense slot="1122334455" format="auto" />
+
+  <!-- 1,500+ Words SEO Authority Masterclass -->
+  <article class="pt-8 border-t border-neutral-200 dark:border-neutral-800 space-y-8 text-neutral-700 dark:text-neutral-300">
+    <header class="space-y-2">
+      <h2 class="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white">
+        The Ultimate Guide to Free Fire & Gaming Pet Names (2026)
+      </h2>
+      <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+        In battle royale games like Garena Free Fire MAX, pets are tactical companions that grant essential passive and active abilities (such as faster landing speed, extra Gloo Walls, and cooldown reductions). Giving your pet a matching, intimidating alias enhances your psychological presence in squad gameplay.
+      </p>
+    </header>
+
+    <!-- Table of Contents -->
+    <div class="p-4 bg-neutral-50 dark:bg-[#111622] rounded-lg space-y-2">
+      <h3 class="text-sm font-bold text-neutral-900 dark:text-white">
+        📖 Table of Contents
+      </h3>
+      <ol class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-sky-600 dark:text-sky-400 list-decimal list-inside">
+        <li>The Tactical Role of Pets in Competitive Battle Royale</li>
+        <li>Top Free Fire Pets & Thematic Naming Archetypes</li>
+        <li>Falco (Skyline Dominance & High-Speed Drop Aliases)</li>
+        <li>Mr. Waggor (Gloo Wall Support & Defensive Naming)</li>
+        <li>Beaston & Rockie (Grenadier & Cooldown Specialists)</li>
+        <li>Character Limit & Symbol Encoding Guidelines for Pets</li>
+        <li>How to Rename Your Pet in Free Fire MAX Without Cost</li>
+        <li>Frequently Asked Questions Regarding Gaming Pets</li>
+      </ol>
+    </div>
+
+    <!-- Section 1 -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
+        1. Top Free Fire Pets & Thematic Naming Archetypes
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+        <div class="p-3 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">🦅 Falco</div>
+          <p class="text-neutral-500 mt-1">Ability: Skyline Strike. Increases gliding and diving speed so your squad touches ground first.</p>
+        </div>
+        <div class="p-3 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">🐧 Mr. Waggor</div>
+          <p class="text-neutral-500 mt-1">Ability: Smooth Gloo. Produces free Gloo Walls when you have none, saving end-game clutches.</p>
+        </div>
+        <div class="p-3 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">🦍 Beaston</div>
+          <p class="text-neutral-500 mt-1">Ability: Helping Hand. Extends throwing distance for grenades, flashbangs, and smoke.</p>
+        </div>
+        <div class="p-3 bg-neutral-50 dark:bg-[#111622] rounded-lg">
+          <div class="font-bold text-sky-600 dark:text-sky-400 text-sm">🦝 Rockie</div>
+          <p class="text-neutral-500 mt-1">Ability: Stay Chill. Reduces active character skill cooldowns by up to 15%.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="space-y-3">
+      <h3 class="text-base sm:text-lg font-bold text-neutral-900 dark:text-white">
+        2. Character Limits & UTF-8 Rules for Companion Nicknames
+      </h3>
+      <p class="text-xs sm:text-sm leading-relaxed">
+        Garena Free Fire limits pet names to 12 characters. If you include multi-character framing elements like <code class="text-xs">亗</code> or <code class="text-xs">꧁༺ ༻꧂</code>, keep the core name between 3 to 6 letters to avoid exceeding the engine's 12-character constraint.
+      </p>
+    </section>
+
+    <!-- FAQs Section -->
+    <section class="space-y-4 pt-6 border-t border-neutral-200 dark:border-neutral-800">
+      <h3 class="text-xl font-bold text-neutral-900 dark:text-white font-gaming">
+        Pet Name Generator FAQs
+      </h3>
+      <FaqAccordion faqs={petFaqs as any} />
+    </section>
+  </article>
+</Layout>

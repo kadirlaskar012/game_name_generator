@@ -2,21 +2,16 @@
 import { SEED_GAMES } from '@/lib/database/seedData';
 ---
 
-<footer class="border-t border-neutral-200 dark:border-neutral-800/80 bg-white dark:bg-surface-dark py-10 transition-colors">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-xs">
+<footer class="border-t border-neutral-200 dark:border-neutral-800/80 bg-white dark:bg-[#0b0f19] py-10 transition-colors">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8 text-xs">
       <!-- Brand column -->
-      <div class="md:col-span-1">
-        <a href="/" class="flex items-center gap-2 mb-2">
-          <div class="w-6 h-6 rounded-md bg-neutral-900 dark:bg-white flex items-center justify-center font-display font-bold text-xs text-white dark:text-neutral-900">
-            G
-          </div>
-          <span class="font-display font-bold text-base text-neutral-900 dark:text-white">
-            GAMERTAG<span class="text-sky-500">PRO</span>
-          </span>
+      <div>
+        <a href="/" class="flex items-center gap-2 mb-2 font-gaming font-extrabold text-base text-neutral-900 dark:text-white">
+          🎮 GAMERTAG<span class="text-sky-500">PRO</span>
         </a>
         <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed mb-3">
-          Instant Unicode gaming nickname generator for Free Fire, BGMI, Valorant, and esports clans.
+          Ultra-fast Unicode gaming nickname generator for Free Fire, BGMI, Valorant, esports squads, and pets.
         </p>
       </div>
 
@@ -30,7 +25,7 @@ import { SEED_GAMES } from '@/lib/database/seedData';
             <li>
               <a
                 href={`/${game.slug}-name-generator/`}
-                class="hover:text-neutral-900 dark:hover:text-white transition flex items-center gap-1.5"
+                class="hover:text-sky-500 transition flex items-center gap-1.5"
               >
                 <span>{game.logo}</span> {game.name}
               </a>
@@ -39,30 +34,31 @@ import { SEED_GAMES } from '@/lib/database/seedData';
         </ul>
       </div>
 
-      <!-- Styles Column -->
+      <!-- Specialized Tools Column -->
       <div>
         <h4 class="font-semibold text-neutral-900 dark:text-neutral-200 mb-2 uppercase tracking-wider text-[11px]">
-          Styles & Fonts
+          Specialized Tools
         </h4>
         <ul class="space-y-1.5 text-neutral-500 dark:text-neutral-400">
-          <li><a href="/free-fire-names/stylish/" class="hover:text-neutral-900 dark:hover:text-white transition">Small Caps (ᴋᴀᴅɪʀ)</a></li>
-          <li><a href="/free-fire-names/attitude/" class="hover:text-neutral-900 dark:hover:text-white transition">Boss Crowns (亗, ☬)</a></li>
-          <li><a href="/clan-name-generator/" class="hover:text-neutral-900 dark:hover:text-white transition">Clan Brackets (『』, 【】)</a></li>
-          <li><a href="/bgmi-name-generator/" class="hover:text-neutral-900 dark:hover:text-white transition">Japanese Katakana (メ, 々, 么)</a></li>
-          <li><a href="/esports-name-generator/" class="hover:text-neutral-900 dark:hover:text-white transition">Gothic Fraktur (𝕶𝖆𝖉𝖎𝖗)</a></li>
+          <li><a href="/name-battle/" class="hover:text-rose-500 transition font-medium text-rose-500">⚔️ Daily Name Battle</a></li>
+          <li><a href="/pet-name-generator/" class="hover:text-sky-500 transition">🐾 Pet Name Generator</a></li>
+          <li><a href="/multilingual-name-generator/" class="hover:text-sky-500 transition">🌐 Multi-Language Names</a></li>
+          <li><a href="/clan-name-generator/" class="hover:text-sky-500 transition">🛡️ Clan & Guild Tags</a></li>
+          <li><a href="/esports-name-generator/" class="hover:text-sky-500 transition">🏆 Esports Pro Names</a></li>
+          <li><a href="/games/" class="hover:text-sky-500 transition">🎮 All Games Directory</a></li>
         </ul>
       </div>
 
       <!-- Quick Links -->
       <div>
         <h4 class="font-semibold text-neutral-900 dark:text-neutral-200 mb-2 uppercase tracking-wider text-[11px]">
-          Platform
+          Platform & Trends
         </h4>
         <ul class="space-y-1.5 text-neutral-500 dark:text-neutral-400">
-          <li><a href="/trending/" class="hover:text-amber-500 transition">Trending Leaderboards</a></li>
-          <li><a href="/favorites/" class="hover:text-red-500 transition">Saved Favorites</a></li>
-          <li><a href="/sitemap.xml" class="hover:text-neutral-900 dark:hover:text-white transition">XML Sitemap</a></li>
-          <li><a href="/admin/" class="hover:text-neutral-900 dark:hover:text-white transition">Admin Panel</a></li>
+          <li><a href="/trending/" class="hover:text-amber-500 transition font-bold text-amber-500">🔥 Trending Leaderboard</a></li>
+          <li><a href="/favorites/" class="hover:text-red-500 transition">❤️ Saved Favorites</a></li>
+          <li><a href="/sitemap.xml" class="hover:text-sky-500 transition">📄 XML Sitemap</a></li>
+          <li><a href="/robots.txt" class="hover:text-sky-500 transition">🤖 Robots.txt</a></li>
         </ul>
       </div>
     </div>
@@ -71,8 +67,8 @@ import { SEED_GAMES } from '@/lib/database/seedData';
       <div>
         &copy; {new Date().getFullYear()} GamerTag Pro. 100% Client & Server Unicode Compliant.
       </div>
-      <div>
-        Free & Zero Watermarks
+      <div class="text-neutral-500">
+        PWA Enabled • Fast Global Edge CDN
       </div>
     </div>
   </div>

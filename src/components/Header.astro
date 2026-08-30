@@ -1,41 +1,43 @@
 ---
 import { SiteSearch } from '@/islands/SiteSearch';
 import { ThemeToggle } from '@/islands/ThemeToggle';
+import { PwaInstallPrompt } from '@/islands/PwaInstallPrompt';
 ---
 
-<header class="w-full border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#0b0f19]">
+<header class="w-full border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#0b0f19] sticky top-0 z-40">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
     <!-- Brand Logo -->
     <a href="/" class="flex items-center gap-2 group shrink-0">
-      <span class="font-extrabold text-lg tracking-tight text-neutral-900 dark:text-white">
+      <span class="font-extrabold text-base sm:text-lg tracking-tight text-neutral-900 dark:text-white font-gaming">
         🎮 GAMERTAG<span class="text-sky-500">PRO</span>
       </span>
     </a>
 
     <!-- Desktop Navigation Links -->
-    <nav class="hidden md:flex items-center gap-4 text-xs font-semibold text-neutral-600 dark:text-neutral-300">
+    <nav class="hidden lg:flex items-center gap-4 text-xs font-semibold text-neutral-600 dark:text-neutral-300">
       <a href="/" class="hover:text-sky-500 transition-colors">Generator</a>
-      <a href="/games/" class="hover:text-sky-500 transition-colors">Games</a>
-      <a href="/free-fire-name-generator/" class="hover:text-sky-500 transition-colors">Free Fire</a>
-      <a href="/bgmi-name-generator/" class="hover:text-sky-500 transition-colors">BGMI</a>
+      <a href="/name-battle/" class="text-rose-500 hover:text-rose-400 font-bold transition-colors">⚔️ Battle</a>
+      <a href="/pet-name-generator/" class="hover:text-sky-500 transition-colors">🐾 Pets</a>
+      <a href="/multilingual-name-generator/" class="hover:text-sky-500 transition-colors">🌐 Languages</a>
       <a href="/clan-name-generator/" class="hover:text-sky-500 transition-colors">Clans</a>
       <a href="/trending/" class="text-amber-500 hover:text-amber-400 transition-colors font-bold">🔥 Trending</a>
       <a href="/favorites/" class="hover:text-red-500 transition-colors">Favorites</a>
     </nav>
 
-    <!-- Right Controls: Search + Theme Toggle -->
+    <!-- Right Controls: PWA Install + Search + Theme Toggle -->
     <div class="flex items-center gap-2">
+      <PwaInstallPrompt client:load />
       <SiteSearch client:load />
       <ThemeToggle client:load />
     </div>
   </div>
 
   <!-- Mobile Quick Horizontal Bar -->
-  <div class="md:hidden flex items-center gap-3 px-4 py-2 border-t border-neutral-100 dark:border-neutral-800/80 overflow-x-auto no-scrollbar text-xs font-medium bg-neutral-50 dark:bg-[#0e1422]">
+  <div class="lg:hidden flex items-center gap-3 px-4 py-2 border-t border-neutral-100 dark:border-neutral-800/80 overflow-x-auto no-scrollbar text-xs font-medium bg-neutral-50 dark:bg-[#0e1422]">
     <a href="/" class="text-neutral-700 dark:text-neutral-200 whitespace-nowrap font-bold">Generator</a>
-    <a href="/games/" class="text-neutral-600 dark:text-neutral-400 whitespace-nowrap">Games</a>
-    <a href="/free-fire-name-generator/" class="text-neutral-600 dark:text-neutral-400 whitespace-nowrap">Free Fire</a>
-    <a href="/bgmi-name-generator/" class="text-neutral-600 dark:text-neutral-400 whitespace-nowrap">BGMI</a>
+    <a href="/name-battle/" class="text-rose-500 whitespace-nowrap font-bold">⚔️ Battle</a>
+    <a href="/pet-name-generator/" class="text-neutral-600 dark:text-neutral-400 whitespace-nowrap">🐾 Pets</a>
+    <a href="/multilingual-name-generator/" class="text-neutral-600 dark:text-neutral-400 whitespace-nowrap">🌐 Languages</a>
     <a href="/clan-name-generator/" class="text-neutral-600 dark:text-neutral-400 whitespace-nowrap">Clans</a>
     <a href="/trending/" class="text-amber-500 whitespace-nowrap font-bold">🔥 Trending</a>
     <a href="/favorites/" class="text-neutral-600 dark:text-neutral-400 whitespace-nowrap">Favorites</a>

@@ -18,8 +18,12 @@ export const GET: APIRoute = async () => {
     { loc: `${baseUrl}/`, priority: '1.0', changefreq: 'daily' },
     { loc: `${baseUrl}/games/`, priority: '0.9', changefreq: 'weekly' },
     { loc: `${baseUrl}/trending/`, priority: '0.9', changefreq: 'hourly' },
+    { loc: `${baseUrl}/name-battle/`, priority: '0.9', changefreq: 'daily' },
+    { loc: `${baseUrl}/pet-name-generator/`, priority: '0.9', changefreq: 'weekly' },
+    { loc: `${baseUrl}/multilingual-name-generator/`, priority: '0.9', changefreq: 'weekly' },
     { loc: `${baseUrl}/clan-name-generator/`, priority: '0.8', changefreq: 'weekly' },
     { loc: `${baseUrl}/esports-name-generator/`, priority: '0.8', changefreq: 'weekly' },
+    { loc: `${baseUrl}/favorites/`, priority: '0.6', changefreq: 'monthly' },
   ];
 
   // Game landing page URLs
